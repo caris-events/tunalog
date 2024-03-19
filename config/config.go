@@ -71,7 +71,7 @@ func init() {
 }
 
 func (c *Config) Save() error {
-	b, err := json.Marshal(c)
+	b, err := json.MarshalIndent(c, "", "    ")
 	if err != nil {
 		return err
 	}
