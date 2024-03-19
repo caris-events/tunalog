@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/caris-events/tunalog/server/config"
-	"github.com/caris-events/tunalog/server/translation"
+	"github.com/caris-events/tunalog/config"
+	"github.com/caris-events/tunalog/translation"
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -43,7 +43,7 @@ func New() (*Handler, error) {
 	}
 
 	render := multitemplate.NewRenderer()
-	render.AddFromFilesFuncs("wizard", funcs, "handler/template/wizard.html")
+	render.AddFromFilesFuncs("wizard", funcs, "view/wizard.html")
 
 	r.HTMLRender = render
 	r.Static("/assets", "assets")

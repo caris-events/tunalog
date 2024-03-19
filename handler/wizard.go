@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/caris-events/tunalog/config"
 	"github.com/caris-events/tunalog/entity"
-	"github.com/caris-events/tunalog/server/config"
 	"github.com/caris-events/tunalog/store"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

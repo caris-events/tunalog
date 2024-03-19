@@ -7,10 +7,10 @@ import (
 
 	"github.com/urfave/cli/v2"
 
+	_ "github.com/caris-events/tunalog/config"
 	"github.com/caris-events/tunalog/handler"
-	_ "github.com/caris-events/tunalog/server/config"
-	_ "github.com/caris-events/tunalog/server/translation"
 	_ "github.com/caris-events/tunalog/store"
+	_ "github.com/caris-events/tunalog/translation"
 )
 
 func main() {
