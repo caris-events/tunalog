@@ -41,3 +41,32 @@ func (s *Store) CreateUser(c context.Context, u *entity.UserW) error {
 	}
 	return nil
 }
+
+// ListUsers
+func (s *Store) ListUsers(c context.Context) ([]*entity.UserR, error) {
+	rows, err := s.db.Query(`SELECT id, username, nickname, bio, avatar_path, created_at, suspended_at FROM users`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []*entity.UserR
+	for rows.Next() {
+		var u entity.UserR
+		if err := rows.Scan(&u.ID, &u.Username, &u.Nickname, &u.Bio, &u.AvatarPath, &u.CreatedAt, &u.SuspendedAt); err != nil {
+			return nil, err
+		}
+		users = append(users, &u)
+	}
+	return users, nil
+}
+
+// GetUser
+func (s *Store) GetUser(c context.Context, id string) (*entity.UserR, error) {
+	row := s.db.QueryRow(`SELECT id, username, password, nickname, bio, avatar_path, created_at, suspended_at FROM users WHERE id = ?`, id)
+	var u entity.UserR
+	if err := row.Scan(&u.ID, &u.Username, &u.Password, &u.Nickname, &u.Bio, &u.AvatarPath, &u.CreatedAt, &u.SuspendedAt); err != nil {
+		return nil, err
+	}
+	return &u, nil
+}

@@ -1,0 +1,75 @@
+{{ define "content" }}
+<div class="ts-container is-very-narrow has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ .MessageTitle }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+    <div class="ts-header">建立使用者</div>
+    <form action="/admin/users" method="post">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-card has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <div class="ts-control">
+                    <div class="label">
+                        <div class="ts-text is-required">使用者帳號</div>
+                    </div>
+                    <div class="content">
+                        <div class="ts-input is-fluid">
+                            <input type="text" name="username" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">
+                        <div class="ts-text is-required">密碼</div>
+                    </div>
+                    <div class="content">
+                        <div class="ts-input is-fluid">
+                            <input type="password" name="password" autocomplete="new-password" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary is-end-aligned">
+                <button class="ts-button">建立</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="ts-header has-top-spaced-big">
+        帳號列表
+        <div class="ts-badge is-start-spaced is-small">{{ len .Users }}</div>
+    </div>
+    <div class="ts-card has-top-spaced">
+        <table class="ts-table is-basic is-striped">
+            <thead>
+                <tr>
+                    <th class="is-collapsed">使用者帳號</th>
+                    <th>暱稱</th>
+                    <th class="is-collapsed">建立日期</th>
+                    <th class="is-collapsed"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Users }}
+                <tr class="is-middle-aligned">
+                    <td class="is-collapsed">
+                        {{ .Username }} {{ if .SuspendedAt }}
+                        <span class="ts-badge is-negative is-dense is-start-spaced">停用中</span>
+                        {{ end }}
+                    </td>
+                    <td>{{ .Nickname }}</td>
+                    <td class="is-collapsed">{{ unix2date .CreatedAt }}</td>
+                    <td class="is-collapsed">
+                        <a href="/admin/user/{{ .ID }}" class="ts-button is-small is-dense is-outlined">編輯</a>
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ end }}
