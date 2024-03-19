@@ -1,12 +1,15 @@
 package handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/caris-events/tunalog/config"
+	"github.com/caris-events/tunalog/entity"
+	"github.com/caris-events/tunalog/store"
 	"github.com/caris-events/tunalog/translation"
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
@@ -45,20 +48,27 @@ func init() {
 
 	render := multitemplate.NewRenderer()
 	render.AddFromFilesFuncs("wizard", funcs, "view/wizard.html")
+	render.AddFromFilesFuncs("admin_users", funcs, "view/admin/_base.html", "view/admin/users.html")
 
 	r.HTMLRender = render
-	r.Static("/assets", "assets")
+	r.Static("/assets", "view/assets")
 	r.Static("/files", "files")
 	r.Static("/uploads", "uploads")
 
 	r.POST("/wizard", Wizard)
 	r.GET("/wizard", WizardView)
 
+	r.GET("/admin", AdminView)
+
+	r.GET("/admin/users", AdminUsersView)
+	r.POST("/admin/users", AdminUsers)
+
 }
 
 const (
 	KeyMessage      = "message"
 	KeyMessageTitle = "message_title"
+	KeyUserID       = "user_id"
 )
 
 // message reads the flash message from the session, and then deletes it.
@@ -86,7 +96,7 @@ func setMessage(c *gin.Context, value string) {
 func setUserID(c *gin.Context, id string) {
 	session := sessions.Default(c)
 
-	session.Set("user", id)
+	session.Set(KeyUserID, id)
 	session.Save()
 }
 
@@ -94,11 +104,19 @@ func setUserID(c *gin.Context, id string) {
 func userID(c *gin.Context) string {
 	session := sessions.Default(c)
 
-	id, ok := session.Get("user").(string)
+	id, ok := session.Get(KeyUserID).(string)
 	if !ok {
 		return ""
 	}
 	return id
+}
+
+func self(c *gin.Context) (*entity.UserR, error) {
+	u, err := store.Instance.GetUser(c, userID(c))
+	if err != nil {
+		return nil, fmt.Errorf("get user: %w", err)
+	}
+	return u, nil
 }
 
 // wizardRedirect
@@ -112,4 +130,24 @@ func wizardRedirect(c *gin.Context) {
 		return
 	}
 	c.Next()
+}
+
+func path(c *gin.Context) string {
+	switch c.FullPath() {
+	case "/admin/users", "/admin/user/:id":
+		return "user"
+	case "/admin/posts", "/admin/post/create", "/admin/post/:id":
+		return "post"
+	case "/admin/tags", "/admin/tag/:id":
+		return "tag"
+	case "/admin/photos":
+		return "media"
+	case "/admin/navigations":
+		return "navigation"
+	case "/admin/settings":
+		return "settings"
+	case "/admin/appearances":
+		return "appearances"
+	}
+	return ""
 }
