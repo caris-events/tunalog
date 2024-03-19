@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/assets/tocas/tocas.min.css" />
+        <script src="/assets/tocas/tocas.min.js"></script>
+        <title>Tunalog</title>
+    </head>
+    <body>
+        <form action="/wizard" method="post">
+            <div class="has-flex-column" style="height: 100vh">
+                <div class="ts-content is-tertiary is-vertically-very-padded">
+                    <div class="ts-container is-very-narrow">
+                        <div class="ts-header is-big is-heavy">歡迎使用 Tunalog👋</div>
+                        <div class="ts-text is-secondary">你只會在初次啟動時見到這個頁面，這些設定都可以在之後更改。</div>
+                    </div>
+                </div>
+                <div class="ts-divider"></div>
+                <div class="has-flex-1">
+                    <div class="ts-container is-very-narrow has-vertically-spaced-big">
+                        {{ if .Message }}
+                        <div class="ts-notice is-negative has-bottom-spaced">
+                            <div class="content">{{ .Message }}</div>
+                        </div>
+                        {{ end }}
+                        <div class="ts-header is-large">網站設定</div>
+                        <div class="ts-text is-secondary">最基礎的網站文字與顯示設定。</div>
+                        <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
+                            <div class="ts-control is-wide mobile:is-stacked">
+                                <div class="label">部落格名稱</div>
+                                <div class="content">
+                                    <div class="ts-input"><input type="text" name="name" value="我的 Tunalog 部落格" /></div>
+                                </div>
+                            </div>
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">標語</div>
+                                <div class="content">
+                                    <div class="ts-input"><input type="text" name="description" value="這是我最ㄅㄧㄤˋ的生活紀錄部落格😲" /></div>
+                                    <div class="ts-text is-description has-top-spaced-small">通常會出現在首頁的網站標題下方，類似簡短的說明。</div>
+                                </div>
+                            </div>
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">網站網址</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="text" name="url" placeholder="https://example.com" />
+                                    </div>
+                                    <div class="ts-text is-description has-top-spaced-small">部落格的完整公開網址，會套用到部份的超連結或電子郵件。</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ts-header is-large has-top-spaced-big">管理員帳號</div>
+                        <div class="ts-text is-secondary">首個此網站管理者的相關登入資料。</div>
+                        <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
+                            <div class="ts-control is-wide mobile:is-stacked">
+                                <div class="label">帳號</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="text" name="username" value="admin" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">暱稱</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="text" name="nickname" value="Admin" />
+                                    </div>
+                                    <div class="ts-text is-description has-top-spaced-small">你的暱稱會出現在作者名稱與自我介紹欄位中。</div>
+                                </div>
+                            </div>
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">密碼</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="password" name="password" value="admin" />
+                                    </div>
+                                    <div class="ts-text is-description has-top-spaced-small">可自行更改密碼，預設密碼為 <span class="ts-text is-code">admin</span>。</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-divider"></div>
+                <div class="ts-content is-tertiary is-vertically-padded is-end-aligned">
+                    <div class="ts-container is-very-narrow">
+                        <button type="submit" class="ts-button is-start-labeled-icon">
+                            <span class="ts-icon is-rocket-icon"></span>
+                            完成設定手續
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

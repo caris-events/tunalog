@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ .Title }} | {{ str "admin_title" }}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="/assets/tocas/tocas.min.css" />
+        <script src="/assets/tocas/tocas.min.js"></script>
+    </head>
+    <body>
+        <div class="ts-app-layout is-fullscreen is-horizontal">
+            <div class="cell has-flex-column" style="width: 260px">
+                <div class="ts-content is-horizontally-padded">
+                    <div class="ts-header is-big is-heavy">{{ .Title }}</div>
+                    <div class="ts-text is-description is-heavy has-top-spaced-small">目前身份為 {{ .Self.Nickname }}</div>
+                    <a href="/admin/post/create" class="ts-button is-start-icon is-outlined has-top-spaced">
+                        <span class="ts-icon is-square-plus-icon"></span>
+                        發表新文章
+                    </a>
+                </div>
+                <div class="ts-app-sidebar">
+                    <div class="header">帳號</div>
+                    <a href="/admin/users" class="item {{ if eq .Path "user" }}is-active{{ end }}">
+                        <span class="ts-icon is-user-icon"></span>使用者
+                    </a>
+                    <div class="header">內容</div>
+                    <a href="/admin/posts" class="item {{ if eq .Path "post" }}is-active{{ end }}">
+                        <span class="ts-icon is-newspaper-icon"></span>文章
+                    </a>
+                    <a href="/admin/tags" class="item {{ if eq .Path "tag" }}is-active{{ end }}">
+                        <span class="ts-icon is-tags-icon"></span>標籤
+                    </a>
+                    <a href="/admin/photos" class="item {{ if eq .Path "media" }}is-active{{ end }}">
+                        <span class="ts-icon is-photo-film-icon"></span>多媒體
+                    </a>
+                    <a href="/admin/navigations" class="item {{ if eq .Path "navigation" }}is-active{{ end }}">
+                        <span class="ts-icon is-link-icon"></span>連結
+                    </a>
+                    <div class="header">{{ str "admin_section_system" }}</div>
+                    <a href="/admin/settings" class="item {{ if eq .Path "settings" }}is-active{{ end }}">
+                        <span class="ts-icon is-gear-icon"></span>偏好設定
+                    </a>
+                    <a href="/admin/appearances" class="item {{ if eq .Path "appearances" }}is-active{{ end }}">
+                        <span class="ts-icon is-palette-icon"></span>主題與外觀
+                    </a>
+                </div>
+                <div class="ts-content has-top-spaced-auto">
+                    <button class="ts-button is-outlined is-fluid">登出</button>
+                </div>
+            </div>
+            <div class="cell is-fluid is-secondary is-scrollable">{{ template "content" . }}</div>
+        </div>
+    </body>
+</html>
