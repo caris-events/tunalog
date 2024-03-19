@@ -29,9 +29,13 @@
                         <div class="ts-text is-secondary">最基礎的網站文字與顯示設定。</div>
                         <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
                             <div class="ts-control is-wide mobile:is-stacked">
-                                <div class="label">部落格名稱</div>
+                                <div class="label">
+                                    <div class="ts-text is-required">部落格名稱</div>
+                                </div>
                                 <div class="content">
-                                    <div class="ts-input"><input type="text" name="name" value="我的 Tunalog 部落格" /></div>
+                                    <div class="ts-input">
+                                        <input type="text" name="name" value="我的 Tunalog 部落格" required />
+                                    </div>
                                 </div>
                             </div>
                             <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
@@ -42,10 +46,12 @@
                                 </div>
                             </div>
                             <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
-                                <div class="label">網站網址</div>
+                                <div class="label">
+                                    <div class="ts-text is-required">網站網址</div>
+                                </div>
                                 <div class="content">
                                     <div class="ts-input">
-                                        <input type="text" name="url" placeholder="https://example.com" />
+                                        <input type="text" name="url" placeholder="https://example.com" required />
                                     </div>
                                     <div class="ts-text is-description has-top-spaced-small">部落格的完整公開網址，會套用到部份的超連結或電子郵件。</div>
                                 </div>
@@ -55,27 +61,33 @@
                         <div class="ts-text is-secondary">首個此網站管理者的相關登入資料。</div>
                         <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
                             <div class="ts-control is-wide mobile:is-stacked">
-                                <div class="label">帳號</div>
+                                <div class="label">
+                                    <div class="ts-text is-required">帳號</div>
+                                </div>
                                 <div class="content">
                                     <div class="ts-input">
-                                        <input type="text" name="username" value="admin" />
+                                        <input type="text" name="username" value="admin" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
-                                <div class="label">暱稱</div>
+                                <div class="label">
+                                    <div class="ts-text is-required">暱稱</div>
+                                </div>
                                 <div class="content">
                                     <div class="ts-input">
-                                        <input type="text" name="nickname" value="Admin" />
+                                        <input type="text" name="nickname" value="Admin" required />
                                     </div>
                                     <div class="ts-text is-description has-top-spaced-small">你的暱稱會出現在作者名稱與自我介紹欄位中。</div>
                                 </div>
                             </div>
                             <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
-                                <div class="label">密碼</div>
+                                <div class="label">
+                                    <div class="ts-text is-required">密碼</div>
+                                </div>
                                 <div class="content">
                                     <div class="ts-input">
-                                        <input type="password" name="password" value="admin" />
+                                        <input type="password" name="password" value="admin" required />
                                     </div>
                                     <div class="ts-text is-description has-top-spaced-small">可自行更改密碼，預設密碼為 <span class="ts-text is-code">admin</span>。</div>
                                 </div>
@@ -94,5 +106,9 @@
                 </div>
             </div>
         </form>
+
+        <script>
+            document.querySelector("[name='url']").value = location.protocol + "//" + location.host
+        </script>
     </body>
 </html>
