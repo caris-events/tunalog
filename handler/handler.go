@@ -20,8 +20,9 @@ type Handler struct {
 	Engine *gin.Engine
 }
 
-func New() (*Handler, error) {
+func init() {
 	r := gin.Default()
+	Instance = &Handler{r}
 
 	r.Use(sessions.Sessions("tunalog", cookie.NewStore([]byte("hello"))), wizardRedirect)
 
@@ -53,7 +54,6 @@ func New() (*Handler, error) {
 	r.POST("/wizard", Wizard)
 	r.GET("/wizard", WizardView)
 
-	return &Handler{}, nil
 }
 
 const (

@@ -18,6 +18,8 @@ func init() {
 	if err != nil {
 		log.Fatalln("open: %w", err)
 	}
+
+	Instance = &Store{db}
 	if err := createUserTable(); err != nil {
 		log.Fatalln("exec: %w", err)
 	}
@@ -34,6 +36,4 @@ func init() {
 		log.Fatalln("exec: %w", err)
 	}
 	//defer db.Close()
-
-	Instance = &Store{db}
 }
