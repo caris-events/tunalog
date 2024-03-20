@@ -1,6 +1,10 @@
 package store
 
-import "github.com/caris-events/tunalog/entity"
+import (
+	"context"
+
+	"github.com/caris-events/tunalog/entity"
+)
 
 type Post struct {
 	ID          string
@@ -37,4 +41,35 @@ func createPostTable() error {
 	)
 `)
 	return err
+}
+
+func (s *Store) CountPostsByUser(c context.Context, uid string) (int, error) {
+	row := s.db.QueryRow("SELECT COUNT(*) FROM posts WHERE author_id = ?", uid)
+	var count int
+	if err := row.Scan(&count); err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+// TransferPosts
+func (s *Store) TransferPosts(c context.Context, fromUserID, toUserID string) error {
+	_, err := s.db.Exec("UPDATE posts SET author_id = ? WHERE author_id = ?", toUserID, fromUserID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeletePostsByUser
+func (s *Store) DeletePostsByUser(c context.Context, id string) error {
+	_, err := s.db.Exec("DELETE FROM post_tags WHERE post_id IN (SELECT id FROM posts WHERE author_id = ?)", id) // implicit linking table
+	if err != nil {
+		return err
+	}
+	_, err = s.db.Exec("DELETE FROM posts WHERE author_id = ?", id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

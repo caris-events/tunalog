@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"time"
 
 	"github.com/caris-events/tunalog/entity"
 )
@@ -69,4 +70,43 @@ func (s *Store) GetUser(c context.Context, id string) (*entity.UserR, error) {
 		return nil, err
 	}
 	return &u, nil
+}
+
+// UpdateUser
+func (s *Store) UpdateUser(c context.Context, u *entity.UserW) error {
+	_, err := s.db.Exec(`UPDATE users SET username = ?, nickname = ?, bio = ?, avatar_path = ?, suspended_at = ? WHERE id = ?`, u.Username, u.Nickname, u.Bio, u.AvatarPath, u.SuspendedAt, u.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Store) CountUsers(c context.Context) (int, error) {
+	row := s.db.QueryRow(`SELECT COUNT(*) FROM users`)
+	var count int
+	if err := row.Scan(&count); err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+// DeleteUser
+func (s *Store) DeleteUser(c context.Context, id string) error {
+	_, err := s.db.Exec(`DELETE FROM users WHERE id = ?`, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// SuspendUser
+func (s *Store) SuspendUser(c context.Context, uid string) error {
+	_, err := s.db.Exec(`UPDATE users SET suspended_at = ? WHERE id = ?`, time.Now().Unix(), uid)
+	return err
+}
+
+// SuspendUser
+func (s *Store) UnsuspendUser(c context.Context, uid string) error {
+	_, err := s.db.Exec(`UPDATE users SET suspended_at = ? WHERE id = ?`, 0, uid)
+	return err
 }

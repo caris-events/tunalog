@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -15,6 +18,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"github.com/sunshineplan/imgconv"
 )
 
 var Instance *Handler
@@ -49,6 +54,7 @@ func init() {
 	render := multitemplate.NewRenderer()
 	render.AddFromFilesFuncs("wizard", funcs, "view/wizard.html")
 	render.AddFromFilesFuncs("admin_users", funcs, "view/admin/_base.html", "view/admin/users.html")
+	render.AddFromFilesFuncs("admin_user_edit", funcs, "view/admin/_base.html", "view/admin/user_edit.html")
 
 	r.HTMLRender = render
 	r.Static("/assets", "view/assets")
@@ -62,6 +68,9 @@ func init() {
 
 	r.GET("/admin/users", AdminUsersView)
 	r.POST("/admin/users", AdminUsers)
+
+	r.GET("/admin/user/:id", AdminUserEditView)
+	r.POST("/admin/user/:id", AdminUserEdit)
 
 }
 
@@ -150,4 +159,45 @@ func path(c *gin.Context) string {
 		return "appearances"
 	}
 	return ""
+}
+
+type photoType string
+
+const (
+	photoTypePostCover          photoType = "post_cover"
+	photoTypePostPhoto          photoType = "post_photo"
+	photoTypePostPhotoThumbnail photoType = "post_photo_thumbnail"
+	photoTypeAvatar             photoType = "avatar"
+)
+
+func saveUpload(c *gin.Context, key string, typ photoType) (string, error) {
+	year := time.Now().Format("2006")
+	month := time.Now().Format("01")
+	id := strconv.Itoa(int(time.Now().Unix())) + "_" + uuid.New().String() // unix timestamp prefix to order by time
+
+	dst := filepath.Join("uploads", year, month, id+".jpg")
+
+	file, err := c.FormFile(key)
+	if err != nil {
+		return "", nil
+	}
+	if err := c.SaveUploadedFile(file, dst); err != nil {
+		return "", fmt.Errorf("save uploaded file: %w", err)
+	}
+	srcImg, err := imgconv.Open(dst)
+	if err != nil {
+		return "", fmt.Errorf("open: %w", err)
+	}
+	resizeImg := imgconv.Resize(srcImg, &imgconv.ResizeOption{Width: 128})
+
+	dstImg, err := os.OpenFile(dst, os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		return "", fmt.Errorf("open file: %w", err)
+	}
+
+	if err = imgconv.Write(dstImg, resizeImg, &imgconv.FormatOption{Format: imgconv.JPEG}); err != nil {
+		return "", fmt.Errorf("write: %w", err)
+	}
+
+	return fmt.Sprintf("uploads/%s/%s/%s.jpg", year, month, id), nil
 }
