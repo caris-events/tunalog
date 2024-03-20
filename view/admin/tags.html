@@ -1,0 +1,113 @@
+{{ define "content" }}
+<div class="ts-layout is-horizontal">
+    <div class="cell is-fluid is-secondary is-scrollable">
+        <div class="ts-container is-very-narrow has-vertically-padded-large has-bottom-padded-huge">
+            {{ if .Message }}
+            <div class="ts-notice has-bottom-spaced-large">
+                <div class="title">{{ .MessageTitle }}</div>
+                <div class="content">{{ .Message }}</div>
+            </div>
+            {{ end }}
+
+            <div class="ts-header">建立標籤</div>
+
+            <form action="/admin/tags" method="post">
+                <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                <div class="ts-card has-top-spaced">
+                    <div class="ts-content is-vertically-padded">
+                        <div class="ts-control">
+                            <div class="label">名稱</div>
+                            <div class="content">
+                                <div class="ts-input">
+                                    <input type="text" name="name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ts-control has-top-spaced-large">
+                            <div class="label">網址代號</div>
+                            <div class="content">
+                                <div class="ts-input">
+                                    <input type="text" name="slug" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ts-control has-top-spaced-large">
+                            <div class="label">簡介</div>
+                            <div class="content">
+                                <div class="ts-input is-resizable">
+                                    <textarea name="description" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content is-dense is-secondary is-end-aligned">
+                        <button type="submit" class="ts-button">建立</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="ts-header has-top-spaced-big has-bottom-spaced">
+                {{ if .Keyword }}搜尋「{{ .Keyword }}」標籤的結果{{ else }}標籤列表{{ end }} {{ if .Pagination.TotalCount }}
+                <span class="ts-badge is-start-spaced is-small">{{ .Pagination.TotalCount }}</span>
+                {{ end }}
+            </div>
+            {{ if not .Tags }}
+            <div class="ts-content is-tertiary is-vertically-very-padded">
+                <div class="ts-text is-center-aligned is-secondary">找不到任何標籤</div>
+            </div>
+            {{ else }}
+            <div class="ts-card">
+                <table class="ts-table is-basic is-striped">
+                    <thead>
+                        <tr>
+                            <th class="is-collapsed">名稱</th>
+                            <th>網址代號</th>
+                            <th class="is-collapsed">文章數量</th>
+                            <th class="is-collapsed" />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .Tags }}
+                        <tr class="is-middle-aligned">
+                            <td class="is-collapsed">{{ .Name }}</td>
+                            <td>
+                                <a href="/?tag={{ .Slug }}" target="_blank" class="ts-badge is-secondary">{{ .Slug }}</a>
+                            </td>
+                            <td class="is-collapsed">{{ .PostCount }}</td>
+                            <td class="is-collapsed">
+                                <a href="/admin/tag/{{ .ID }}" class="ts-button is-small is-dense is-icon is-outlined">
+                                    <span class="ts-icon is-pen-to-square-icon"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+
+            {{ template "pagination" . }}
+            <!-- -->
+            {{ end }}
+        </div>
+    </div>
+    <div class="cell" style="width: 290px">
+        <form action="/admin/tags" method="get">
+            <div class="ts-content">
+                <div class="ts-header is-large">篩選條件</div>
+                <div class="ts-text is-secondary has-top-spaced-large">名稱或網址代號</div>
+                <div class="ts-input is-underlined is-fluid has-top-spaced-small">
+                    <input type="text" name="keyword" value="{{ .Keyword }}" required />
+                </div>
+                <div class="ts-divider is-section"></div>
+                <div class="ts-wrap is-vertical">
+                    <button type="submit" class="ts-button is-fluid">套用並搜尋</button>
+                    {{ if .Keyword }}
+                    <a href="/admin/tags" class="ts-button is-outlined">重設</a>
+                    {{ end }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

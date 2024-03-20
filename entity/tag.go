@@ -5,6 +5,7 @@ type TagW struct {
 	Slug        string
 	Name        string
 	Description string
+	CreatedAt   int64
 }
 
 type TagR struct {
@@ -12,5 +13,6 @@ type TagR struct {
 	Slug        string
 	Name        string
 	Description string
+	CreatedAt   int64
 	PostCount   int
 }
