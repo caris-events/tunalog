@@ -1,0 +1,139 @@
+{{ define "content" }}
+<div class="ts-container is-very-narrow has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ .MessageTitle }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+
+    <div class="ts-header">編輯使用者</div>
+    <form action="/admin/user/{{ .User.ID }}" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-card has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <div class="ts-control">
+                    <div class="label">大頭貼</div>
+                    <div class="content">
+                        {{ if .User.AvatarPath }}
+                        <a href="../../{{ .User.AvatarPath }}" target="_blank">
+                            <div class="ts-image is-rounded is-bordered is-covered is-1-by-1">
+                                <img src="../../{{ .User.AvatarPath }}" width="128" height="128" alt="" />
+                            </div>
+                        </a>
+                        {{ else }}
+                        <div class="ts-image is-rounded is-bordered is-covered is-1-by-1">
+                            <img src="../../assets/avatar.png" width="128" height="128" alt="" />
+                        </div>
+                        {{ end }}
+                        <div class="ts-file has-top-spaced">
+                            <input type="file" name="avatar_file" />
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">使用者帳號</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="username" value="{{ .User.Username }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">暱稱</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="nickname" value="{{ .User.Nickname }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">新密碼</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="password" name="password" autocomplete="new-password" />
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">留空表示不做任何變更。</div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">簡介</div>
+                    <div class="content">
+                        <div class="ts-input is-resizable">
+                            <textarea name="bio" rows="5">{{ .User.Bio }}</textarea>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">支援 HTML 標籤與 JavaScript 程式碼。</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <a href="/admin/users" class="ts-button is-outlined">返回</a>
+                    <button type="submit" name="action" value="update" class="ts-button">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="ts-header has-top-spaced-big">帳號管理</div>
+    <div class="ts-card has-top-spaced">
+        <div class="ts-content is-vertically-padded">
+            <div class="ts-control">
+                <div class="label">大頭貼圖片</div>
+                <div class="content">
+                    <form action="/admin/user/{{ .User.ID }}" method="post">
+                        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                        <button type="submit" name="action" value="reset_avatar" class="ts-button is-outlined">移除大頭貼</button>
+                    </form>
+                    <div class="ts-text is-description has-top-spaced-small">將該使用者的大頭貼重設為預設的大頭貼。</div>
+                </div>
+            </div>
+            {{ if and (not .IsOnlyUser) (ne .User.ID .Self.ID) }}
+            <div class="ts-control has-top-spaced-large">
+                <div class="label">停用狀態</div>
+                <div class="content">
+                    {{ if .User.SuspendedAt }}
+                    <form action="/admin/user/{{ .User.ID }}" method="post">
+                        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                        <input type="hidden" name="is_suspended" value="false" />
+                        <button type="submit" name="action" value="suspend" class="ts-button">重新啟用使用者</button>
+                    </form>
+                    <div class="ts-text is-small is-negative has-top-spaced-small">該使用者目前已被停用，若要恢復登入與編輯權限請重新啟用該使用者。</div>
+                    {{ else }}
+                    <form action="/admin/user/{{ .User.ID }}" method="post">
+                        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                        <input type="hidden" name="is_suspended" value="true" />
+                        <button type="submit" name="action" value="suspend" class="ts-button is-outlined is-negative">停用使用者</button>
+                    </form>
+                    <div class="ts-text is-description has-top-spaced-small">該使用者會暫時無法登入與編輯文章，但所有資料都會保持現狀。</div>
+                    {{ end }}
+                </div>
+            </div>
+            <div class="ts-divider is-section"></div>
+            <div class="ts-control">
+                <div class="label">刪除使用者</div>
+                <div class="content {{ if and .IsDeletable .PostCount }}is-padded{{ end }}">
+                    <form action="/admin/user/{{ .User.ID }}" method="post" onsubmit="return confirm('你真的要刪除「{{ .User.Nickname }}」使用者嗎？這個動作無法復原！')">
+                        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                        <div class="{{ if or .IsOnlyUser (not .PostCount) }}has-hidden{{ end }}">
+                            <div class="ts-text">此為不可復原的動作！這個作者的 {{ .PostCount }} 篇文章該轉移給誰？</div>
+                            <div class="ts-select is-fluid has-top-spaced">
+                                <select name="transfer_to_id">
+                                    <option value="" selected>不轉移，全部銷毀</option>
+                                    {{ range .Users }} {{ if ne .Username $.User.Username }}
+                                    <option value="{{ .Username }}">{{ .Nickname }}（{{ .Username }}）</option>
+                                    {{ end }} {{ end }}
+                                </select>
+                            </div>
+                            <div class="ts-divider is-section"></div>
+                        </div>
+                        <button type="submit" name="action" value="delete" class="ts-button is-negative">銷毀使用者</button>
+                    </form>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ end }}
