@@ -1,0 +1,252 @@
+{{ define "content" }}
+<div class="ts-container is-very-narrow has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ .MessageTitle }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+
+    <div class="ts-header">外觀與內容</div>
+    <form action="/admin/appearances" method="post">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-card has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <!-- display_powered_by -->
+                <div class="ts-control">
+                    <div class="label">頁腳動力提供者</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="is_powered_by_shown" type="radio" value="true" {{ if.Config.IsPoweredByShown }}checked{{ end }} />
+                                顯示「驕傲地採用 Tunalog 發表」
+                            </label>
+                            <label class="ts-radio">
+                                <input name="is_powered_by_shown" type="radio" value="false" {{ if not .Config.IsPoweredByShown }}checked{{ end }} />
+                                停用
+                            </label>
+                            <div class="ts-text is-description">你可以在頁腳選擇要不要顯示這個部落格程式的名稱，好讓更多人知道這個神奇蹦蹦超棒異域部落格！拜託啦。</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / display_powered_by -->
+
+                <!-- display_copyright -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">頁腳版權聲明</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="is_copyright_shown" type="radio" value="true" {{if .Config.IsCopyrightShown }}checked{{ end }} />
+                                啟用
+                            </label>
+                            <label class="ts-radio">
+                                <input name="is_copyright_shown" type="radio" value="false" {{ if not .Config.IsCopyrightShown }}checked{{ end }} />
+                                停用
+                            </label>
+                            <div class="ts-text is-description">是否在頁腳顯示網站名稱與版權聲明年份？</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / display_copyright -->
+
+                <!-- color_scheme -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">主題色系</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio"> <input name="color_scheme" type="radio" value="light" {{ if eq .Config.ColorScheme "light" }}checked{{ end }} /> 亮色 </label>
+                            <label class="ts-radio"> <input name="color_scheme" type="radio" value="dark" {{ if eq .Config.ColorScheme "dark" }}checked{{ end }} /> 暗色 </label>
+                            <label class="ts-radio">
+                                <input name="color_scheme" type="radio" value="auto" {{ if eq .Config.ColorScheme "auto" }}checked{{ end }} /> 取決於讀者設定
+                            </label>
+                            <div class="ts-text is-description">
+                                網站的主要色調可以是亮色（白底黑字）或暗色（黑底白字），但也能取決於讀者的瀏覽器偏好設定（例如：有的行動裝置會在晚上進入夜間模式）。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / color_scheme -->
+
+                <!-- container_width -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">全域寬度屬性</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="container_width" type="radio" value="710px" {{ if eq .Config.ContainerWidth "710px" }}checked{{ end }} /> 710px
+                            </label>
+                            <label class="ts-radio">
+                                <input name="container_width" type="radio" value="610px" {{ if eq .Config.ContainerWidth "610px" }}checked{{ end }} /> 610px
+                            </label>
+                            <div class="ts-text is-description">文章的寬度可以更窄，避免內容過短時造成的空虛感。</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / container_width -->
+
+                <!-- font_family -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">字型樣式</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="font_family" type="radio" value="noto_sans" {{ if eq .Config.FontFamily "noto_sans" }}checked{{ end }} /> Noto Sans
+                            </label>
+                            <label class="ts-radio">
+                                <input name="font_family" type="radio" value="noto_serif" {{ if eq .Config.FontFamily "noto_serif" }}checked{{ end }} /> Noto Serif
+                            </label>
+                            <div class="ts-text is-description">你可以替網站內容選擇一個更相符的字型風格。</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / font_family -->
+
+                <!-- font_size -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">字體大小</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio"> <input name="font_size" type="radio" value="16px" {{ if eq .Config.FontSize "16px" }}checked{{ end }} /> 16px </label>
+                            <label class="ts-radio"> <input name="font_size" type="radio" value="18px" {{ if eq .Config.FontSize "18px" }}checked{{ end }} /> 18px </label>
+                            <div class="ts-text is-description">
+                                網站的字體可以偏大令人更容易閱讀，同時搭配「全域寬度屬性」還有自己的撰寫習慣，可以讓整個網站的版面不再那麼空白。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / font_size -->
+
+                <!-- highlight_js -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">程式碼標註</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="highlight_js" type="radio" value="true" {{ if .Config.HighlightJS }}checked{{ end }} />
+                                啟用
+                            </label>
+                            <label class="ts-radio">
+                                <input name="highlight_js" type="radio" value="false" {{ if not .Config.HighlightJS }}checked{{ end }} />
+                                停用
+                            </label>
+                            <div class="ts-text is-description">是否要透過 Highlight.js 螢光標記程式碼區塊？</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / highlight_js -->
+
+                <!-- author_block -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">作者資訊位置</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio"> <input name="author_block" type="radio" value="start" {{ if eq .Config.AuthorBlock "start" }}checked{{ end }} /> 文首 </label>
+                            <label class="ts-radio"> <input name="author_block" type="radio" value="end" {{ if eq .Config.AuthorBlock "end" }}checked{{ end }} /> 文末 </label>
+                            <label class="ts-radio"> <input name="author_block" type="radio" value="none" {{ if eq .Config.AuthorBlock "none" }}checked{{ end }} /> 隱藏 </label>
+                            <div class="ts-text is-description">發文作者的個人資訊（頭像、名稱與簡介）應出現在內文中的何處？</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / author_block -->
+
+                <!-- posts_per_page -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">單頁筆數</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input name="posts_per_page" type="number" value="{{ .Config.PostsPerPage }}" />
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">文章清單的每一頁最多出現幾筆文章？預設為 <span class="ts-text is-code">10</span>。</div>
+                    </div>
+                </div>
+                <!-- / posts_per_page -->
+
+                <!-- themes
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">佈景主題</div>
+                    <div class="content">
+                        <div class="ts-select is-fluid">
+                            <select name="theme">
+                                <option value="default" {{ if eq .Config.Theme "default" }}selected{{ end }}>預設</option>
+                                {{ range .Themes }}
+                                <option value="{{ . }}" {{ if eq $.Config.Theme . }}selected{{ end }}>{{ . }}</option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">
+                            你安裝在 <span class="ts-text is-code">/themes</span> 資料夾中的自訂佈景主題會出現在此，詳情可檢視佈景主題的<a
+                                class="ts-text is-external-link"
+                                href="#!"
+                                >線上說明文件</a
+                            >。
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <button type="submit" name="action" value="update" class="ts-button">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="ts-header has-top-spaced-big">自訂程式碼</div>
+    <div class="ts-text is-secondary has-top-spaced-small">
+        你可以在不需要編輯 Tunalog 的原始碼下，直接在頁面中插入部份程式碼。這讓你能夠方便地插入像是廣告追蹤碼或是第三方留言系統。
+    </div>
+    <form action="/admin/appearances" method="post">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-card has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <div class="ts-control">
+                    <div class="label">網頁開頭</div>
+                    <div class="content is-padded">
+                        <div class="ts-input is-resizable">
+                            <textarea name="injected_head" rows="5">{{ .Config.InjectedHead }}</textarea>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">這段程式碼會被插入在每頁的 <span class="ts-text is-code">&lt;head&gt;</span> 之中。</div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">網頁結尾</div>
+                    <div class="content">
+                        <div class="ts-input is-resizable">
+                            <textarea name="injected_foot" rows="5">{{ .Config.InjectedFoot }}</textarea>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">這段程式碼會被插入在每頁的 <span class="ts-text is-code">&lt;body&gt;</span> 結尾。</div>
+                    </div>
+                </div>
+                <div class="ts-divider has-vertically-spaced-big"></div>
+                <div class="ts-control">
+                    <div class="label">文章開頭</div>
+                    <div class="content">
+                        <div class="ts-input is-resizable">
+                            <textarea name="injected_post_start" rows="5">{{ .Config.InjectedPostStart }}</textarea>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">這段程式碼會被插入在每篇文章的內文開頭，可以擺放廣告內容。</div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">文章結尾</div>
+                    <div class="content">
+                        <div class="ts-input is-resizable">
+                            <textarea name="injected_post_end" rows="5">{{ .Config.InjectedPostEnd }}</textarea>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">這段程式碼會被插入在每篇文章的內文結尾，通常可以嵌入第三方留言系統。</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <button type="submit" name="action" value="update_injected" class="ts-button">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}
