@@ -1,0 +1,27 @@
+{{ define "pagination" }}
+<!-- prettier-ignore -->
+<div class="ts-pagination has-top-spaced">
+    <a class="item is-back {{if eq .Pagination.CurrentPage 1 }}is-disabled{{ end }}" href="?{{ .Pagination.Query }}page={{ sub .Pagination.CurrentPage 1 }}"></a>
+    {{ if gt .Pagination.CurrentPage 2 }}
+        <a href="?{{ .Pagination.Query }}page=1" class="item">1</a>
+    {{ end }}
+    {{ if gt .Pagination.CurrentPage 3 }}
+        <span class="item is-skipped"></span>
+    {{ end }}
+    {{ if gt (sub .Pagination.CurrentPage 1) 0 }}
+        <a href="?{{ .Pagination.Query }}page={{ sub .Pagination.CurrentPage 1 }}" class="item">{{ sub .Pagination.CurrentPage 1 }}</a>
+
+    {{ end }}
+    <a href="#!" class="item is-active">{{ .Pagination.CurrentPage }}</a>
+    {{ if lt (add .Pagination.CurrentPage 1) .Pagination.TotalPages }}
+        <a href="?{{ .Pagination.Query }}page={{ add .Pagination.CurrentPage 1 }}" class="item">{{ add .Pagination.CurrentPage 1 }}</a>
+    {{ end }}
+    {{ if lt .Pagination.CurrentPage .Pagination.TotalPages }}
+        {{ if lt .Pagination.CurrentPage (sub .Pagination.TotalPages 2) }}
+            <span class="item is-skipped"></span>
+        {{ end }}
+        <a href="?{{ .Pagination.Query }}page={{ .Pagination.TotalPages }}" class="item">{{ .Pagination.TotalPages }}</a>
+    {{ end }}
+    <a href="?{{ .Pagination.Query }}page={{ add .Pagination.CurrentPage 1 }}" class="item is-next {{if eq .Pagination.CurrentPage .Pagination.TotalPages }}is-disabled{{ end }}"></a>
+</div>
+{{ end }}
