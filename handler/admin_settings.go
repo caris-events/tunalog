@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"runtime"
 	"time"
 
 	"github.com/caris-events/tunalog/config"
@@ -24,6 +25,8 @@ func AdminSettingsView(c *gin.Context) {
 		"Self":               self,
 		"Path":               path(c),
 		"Message":            message(c),
+		"Version":            config.Version,
+		"RuntimeVersion":     runtime.Version(),
 		"Timezones":          entity.Timezones,
 		"IsCustomTimeFormat": config.Instance.TimeFormat != "PM 03:04" && config.Instance.TimeFormat != "15:04" && config.Instance.TimeFormat != "03:04 PM",
 		"IsCustomDateFormat": config.Instance.DateFormat != "2006-01-02" && config.Instance.DateFormat != "01/02/2006" && config.Instance.DateFormat != "02/01/2006",
