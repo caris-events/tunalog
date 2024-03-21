@@ -1,0 +1,67 @@
+{{ define "content" }}
+<div class="ts-container is-very-narrow has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ .MessageTitle }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+
+    <div class="ts-header">編輯標籤</div>
+    <form action="/admin/tag/{{ .Tag.ID }}" method="post">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-card has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <div class="ts-control">
+                    <div class="label">名稱</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="name" value="{{ .Tag.Name }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">網址代號</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="slug" value="{{ .Tag.Slug }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">簡介</div>
+                    <div class="content">
+                        <div class="ts-input is-resizable">
+                            <textarea name="description" rows="3">{{ .Tag.Description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <a href="/admin/tags" class="ts-button is-outlined">返回</a>
+                    <button type="submit" name="action" value="update" class="ts-button">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="ts-header has-top-spaced-huge">標籤管理</div>
+    <div class="ts-card has-top-spaced">
+        <div class="ts-content is-vertically-padded">
+            <div class="ts-control">
+                <div class="label">刪除標籤</div>
+                <div class="content">
+                    <form action="/admin/tag/{{ .Tag.ID }}" method="post" onsubmit="return confirm('你真的要刪除「{{ .Tag.Name }}」標籤嗎？這個動作無法復原！')">
+                        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                        <button type="submit" name="action" value="delete" class="ts-button is-negative is-outlined">銷毀標籤</button>
+                        {{ if .Tag.PostCount }}
+                        <div class="ts-text is-description has-top-spaced">此為不可復原的動作！這個標籤將會從關聯的 {{ .Tag.PostCount }} 篇文章移除。</div>
+                        {{ end }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}
