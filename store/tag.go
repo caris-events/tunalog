@@ -91,3 +91,22 @@ func (s *Store) CreateTag(c context.Context, t *entity.TagW) error {
 	}
 	return nil
 }
+
+// ListTagsByPost
+func (s *Store) ListTagsByPost(id string) ([]*entity.TagR, error) {
+	rows, err := s.db.Query(`SELECT t.id, t.slug, t.name, t.description, t.created_at FROM tags t JOIN post_tags pt ON t.id = pt.tag_id WHERE pt.post_id = ?`, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tags []*entity.TagR
+	for rows.Next() {
+		var t entity.TagR
+		if err := rows.Scan(&t.ID, &t.Slug, &t.Name, &t.Description, &t.CreatedAt); err != nil {
+			return nil, err
+		}
+		tags = append(tags, &t)
+	}
+	return tags, nil
+}

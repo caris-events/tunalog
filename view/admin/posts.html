@@ -1,0 +1,160 @@
+{{ define "content" }}
+<div class="ts-layout is-horizontal">
+    <div class="cell is-fluid is-secondary is-scrollable">
+        <div class="ts-container is-very-narrow has-vertically-padded-large has-bottom-padded-huge">
+            {{ if .Message }}
+            <div class="ts-notice has-bottom-spaced-large">
+                <div class="title">{{ .MessageTitle }}</div>
+                <div class="content">{{ .Message }}</div>
+            </div>
+            {{ end }}
+
+            <div class="ts-grid is-middle-aligned">
+                <div class="column is-fluid">
+                    <div class="ts-header">
+                        文章列表{{ if .Pagination.TotalCount }}
+                        <div class="ts-badge is-start-spaced is-small">{{ .Pagination.TotalCount }}</div>
+                        {{ end }}
+                    </div>
+                </div>
+                <div class="column">
+                    <a href="./post/create" class="ts-button is-start-icon is-outlined">
+                        <span class="ts-icon is-plus-icon"></span>
+                        建立
+                    </a>
+                </div>
+            </div>
+            {{ if not .Posts }}
+            <div class="ts-content is-tertiary is-vertically-very-padded has-top-spaced">
+                <div class="ts-text is-center-aligned is-secondary">找不到文章</div>
+            </div>
+            {{ else }}
+            <div class="ts-card has-top-spaced">
+                <table class="ts-table is-basic">
+                    <thead>
+                        <tr>
+                            <th>標題</th>
+                            <th class="is-collapsed is-center-aligned">狀態</th>
+                            <th class="is-collapsed" />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .Posts }}
+                        <tr class="is-middle-aligned">
+                            <td>
+                                <a href="#!" class="ts-text is-medium is-bold is-undecorated">{{ .Title }}</a>
+                                <br />
+                                <div class="ts-meta is-secondary is-small">
+                                    <div class="item">由 {{ .Author.Nickname }} 發表</div>
+                                    <time class="item" datetime="{{ .PublishedAt }}" data-tooltip="{{ .PublishedAtDatetime }}"></time>
+                                </div>
+                            </td>
+                            <td class="is-collapsed">
+                                <div class="ts-badge">已排程</div>
+                                <div class="ts-badge">已發表</div>
+                                <div class="ts-badge">置頂</div>
+                                <div class="ts-badge">草稿</div>
+                            </td>
+                            <td class="is-collapsed">
+                                <a href="/admin/post/{{ .ID }}" class="ts-button is-small is-dense is-icon is-outlined">
+                                    <span class="ts-icon is-pen-to-square-icon"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {{ end }}
+
+                    </tbody>
+                </table>
+            </div>
+            {{ template "pagination" . }}
+            <!-- -->
+            {{ end }}
+        </div>
+    </div>
+    <div class="cell" style="width: 290px">
+        <form action="/admin/posts" method="get">
+            <div class="ts-content">
+                <div class="ts-header is-large">篩選條件</div>
+                <div class="ts-text is-secondary has-top-spaced-large">標題</div>
+                <div class="ts-input is-underlined is-fluid has-top-spaced-small">
+                    <input type="text" name="title" value="{{ .Query.Title }}" />
+                </div>
+                <div class="ts-text is-secondary has-top-spaced-large">作者</div>
+                <div class="ts-select is-underlined is-fluid has-top-spaced-small">
+                    <select name="author_id">
+                        <option value="" {{ if eq .Query.AuthorID "" }}selected{{ end }}>任意</option>
+                        {{ range .Users }}
+                        <option value="{{ .ID }}" {{ if eq $.Query.AuthorID .ID }}selected{{ end }}>{{ .Nickname }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                <div class="ts-text is-secondary has-top-spaced-large">可見度</div>
+                <div class="ts-select is-underlined is-fluid has-top-spaced-small">
+                    <select name="visibility">
+                        <option value="" {{ if eq .Query.Visibility "" }}selected{{ end }}>任意</option>
+                        <option value="public" {{ if eq .Query.Visibility "public" }}selected{{ end }}>公開</option>
+                        <option value="private" {{ if eq .Query.Visibility "private" }}selected{{ end }}>僅連結</option>
+                        <option value="private" {{ if eq .Query.Visibility "draft" }}selected{{ end }}>草稿</option>
+                    </select>
+                </div>
+                <div class="ts-text is-secondary has-top-spaced-large">發表月份</div>
+                    <div class="ts-select is-underlined is-fluid has-top-spaced-small">
+                        <select name="published_date">
+                            <option value="">任意</option>
+                            {{ range .Dates }}
+                            <option value="{{ . }}" {{ if eq .Query.PublishedDate . }}selected{{ end }}>{{ . }}</option>
+                            {{ end }}
+                        </select>
+                    </div>
+                <div class="ts-text is-secondary has-top-spaced-large">排序方式</div>
+                <div class="ts-selection is-fluid has-top-spaced-small">
+                    <label class="item">
+                        <input type="radio" name="order_by" value="" {{ if eq .Query.OrderBy "" }}checked{{ end }} />
+                        <div class="text">最新的</div>
+                    </label>
+                    <label class="item">
+                        <input type="radio" name="order_by" value="created_at_asc" {{ if eq .Query.OrderBy "created_at_asc" }}checked{{ end }} />
+                        <div class="text">最舊的</div>
+                    </label>
+                </div>
+                <div class="ts-text is-secondary has-top-spaced-large">密碼保護</div>
+                <div class="ts-selection is-fluid has-top-spaced-small">
+                    <label class="item">
+                        <input type="radio" name="has_password" value="" {{ if not .Query.HasPassword }}checked{{ end }} />
+                        <div class="text">任意</div>
+                    </label>
+                    <label class="item">
+                        <input type="radio" name="has_password" value="true" {{ if eq (ptrstr .Query.HasPassword) "true" }}checked{{ end }} />
+                        <div class="text">有</div>
+                    </label>
+                    <label class="item">
+                        <input type="radio" name="has_password" value="false" {{ if eq (ptrstr .Query.HasPassword) "false" }}checked{{ end }} />
+                        <div class="text">無</div>
+                    </label>
+                </div>
+                <div class="ts-divider is-section"></div>
+                <div class="ts-wrap is-vertical">
+                    <button type="submit" class="ts-button is-fluid">套用並搜尋</button>
+                    {{ if .IsQuerySetted }}
+                    <a href="/admin/posts" class="ts-button is-outlined">重設</a>
+                    {{ end }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function relativeTime(timestamp) {
+        var lang = navigator.language
+        var diff = timestamp - Math.floor(Date.now() / 1000)
+        var days = Math.round(diff / 60 / 60 / 24)
+        if (days > -14) {
+            return (new Intl.RelativeTimeFormat(lang, { numeric: 'auto' })).format(days, 'day')
+        }
+        return (new Intl.DateTimeFormat(lang, { year: 'numeric', month: '2-digit', day: '2-digit' })).format((new Date(timestamp * 1000)))
+    }
+    document.querySelectorAll('time').forEach(function (element) {
+        element.textContent = relativeTime(element.dateTime)
+    })
+</script>
+{{ end }}
