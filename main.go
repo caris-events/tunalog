@@ -7,7 +7,7 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	_ "github.com/caris-events/tunalog/config"
+	"github.com/caris-events/tunalog/config"
 	"github.com/caris-events/tunalog/handler"
 	_ "github.com/caris-events/tunalog/store"
 	_ "github.com/caris-events/tunalog/translation"
@@ -23,7 +23,7 @@ func main() {
 
 	app := &cli.App{
 		Name:    "tunalog",
-		Version: "1.0.0",
+		Version: config.Version,
 		Usage:   "A simple blogging system written in Golang ✨",
 		Action:  start,
 		Commands: []*cli.Command{
