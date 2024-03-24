@@ -34,7 +34,7 @@
                     <thead>
                         <tr>
                             <th>標題</th>
-                            <th class="is-collapsed is-center-aligned">狀態</th>
+                            <th class="is-collapsed is-end-aligned">狀態</th>
                             <th class="is-collapsed" />
                         </tr>
                     </thead>
@@ -42,18 +42,24 @@
                         {{ range .Posts }}
                         <tr class="is-middle-aligned">
                             <td>
-                                <a href="#!" class="ts-text is-medium is-bold is-undecorated">{{ .Title }}</a>
+                                <a href="/{{ .Slug }}" class="ts-text is-medium is-bold is-undecorated" target="_blank">{{ .Title }}</a>
                                 <br />
                                 <div class="ts-meta is-secondary is-small">
                                     <div class="item">由 {{ .Author.Nickname }} 發表</div>
                                     <time class="item" datetime="{{ .PublishedAt }}" data-tooltip="{{ .PublishedAtDatetime }}"></time>
                                 </div>
                             </td>
-                            <td class="is-collapsed">
-                                <div class="ts-badge">已排程</div>
-                                <div class="ts-badge">已發表</div>
-                                <div class="ts-badge">置頂</div>
+                            <td class="is-collapsed is-end-aligned">
+                                {{ if .PinnedAt }}
+                                <div class="ts-badge is-outlined">置頂</div>
+                                {{ end }}
+                                {{ if .IsDraft }}
                                 <div class="ts-badge">草稿</div>
+                                {{ else if .IsUnpublished }}
+                                <div class="ts-badge">已排程</div>
+                                {{ else }}
+                                <div class="ts-badge is-secondary">已發表</div>
+                                {{ end }}
                             </td>
                             <td class="is-collapsed">
                                 <a href="/admin/post/{{ .ID }}" class="ts-button is-small is-dense is-icon is-outlined">
@@ -102,7 +108,7 @@
                         <select name="published_date">
                             <option value="">任意</option>
                             {{ range .Dates }}
-                            <option value="{{ . }}" {{ if eq .Query.PublishedDate . }}selected{{ end }}>{{ . }}</option>
+                            <option value="{{ . }}" {{ if eq $.Query.PublishedDate . }}selected{{ end }}>{{ . }}</option>
                             {{ end }}
                         </select>
                     </div>
