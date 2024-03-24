@@ -1,0 +1,414 @@
+{{ define "content" }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+
+<style type="text/css">
+    .editor-toolbar {
+        border-radius: 0;
+        border: 0;
+        max-width: 780px !important;
+        margin: 0 auto !important;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: var(--ts-white);
+    }
+    .editor-toolbar::after {
+        position: absolute;
+        content: "";
+        height: 1px;
+        left: -9999px;
+        right: -9999px;
+        bottom: 0;
+        background: var(--ts-gray-300);
+    }
+    .CodeMirror {
+        border-radius: 0 !important;
+        height: -webkit-fill-available !important;
+        max-height: calc(100% - 75px) !important;
+        background-color: var(--ts-gray-50) !important;
+        color: var(--ts-gray-800) !important;
+        border: 0 !important;
+        max-width: 780px !important;
+        margin: 0 auto !important;
+    }
+    .editor-toolbar i.separator {
+        border-right-color: var(--ts-gray-300);
+    }
+    .editor-toolbar a {
+        color: var(--ts-gray-800) !important;
+    }
+    .editor-toolbar a.active,
+    .editor-toolbar a:hover {
+        background-color: transparent;
+        color: var(--ts-gray-800) !important;
+    }
+</style>
+
+<form action="/admin/post/create" method="post" enctype="multipart/form-data" style="display: contents">
+    <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+    <div class="ts-layout is-horizontal">
+        <div class="cell is-fluid" style="overflow-x: hidden">
+            <!-- prettier-ignore -->
+            <textarea id="content" name="content">
+在 Unity
+中，目前分為兩個撰寫遊戲的方式：[ECS](https://learn.unity.com/tutorial/entity-component-system)（Entity、Component、System）與傳統的
+[MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html)。 前者是 Unity 在
+2018 年所推出的新程式結構撰寫理念，主要是為了解決多數的程式碼都在主執行緒上執行，而導致 CPU
+分配率不彰、程式效率降低、執行緒鎖死的問題。但 ECS
+基本上到年底，都還不是一個完善的狀態，更不是萬能仙丹；事實上，ECS
+就算進入了正式版，也有可能是在下一個產物出來之前的過渡期設計。 話雖如此，ECS
+的設計理念還是值得參考與借鑒的。在前端網頁設計中，其實已經運用了類似的理念有至少二、三年之久，那東西耳熟能詳的名稱是：[Vuex](https://vuex.vuejs.org/)
+與 [Redux](https://redux.js.org/)。 簡單來說，ECS 嘗試地想要將：「把所有邏輯全部塞進同一個
+MonoBehaviour 元件」的這種問題給解決。設想看看，如果遊戲內有一百個物件，而且那些物件都是 NPC
+玩家，但角色大多都是相同的邏輯與行為方式，在傳統寫法這會造成每個元件都有自己的邏輯，而導致效能不彰。
+說到每個元件都有自己的邏輯，ECS 的解決方法顯而易見： >
+讓元件本身只保有狀態資料，而邏輯獨立成一個中央系統。
+如果這聽起來牛頭不對馬嘴、不曉得到底是在說什麼東西，那麼你一定會喜歡接下來的程式碼範例章節。 #
+現有問題 讓我們假設現在有個 `CreatureObject` 生物物件，這是一個很標準的 `MonoBehaviour`
+物件，他會被套用到任何生物的 `GameObject` 上。
+這個程式碼說來簡單：也就是一個生物能夠在受到傷害的時候，把自己的生命值減低一定的數值而已。
+這看起來沒有什麼問題，但實際上會在後期演變成更肥大的遊戲物件，甚至有可能會需要為了不同場景而寫出多個不同但最終卻有著相同效果的函式。
+# 解決方法
+為了下一代著想，我們需要把邏輯拆分出來成為一個獨立的中央共享系統，然後讓物件本身只帶有狀態資料，其他什麼都沒有。
+在上述程式碼中，就是將狀態變動邏輯獨立成一個中央系統的最好例子，由這個方式可以額外延伸更多的系統…像是：控制系統、動畫系統、道具系統、對話系統等。
+雖然說 ECS 不完全僅是這樣的東西，但這卻是其中最重要的一環；而另一件事情不得不提到的就是 ECS
+在多工上的優勢，同時也是最為麻煩與嚴謹的一部分，不過那又是另一個話題了。
+                </textarea>
+        </div>
+        <div class="cell is-scrollable" style="width: 310px">
+            <div class="ts-content">
+                <div class="ts-header">發表</div>
+
+                <!-- 功能按鈕 -->
+                <div class="ts-grid has-top-spaced-large">
+                    <div class="column is-fluid">
+                        <button class="ts-button is-outlined" type="submit" name="action" value="draft">存為草稿</button>
+                    </div>
+                    <div class="column">
+                        <button class="ts-button" type="submit" name="action" value="create">發表文章</button>
+                    </div>
+                </div>
+                <!-- / 功能按鈕 -->
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content">
+                <div class="ts-header">文章資訊</div>
+
+                <!-- 文章網址 -->
+                <div id="cover-placeholder" class="ts-card has-top-spaced">
+                    <div class="ts-content is-secondary is-interactive is-fitted" onclick="showCoverPicker()">
+                        <div class="ts-blankslate is-secondary is-small">
+                            <span class="ts-icon is-image-icon"></span>
+                            <div class="description">尚未選擇文章封面</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="cover-preview" class="has-hidden">
+                    <div class="ts-image is-rounded is-full-width is-bordered is-16-by-9 has-top-spaced">
+                        <img id="cover-image" src="#!" alt="" />
+                        <div class="ts-mask is-secondary is-top">
+                            <div class="ts-content is-compact is-end-aligned has-leading-none">
+                                <button class="ts-close is-rounded" type="button" onclick="resetCover()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ts-file is-solid has-top-spaced-small">
+                    <input type="file" id="cover-file" name="cover_file" />
+                </div>
+                <!-- / 文章網址 -->
+
+                <!-- 標題 -->
+                <div class="ts-text has-top-spaced-large">標題</div>
+                <div class="ts-input is-solid has-top-spaced-small">
+                    <input type="text" name="title" placeholder="替這篇文章想個標題…" required />
+                </div>
+                <!-- / 標題 -->
+
+                <!-- 文章網址 -->
+                <div class="ts-text has-top-spaced-large">文章網址</div>
+                <div class="ts-input is-solid has-top-spaced-small">
+                    <input type="text" id="slug" name="slug" value="{{ .RandomID }}" required />
+                </div>
+                <div class="ts-text is-description has-top-spaced-small has-break-all">https://localhost/<span id="slug-preview">{{ .RandomID }}</span></div>
+                <!-- / 文章網址 -->
+
+                <!-- 作者 -->
+                <div class="ts-text has-top-spaced-small">作者</div>
+                <div class="ts-select is-fluid is-solid has-top-spaced-small">
+                    <select name="author_id">
+                        {{ range .Users }}
+                        <option value="{{ .ID }}">{{ .Nickname }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                <!-- / 作者 -->
+
+                <!-- 誰能看見？ -->
+                <div class="ts-text has-top-spaced-large">誰能看見？</div>
+                <div class="ts-selection is-fluid has-top-spaced-small">
+                    <label class="item">
+                        <input type="radio" name="visibility" value="public" checked />
+                        <div class="text">公開</div>
+                    </label>
+                    <label class="item">
+                        <input type="radio" name="visibility" value="private" />
+                        <div class="text">私人</div>
+                    </label>
+                    <label class="item">
+                        <input type="radio" name="visibility" value="password" />
+                        <div class="text">密碼</div>
+                    </label>
+                </div>
+                <!-- / 誰能看見？ -->
+
+                <!-- 密碼 -->
+                <div id="password-container" class="has-hidden has-top-spaced-small">
+                    <div class="ts-input is-underlined is-start-icon">
+                        <span class="ts-icon is-key-icon"></span>
+                        <input type="text" name="password" />
+                    </div>
+                </div>
+                <!-- / 密碼 -->
+
+                <!-- 發佈時間 -->
+                <div class="ts-text has-top-spaced-large">發佈時間</div>
+                <div class="ts-selection is-fluid has-top-spaced-small">
+                    <label class="item">
+                        <input type="radio" name="is_scheduled" value="false" checked />
+                        <div class="text">立刻</div>
+                    </label>
+                    <label class="item">
+                        <input type="radio" name="is_scheduled" value="true" />
+                        <div class="text">預約日期</div>
+                    </label>
+                </div>
+                <!-- / 發佈時間 -->
+
+                <!-- 日期與時間 -->
+                <div id="schedule-container" class="has-hidden has-top-spaced-small">
+                    <div class="ts-input is-underlined has-top-spaced-small">
+                        <input type="datetime-local" id="published-datetime" />
+                    </div>
+                    <input type="hidden" id="published-at" name="published_at" />
+                </div>
+                <!-- / 日期與時間 -->
+
+                <!-- 摘要 -->
+                <div class="ts-text has-top-spaced-large">摘要</div>
+                <div class="ts-input is-underlined is-resizable has-top-spaced-small">
+                    <!-- prettier-ignore -->
+                    <textarea name="excerpt" data-autosize="vertical" rows="5">
+                    Unity 在 2018
+                    年所推出的新程式結構撰寫理念，主要是為了解決多數的程式碼都在主執行緒上執行，而導致 CPU
+                    分配率不彰、程式效率降低、執行緒鎖死的問題。
+                    </textarea>
+                </div>
+                <!-- / 摘要 -->
+
+                <!-- 標籤 -->
+                <div class="ts-text has-top-spaced-large">標籤</div>
+                <div class="ts-grid is-middle-aligned has-top-spaced-small">
+                    <div class="column is-fluid">
+                        <div class="ts-input is-underlined">
+                            <input id="tag-autocomplete" list="tag-list" placeholder="在此搜尋或建立標籤…" />
+                        </div>
+                    </div>
+                    <div class="column">
+                        <button type="button" id="tag-autocomplete-submit" class="ts-button is-icon is-outlined">
+                            <span class="ts-icon is-plus-icon"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <datalist id="tag-list">
+                    {{ range .Tags }}
+                    <option value="{{ .Name }}"></option>
+                    {{ end }}
+                </datalist>
+
+                <div class="ts-input is-underlined has-top-spaced-small">
+                    <input type="hidden" id="tag-underlying" name="tags" />
+                </div>
+                <div id="tag-preview" class="ts-wrap is-compact"></div>
+                <!-- / 標籤 -->
+
+                <!-- 置頂 -->
+                <div class="ts-text has-top-spaced-large">其他選項</div>
+                <div class="ts-wrap is-vertical is-compact has-top-spaced-small">
+                    <label class="ts-checkbox">
+                        <input type="checkbox" name="is_pinned" value="true" />
+                        置頂此文章
+                    </label>
+                    <label class="ts-checkbox">
+                        <input type="checkbox" name="is_hidden" value="true" />
+                        從文章列表中隱藏
+                    </label>
+                </div>
+
+                <!-- / 置頂 -->
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var easyMDE = new EasyMDE({
+        element: document.getElementById("content"),
+        spellChecker: false,
+        status: false,
+        toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "upload-image", "table"],
+        uploadImage: true,
+        imageUploadFunction: function (file, onSuccess, onError) {
+            var formData = new FormData()
+            formData.append("_csrf", "{{ .CSRF }}")
+            formData.append("photo_file", file)
+
+            fetch("/admin/photo", {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    onSuccess(data.path)
+                })
+                .catch(error => {
+                    console.error("Error:", error)
+                })
+        },
+    })
+
+    easyMDE.codemirror.on("change", () => {
+        document.getElementById("content").value = easyMDE.value()
+    })
+</script>
+
+<script>
+    var tag_autocomplete = document.getElementById("tag-autocomplete")
+    var tag_autocomplete_button = document.getElementById("tag-autocomplete-submit")
+    var tag_underlying = document.getElementById("tag-underlying")
+    var tag_preview = document.getElementById("tag-preview")
+    var tag_triggered_source = null
+
+    document.querySelectorAll(`[name="visibility"]`).forEach(v => {
+        v.addEventListener("change", e => {
+            if (e.target.value === "password") {
+                document.getElementById("password-container").classList.remove("has-hidden")
+            } else {
+                document.getElementById("password-container").classList.add("has-hidden")
+            }
+        })
+    })
+
+    document.querySelectorAll(`[name="is_scheduled"]`).forEach(v => {
+        v.addEventListener("change", e => {
+            var datetime_input = document.getElementById("published-datetime")
+            if (e.target.value === "true") {
+                document.getElementById("published-at").value = Math.round(new Date(datetime_input.value).getTime() / 1000)
+                document.getElementById("schedule-container").classList.remove("has-hidden")
+            } else {
+                document.getElementById("published-at").value = ""
+                document.getElementById("schedule-container").classList.add("has-hidden")
+            }
+        })
+    })
+
+    document.getElementById("published-datetime").addEventListener("change", e => {
+        document.getElementById("published-at").value = Math.round(new Date(e.target.value).getTime() / 1000)
+    })
+
+    var now = new Date()
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+    document.getElementById("published-datetime").value = now.toISOString().slice(0, 16)
+
+    document.getElementById("published-datetime").dispatchEvent(new Event("change"))
+
+    document.getElementById("cover-file").addEventListener("change", function (e) {
+        var file = e.target.files[0]
+        var reader = new FileReader()
+
+        reader.onload = function () {
+            document.getElementById("cover-image").src = reader.result
+            document.getElementById("cover-placeholder").classList.add("has-hidden")
+            document.getElementById("cover-preview").classList.remove("has-hidden")
+        }
+
+        if (file) {
+            reader.readAsDataURL(file)
+        } else {
+            document.getElementById("cover-image").src = ""
+            document.getElementById("cover-placeholder").classList.remove("has-hidden")
+            document.getElementById("cover-preview").classList.add("has-hidden")
+        }
+    })
+
+    function resetCover() {
+        document.getElementById("cover-preview").src = ""
+        document.getElementById("cover-file").value = ""
+        document.getElementById("cover-file").dispatchEvent(new Event("change"))
+    }
+
+    function showCoverPicker() {
+        document.getElementById("cover-file").showPicker()
+    }
+
+    document.getElementById("slug").addEventListener("input", function (e) {
+        document.getElementById("slug-preview").textContent = e.target.value
+    })
+
+    tag_underlying.addEventListener("change", e => {
+        var tags = tag_underlying.value.split(",").filter(v => v !== "")
+        tag_preview.innerHTML = ""
+
+        tags.forEach(tag => {
+            tag_preview.insertAdjacentHTML(
+                "beforeend",
+                `
+            <span class="ts-chip">
+                ${tag}
+                <button class="ts-close js-tag-delete" data-name="${tag}" type="button"></button>
+            </span>`
+            )
+        })
+
+        document.querySelectorAll(".js-tag-delete").forEach(button => {
+            button.addEventListener("click", () => {
+                tag_underlying.value = tag_underlying.value
+                    .split(",")
+                    .filter(v => v !== button.dataset.name)
+                    .join(",")
+                button.parentNode.remove()
+            })
+        })
+    })
+
+    tag_autocomplete.addEventListener("keydown", e => {
+        tag_triggered_source = e.key ? "input" : "list"
+
+        if (e.key === "Enter" || e.keyCode === 13) {
+            e.preventDefault()
+            tagAutoCompleteToUnderlying()
+        }
+    })
+
+    tag_autocomplete.addEventListener("input", e => {
+        value = e.target.value
+
+        if (tag_triggered_source === "list") {
+            tagAutoCompleteToUnderlying()
+        }
+    })
+
+    tag_autocomplete_button.addEventListener("click", tagAutoCompleteToUnderlying)
+
+    // tagAutoCompleteToUnderlying
+    function tagAutoCompleteToUnderlying() {
+        var tags = tag_underlying.value.split(",").filter(v => v !== "" && v !== tag_autocomplete.value.trim())
+        tag_underlying.value = [...tags, tag_autocomplete.value.trim()].join(",")
+        tag_underlying.dispatchEvent(new Event("change"))
+        tag_autocomplete.value = ""
+    }
+</script>
+{{ end }}
