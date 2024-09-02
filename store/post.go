@@ -112,7 +112,18 @@ func ClearExpiredTrashPosts() error {
 func GetPreviousPost(id string) (*entity.PostR, error) {
 	var p entity.PostR
 	p.Author = entity.UserR{}
-	if err := db.QueryRow("SELECT p.id, p.title, p.slug, p.excerpt, p.author_id, p.password, p.visibility, p.content, p.published_at, p.created_at, p.updated_at, p.pinned_at, u.nickname, u.email, u.bio, u.created_at FROM posts p JOIN users u ON p.author_id = u.id WHERE p.published_at < ? AND p.published_at < (SELECT published_at FROM posts WHERE id = ?) AND (p.visibility = ? OR p.visibility = ?) AND trashed_at = 0 ORDER BY p.published_at DESC LIMIT 1", time.Now().Unix(), id, "public", "password").Scan(&p.ID, &p.Title, &p.Slug, &p.OriginalExcerpt, &p.AuthorID, &p.Password, &p.Visibility, &p.Content, &p.PublishedAt, &p.CreatedAt, &p.UpdatedAt, &p.PinnedAt, &p.Author.Nickname, &p.Author.Email, &p.Author.Bio, &p.Author.CreatedAt); err != nil {
+	if err := db.QueryRow(`
+        SELECT p.id, p.title, p.slug, p.excerpt, p.author_id, p.password, p.visibility, p.content, p.published_at, p.created_at, p.updated_at, p.pinned_at, u.nickname, u.email, u.bio, u.created_at
+        FROM posts p
+        JOIN users u ON p.author_id = u.id
+        WHERE p.published_at < ?
+        AND (p.published_at < (SELECT published_at FROM posts WHERE id = ?) OR (p.published_at = (SELECT published_at FROM posts WHERE id = ?) AND p.created_at < (SELECT created_at FROM posts WHERE id = ?)))
+        AND (p.visibility = ? OR p.visibility = ?)
+        AND p.trashed_at = 0
+        ORDER BY p.published_at DESC, p.created_at DESC
+        LIMIT 1`,
+		time.Now().Unix(), id, id, id, "public", "password").Scan(
+		&p.ID, &p.Title, &p.Slug, &p.OriginalExcerpt, &p.AuthorID, &p.Password, &p.Visibility, &p.Content, &p.PublishedAt, &p.CreatedAt, &p.UpdatedAt, &p.PinnedAt, &p.Author.Nickname, &p.Author.Email, &p.Author.Bio, &p.Author.CreatedAt); err != nil {
 		return nil, err
 	}
 	tags, err := ListTagsByPost(p.ID)
@@ -126,7 +137,18 @@ func GetPreviousPost(id string) (*entity.PostR, error) {
 func GetNextPost(id string) (*entity.PostR, error) {
 	var p entity.PostR
 	p.Author = entity.UserR{}
-	if err := db.QueryRow("SELECT p.id, p.title, p.slug, p.excerpt, p.author_id, p.password, p.visibility, p.content, p.published_at, p.created_at, p.updated_at, p.pinned_at, u.nickname, u.email, u.bio, u.created_at FROM posts p JOIN users u ON p.author_id = u.id WHERE p.published_at < ? AND p.published_at > (SELECT published_at FROM posts WHERE id = ?) AND (p.visibility = ? OR p.visibility = ?) AND trashed_at = 0 ORDER BY p.published_at ASC LIMIT 1", time.Now().Unix(), id, "public", "password").Scan(&p.ID, &p.Title, &p.Slug, &p.OriginalExcerpt, &p.AuthorID, &p.Password, &p.Visibility, &p.Content, &p.PublishedAt, &p.CreatedAt, &p.UpdatedAt, &p.PinnedAt, &p.Author.Nickname, &p.Author.Email, &p.Author.Bio, &p.Author.CreatedAt); err != nil {
+	if err := db.QueryRow(`
+        SELECT p.id, p.title, p.slug, p.excerpt, p.author_id, p.password, p.visibility, p.content, p.published_at, p.created_at, p.updated_at, p.pinned_at, u.nickname, u.email, u.bio, u.created_at
+        FROM posts p
+        JOIN users u ON p.author_id = u.id
+        WHERE p.published_at < ?
+        AND (p.published_at > (SELECT published_at FROM posts WHERE id = ?) OR (p.published_at = (SELECT published_at FROM posts WHERE id = ?) AND p.created_at > (SELECT created_at FROM posts WHERE id = ?)))
+        AND (p.visibility = ? OR p.visibility = ?)
+        AND p.trashed_at = 0
+        ORDER BY p.published_at ASC, p.created_at ASC
+        LIMIT 1`,
+		time.Now().Unix(), id, id, id, "public", "password").Scan(
+		&p.ID, &p.Title, &p.Slug, &p.OriginalExcerpt, &p.AuthorID, &p.Password, &p.Visibility, &p.Content, &p.PublishedAt, &p.CreatedAt, &p.UpdatedAt, &p.PinnedAt, &p.Author.Nickname, &p.Author.Email, &p.Author.Bio, &p.Author.CreatedAt); err != nil {
 		return nil, err
 	}
 	tags, err := ListTagsByPost(p.ID)
