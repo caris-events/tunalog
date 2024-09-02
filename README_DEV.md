@@ -1,5 +1,7 @@
 # Tunalog Development Notes
 
+### Using Go Conditional Compilation
+
 Compile All at once:
 
 ```
@@ -26,3 +28,13 @@ GOOS=windows GOARCH=arm64 go build -o bin/arm64_windows_tunalog.exe &&
 GOOS=darwin GOARCH=arm64 go build -o bin/arm64_macos_tunalog &&
 GOOS=linux GOARCH=arm64 go build -o bin/arm64_linux_tunalog
 ```
+
+### Using Makefile
+
+You can also use `make` command to build the whole project. The compiled binary will be exported to the `bin` folder.
+
+```
+cd tunalog
+make
+```
+
