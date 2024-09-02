@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"os"
 	"slices"
@@ -33,7 +34,7 @@ var (
 
 	//go:embed locales
 	LocalesFS embed.FS
-	//go:embed themes
+	//go:embed themes/default
 	ThemesFS embed.FS
 
 	funcs = template.FuncMap{
@@ -73,8 +74,15 @@ func init() {
 	if err := os.MkdirAll("data/uploads/covers", 0755); err != nil {
 		log.Fatalln(err)
 	}
-	if _, err := os.Stat("data/themes"); os.IsNotExist(err) {
-		if err := os.CopyFS("data", ThemesFS); err != nil {
+	if err := os.MkdirAll("data/themes", 0755); err != nil {
+		log.Fatalln(err)
+	}
+	if _, err := os.Stat("data/themes/default"); os.IsNotExist(err) {
+		f, err := fs.Sub(ThemesFS, "themes")
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if err := os.CopyFS("data/themes", f); err != nil {
 			log.Fatalln(err)
 		}
 	}
