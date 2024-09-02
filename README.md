@@ -8,7 +8,7 @@ A no-installation, easy-to-use blogging system written in Go.
 
 ---
 
--   Easy Markdown editor (powered by [SimpleMDE](<[https://simplemde.com/](https://github.com/sparksuite/simplemde-markdown-editor)>)).
+-   Easy Markdown editor (powered by [SimpleMDE](<[https://simplemde.com/](https://github.com/sparksuite/simplemde-markdown-editor)>).
 -   Portable, Zero-configuration SQLite file database.
 -   Only 30 MiB in size and uses 32 MiB of memory while running.
 
@@ -28,20 +28,20 @@ A no-installation, easy-to-use blogging system written in Go.
 1. Download latest Tunalog
 
 ```
-$ wget -c https://github.com/caris-events/tunalog/releases/latest/download/x64_linux_tunalog
+$ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunalog_linux_x64
 ```
 
 2. Run Tunalog
 
 ```
-./x64_linux_tunalog
+./tunalog_linux_x64
 ```
 
 ### Using on Windows
 
-1. Download latest Tunalog: [x64_windows_tunalog.exe](https://github.com/caris-events/tunalog/releases/latest/download/x64_windows_tunalog.exe)
+1. Download latest Tunalog: [tunalog_windows_x64.exe](https://github.com/caris-events/tunalog/releases/latest/download/tunalog_windows_x64.exe)
 
-2. Double-click the downloaded `x64_windows_tunalog.exe` file to run.
+2. Double-click the downloaded `tunalog_windows_x64.exe` file to run.
 
 &nbsp;
 
