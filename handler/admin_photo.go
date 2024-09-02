@@ -60,7 +60,10 @@ func PhotosView(c *gin.Context) {
 		return files[i].Filename > files[j].Filename
 	})
 
-	offset := (page - 1) * countPerPage
+	var (
+		count  = len(files)
+		offset = (page - 1) * countPerPage
+	)
 	if offset+countPerPage > len(files) {
 		files = files[offset:]
 	} else if offset < len(files) {
@@ -83,7 +86,7 @@ func PhotosView(c *gin.Context) {
 	}
 	c.HTML(http.StatusOK, "admin_photos", data(c, gin.H{
 		"Files":      groups,
-		"Pagination": pagination(c, page, len(files), countPerPage),
+		"Pagination": pagination(c, page, count, countPerPage),
 	}))
 }
 
