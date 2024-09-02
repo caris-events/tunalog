@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="icon" type="image/png" href="{{ .URL.RelativeRoot }}assets/favicon.png">
+        <title>Tunalog</title>
+    </head>
+    <body>
+        <form method="POST">
+            <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+            <div class="has-flex-column" style="height: 100vh">
+                <div class="ts-content is-tertiary is-vertically-very-padded">
+                    <div class="ts-container is-very-narrow">
+                        <div class="ts-header is-big is-heavy">{{ __ "wizard_welcome" }}</div>
+                        <div class="ts-text is-secondary">{{ __ "wizard_description" }}</div>
+                    </div>
+                </div>
+                <div class="ts-divider"></div>
+                <div class="has-flex-1">
+                    <div class="ts-container is-very-narrow has-vertically-spaced-big">
+                        {{ if .Message }}
+                        <div class="ts-notice is-negative has-bottom-spaced">
+                            <div class="content">{{ .Message }}</div>
+                        </div>
+                        {{ end }}
+                        <div class="ts-header is-large">{{ __ "wizard_settings" }}</div>
+                        <div class="ts-text is-secondary">{{ __ "wizard_settings_description" }}</div>
+                        <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
+                            <!-- name -->
+                            <div class="ts-control is-wide mobile:is-stacked">
+                                <div class="label">{{ __ "settings_name" }}</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="text" name="name" value="{{ __ "wizard_name_value" }}" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / name -->
+
+                            <!-- description -->
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">{{ __ "settings_slogan" }}</div>
+                                <div class="content">
+                                    <div class="ts-input"><input type="text" name="description" value="{{ __ "wizard_slogan_value" }}" /></div>
+                                    <div class="ts-text is-description has-top-spaced-small">{{ __ "wizard_slogan_description" }}</div>
+                                </div>
+                            </div>
+                            <!-- description -->
+
+                            <!-- locale -->
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">{{ __ "settings_locale" }}</div>
+                                <div class="content">
+                                    <div class="ts-select">
+                                        <select name="locale">
+                                            {{ range $k, $v := .Locales }}
+                                            <option value="{{ $v }}" {{ if eq $.DefaultLocale $v }}selected{{ end }}>{{ $k }}</option>
+                                            {{ end }}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- locale -->
+
+                            <!-- timezone -->
+                            <input type="hidden" name="timezone" value="" />
+                            <!-- / timezone -->
+                        </div>
+                        <div class="ts-header is-large has-top-spaced-big">{{ __ "wizard_admin" }}</div>
+                        <div class="ts-text is-secondary">{{ __ "wizard_admin_description" }}</div>
+                        <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
+                            <!-- email -->
+                            <div class="ts-control is-wide mobile:is-stacked">
+                                <div class="label">{{ __ "users_email" }}</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="text" name="email" value="admin@example.com" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / email -->
+
+                            <!-- nickname -->
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">{{ __ "users_nickname" }}</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="text" name="nickname" value="Admin" required />
+                                    </div>
+                                    <div class="ts-text is-description has-top-spaced-small">{{ __ "wizard_nickname_description" }}</div>
+                                </div>
+                            </div>
+                            <!-- / nickname -->
+
+                            <!-- password -->
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
+                                <div class="label">{{ __ "users_password" }}</div>
+                                <div class="content">
+                                    <div class="ts-input">
+                                        <input type="password" name="password" value="admin" required />
+                                    </div>
+                                    <div class="ts-text is-description has-top-spaced-small">{{ __ "wizard_password_description" }}</div>
+                                </div>
+                            </div>
+                            <!-- / password -->
+                        </div>
+                    </div>
+                </div>
+                <div class="ts-divider"></div>
+                <div class="ts-content is-tertiary is-vertically-padded is-end-aligned">
+                    <div class="ts-container is-very-narrow">
+                        <button type="submit" class="ts-button is-start-labeled-icon">
+                            <span class="ts-icon is-rocket-icon"></span>
+                            {{ __ "button_finishwizard" }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            document.getElementsByName("timezone")[0].value = new Date().getTimezoneOffset() * -60
+        </script>
+    </body>
+</html>

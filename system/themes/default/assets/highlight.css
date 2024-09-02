@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+
+.hljs {
+    background: none;
+}
+
+.hljs-meta,
+.hljs-name,
+.hljs-section {
+    color: #6db4ee;
+}
+
+.hljs-title {
+    color: #e4e4a3;
+}
+
+.hljs-code {
+    color: #50a14f;
+}
+
+.hljs-selector-tag {
+    color: #e45649;
+}
+
+.hljs-variable {
+    color: #9cdcfe;
+}
+
+.hljs-attr,
+.hljs-attribute {
+    color: #9cdcfe;
+}
+
+.hljs-comment {
+    color: #6eab53;
+}
+
+.hljs-keyword {
+    color: #6db4ee;
+}
+
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag,
+.hljs-deletion {
+    color: #50a14f;
+}
+
+.hljs-string,
+.hljs-number {
+    color: #9ede82;
+}
+
+.hljs-type {
+    color: #4ae3c4;
+}
+
+.hljs-params {
+    color: #9cdcfe;
+}
+
+.language-shell .hljs-meta {
+    user-select: none;
+}

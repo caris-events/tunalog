@@ -1,0 +1,112 @@
+{{ define "content" }}
+<div id="content-container" class="ts-container has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ __ "notice_title" }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+
+    <div class="ts-header">{{ __ "navigations_navigations" }}</div>
+    <div class="ts-box has-top-spaced">
+        <form method="POST">
+            <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+            <div class="ts-content is-vertically-padded">
+                <!-- name -->
+                <div class="ts-control">
+                    <div class="label">{{ __ "navigations_name" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="name" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- / name -->
+
+                <!-- url -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "navigations_url" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="url" name="url" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- / url -->
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary is-end-aligned">
+                <button type="submit" class="ts-button">{{ __ "button_create" }}</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="ts-header has-top-spaced-big has-bottom-spaced">
+        {{ __ "navigations_list" }} {{ if len .Navigations }}
+        <span class="ts-badge is-start-spaced is-small">{{ len .Navigations }}</span>
+        {{ end }}
+    </div>
+    {{ if not .Navigations }}
+    <div class="ts-content is-tertiary is-vertically-very-padded">
+        <div class="ts-text is-center-aligned is-secondary">{{ __ "navigations_notfound" }}</div>
+    </div>
+    {{ else }}
+    <div class="ts-box">
+        <form action="navigations/edit" method="POST">
+            <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+            <table class="ts-table is-celled">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">{{ __ "navigations_name" }}</th>
+                        <th>{{ __ "navigations_url" }}</th>
+                        <th style="width: 80px">{{ __ "navigations_order" }}</th>
+                        <th class="is-collapsed"><span class="ts-icon is-trash-can-icon"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .Navigations }}
+                    <tr class="is-middle-aligned">
+                        <td class="is-compact" style="width: 30%">
+                            <div class="ts-input">
+                                <input type="text" name="name[]" value="{{ .Name }}" required />
+                            </div>
+                        </td>
+                        <td class="is-compact">
+                            <div class="ts-input">
+                                <input type="url" name="url[]" value="{{ .URL }}" required />
+                            </div>
+                        </td>
+                        <td class="is-compact" style="width: 100px">
+                            <div class="ts-input">
+                                <input type="number" name="sequence[]" value="{{ .Sequence }}" required />
+                            </div>
+                        </td>
+                        <td class="is-compact is-middle-aligned is-center-aligned">
+                            <label class="ts-checkbox is-large is-solo">
+                                <!-- keep them both input close/ no space so `.previousSibling` won't select text -->
+                                <input type="hidden" name="is_deleted[]" value="false" /><input type="checkbox" />
+                            </label>
+                        </td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <button type="submit" class="ts-button">{{ __ "button_savechanges" }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {{ end }}
+</div>
+
+<script>
+    document.querySelectorAll('input[type="checkbox"]').forEach((v) => {
+        v.addEventListener('change', (e) => {
+            e.target.previousSibling.value = e.target.checked ? 'true' : 'false';
+        });
+    });
+</script>
+{{ end }}

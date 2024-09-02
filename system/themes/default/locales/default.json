@@ -1,0 +1,33 @@
+{
+    "filter_tag": "Show only posts with the tag:",
+    "filter_author": "Show only posts by the author:",
+    "filter_date": "Show only posts from the date:",
+
+    "button_resetfilter": "Reset Filter",
+    "button_menu": "Menu",
+    "button_close": "Close",
+    "button_editpost": "Edit Post",
+    "button_unlock": "Unlock",
+
+    "notfound_title": "No Posts Found",
+    "notfound_description": "There are currently no public posts available to view",
+
+    "title_private": "Private:",
+    "title_draft": "Draft:",
+    "title_password": "Protected:",
+    "title_scheduled": "—— Scheduled",
+
+    "notice_title": "Notice",
+    "status_pinned": "Pinned",
+
+    "password_title": "This Post is Locked",
+    "password_description": "Enter the post password to unlock and view the content.",
+    "password_placeholder": "Enter password here...",
+    "password_excerpt": "Protected posts do not display an excerpt.",
+
+    "pagination_new": "← Newer Posts",
+    "pagination_old": "Older Posts →",
+    "pagination_new_label": "Newer Posts",
+    "pagination_old_label": "Older Posts",
+    "pagination_info": "Page %d of %d"
+}

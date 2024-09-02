@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="{{ if .Config.ContainerWidth }}container-{{ .Config.ContainerWidth }}{{ end }} text-{{ .Config.FontSize }} font-{{ .Config.FontFamily }} {{ if .Config.ColorScheme }}is-{{ .Config.ColorScheme }}{{ end }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Post.Title }} - {{ .Config.Name }}</title>
+    {{ if .IsUnlocked }}
+    <meta name="description" content="{{ .Post.Excerpt }}">
+    <meta property="og:description" content="{{ .Post.Excerpt }}" />
+    {{ end }}
+    <!-- og -->
+    <meta property="og:title" content="{{ .Post.Title }}" />
+    <meta property="og:site_name" content="{{ .Config.Name }}" />
+    <meta property="og:url" content="{{ .URL.Absolute }}" />
+    {{ if .Post.Cover }}
+    <meta property="og:image" content="{{ .URL.Root }}/{{ .Post.Cover }}" />
+    {{ end }}
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="{{ .Post.PublishedDate }}" />
+    <meta property="article:author" content="{{ .Post.Author.Nickname }}" />
+    {{ range .Post.Tags }}
+    <meta property="article:tag" content="{{ .Name }}" />
+    {{ end }}
+    <!-- / og -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+    {{ if .Config.HighlightJS }}
+    <link rel="stylesheet" href="{{ .URL.RelativeRoot }}assets/highlight.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    {{ end }}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="{{ .URL.RelativeRoot }}assets/style.css" />
+    <link rel="icon" type="image/png" href="{{ .URL.RelativeRoot }}assets/favicon.png">
+    {{ .Config.InjectedHead | html }}
+</head>
+<body id="page">
+    <!--- drawer -->
+    <dialog id="singular-drawer" class="ts-app-drawer is-end is-small">
+        <div class="content">
+            <div class="ts-content is-padded">
+                <div class="ts-grid is-middle-aligned">
+                    <div class="column is-fluid">
+                        <div class="ts-header">{{ __ "button_menu" }}</div>
+                    </div>
+                    <div class="column">
+                        <button class="ts-button is-fluid is-outlined" data-dialog="singular-drawer">
+                            {{ __ "button_close" }}
+                        </button>
+                    </div>
+                </div>
+                {{ if .Navigations }}
+                <div class="ts-list is-unordered has-top-spaced-large">
+                    {{ range .Navigations }}
+                    <a href="{{ .URL }}" class="item">{{ .Name }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+            </div>
+        </div>
+    </dialog>
+    <!--- / drawer -->
+
+    <div id="page-content" class="tablet+:has-top-padded-big tablet+:has-bottom-padded-huge mobile:has-bottom-padded-large mobile:has-top-padded-large">
+
+        <div class="ts-container">
+            <!-- header -->
+            <div class="ts-grid is-middle-aligned">
+                <div class="column is-fluid">
+                    <a href="{{ .URL.RelativeRoot }}" class="ts-header is-heavy tablet+:is-large">{{ .Config.Name }}</a>
+                </div>
+                <div class="column">
+                    <button class="ts-button is-fluid is-outlined" data-dialog="singular-drawer">
+                        {{ __ "button_menu" }}
+                    </button>
+                </div>
+            </div>
+            <!--- / header -->
+
+            <!-- cover -->
+            {{ if .Post.Cover }}
+            <div id="singular-cover" class="ts-image is-rounded is-16-by-9 tablet+:has-top-spaced-big mobile:has-top-spaced-large">
+                <img src="{{ .Post.Cover }}" />
+            </div>
+            {{ end }}
+            <!-- / cover -->
+
+            <!-- date -->
+            <div class="date ts-meta is-secondary tablet+:has-top-spaced-big mobile:has-top-spaced-large">
+                <a href="{{ .URL.RelativeRoot }}archive/{{ .Post.PublishedYear }}/{{ .Post.PublishedMonth }}/{{ .Post.PublishedDay }}" class="item">
+                    {{ .Post.PublishedAt | unix2date -}}
+                </a>
+                {{ if .Post.PinnedAt }}
+                <span class="item">{{ __ "status_pinned" }}</span>
+                {{ end }}
+                {{ if .Self }}
+                <a href="{{ .URL.RelativeRoot }}admin/post/{{ .Post.ID }}" class="item">
+                    {{ __ "button_editpost" }} <span class="ts-icon is-pen-to-square-icon"></span>
+                </a>
+                {{ end }}
+            </div>
+            <!-- / date -->
+
+            <!-- title -->
+            <div class="ts-header is-heavy tablet+:is-massive mobile:is-big">
+                {{ if eq .Post.Visibility "private" }}{{ __ "title_private" }}{{ end }}
+                {{ if eq .Post.Visibility "draft" }}{{ __ "title_draft" }}{{ end }}
+                {{ if eq .Post.Visibility "password" }}{{ __ "title_password" }}{{ end }}
+                {{ .Post.Title }}
+                {{ if not .Post.IsPublished }}{{ __ "title_scheduled" }}{{ end }}
+            </div>
+            <!-- / title -->
+
+            <div class="ts-divider has-top-spaced-large"></div>
+
+            <!-- content -->
+            {{ if .IsUnlocked }}
+                {{ .Config.InjectedPostStart }}
+
+                {{ if eq .Config.AuthorBlock "start" }}
+                    {{ template "author.html" . }}
+                {{ end }}
+
+                <div id="singular-content" class="has-top-spaced-large">
+                    {{- markdown .Post.Content -}}
+                </div>
+
+                {{ if .Post.Tags }}
+                <div id="singular-tags" class="ts-wrap has-top-spaced-big">
+                    {{ range .Post.Tags }}
+                    <a href="{{ $.URL.RelativeRoot }}tag/{{ .Slug }}" class="tags-item">#{{ .Name }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+
+                {{ if eq .Config.AuthorBlock "end" }}
+                    {{ template "author.html" . }}
+                {{ end }}
+
+                {{ .Config.InjectedPostEnd }}
+            {{ else }}
+                <!-- locked -->
+                {{ if .Message }}
+                <div class="ts-notice has-bottom-spaced-large has-top-spaced-large">
+                    <div class="title">{{ __ "notice_title" }}</div>
+                    <div class="content">{{ .Message }}</div>
+                </div>
+                {{ end }}
+
+                <form method="POST">
+                    <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                    <div class="ts-content is-fitted is-secondary has-top-spaced-large">
+                        <div class="ts-blankslate is-narrow">
+                            <span class="ts-icon is-lock-icon"></span>
+                            <div class="header">{{ __ "password_title" }}</div>
+                            <div class="description">{{ __ "password_description" }}</div>
+                            <div class="action">
+                                <div class="ts-grid">
+                                    <div class="column is-fluid">
+                                        <div class="ts-input">
+                                            <input type="text" name="password" placeholder="{{ __ "password_placeholder" }}" required />
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <button type="submit" class="ts-button">{{ __ "button_unlock" }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- / locked -->
+            {{ end }}
+            <!-- / content -->
+
+
+            <!-- pagination -->
+            {{ if or .PreviousPost .NextPost }}
+            <div class="ts-divider has-top-spaced-large"></div>
+
+            <div id="singular-pagination" class="has-top-spaced-large">
+                <div class="ts-grid tablet+:is-2-columns mobile:is-1-columns">
+                    {{ if .NextPost }}
+                    <a href="{{ .NextPost.Slug }}" class="pagination-item column">
+                        <div class="ts-text is-small is-secondary">{{ __ "pagination_new_label" }}</div>
+                        <div class="item-header ts-header">{{ .NextPost.Title }}</div>
+                    </a>
+                    {{ end }}
+                    {{ if not .NextPost }}
+                    <div class="column"></div>
+                    {{ end }}
+                    {{ if .PreviousPost }}
+                    <a href="{{ .PreviousPost.Slug }}" class="pagination-item column tablet+:is-end-aligned">
+                        <div class="ts-text is-small is-secondary">{{ __ "pagination_old_label" }}</div>
+                        <div class="item-header ts-header is-end-aligned">{{ .PreviousPost.Title }}</div>
+                    </a>
+                    {{ end }}
+                    {{ if not .PreviousPost }}
+                    <div class="column"></div>
+                    {{ end }}
+                </div>
+            </div>
+            {{ end }}
+            <!-- / pagination -->
+        </div>
+    </div>
+
+    <!-- footer -->
+    {{ if .Config.FooterText }}
+    <div id="page-footer" class="ts-content is-horizontally-fitted">
+        <div class="ts-container">{{ .Config.FooterText | html }}</div>
+    </div>
+    {{ end }}
+    <!-- / footer -->
+
+    {{ if .Config.HighlightJS }}
+    <script>
+        hljs.highlightAll()
+    </script>
+    {{ end }}
+
+    {{ .Config.InjectedFoot | html }}
+</body>
+</html>

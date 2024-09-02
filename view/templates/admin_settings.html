@@ -1,0 +1,190 @@
+{{ define "content" }}
+<link rel="stylesheet" href="{{ .URL.RelativeRoot }}admin/assets/style.css" />
+<div id="content-container" class="ts-container has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ __ "notice_title" }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+
+    <div class="ts-header">{{ __ "settings_settings" }}</div>
+    <form method="POST">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-box has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <!-- name -->
+                <div class="ts-control">
+                    <div class="label">{{ __ "settings_name" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="name" value="{{ .Config.Name }}" />
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">{{ __ "settings_name_description" }}</div>
+                    </div>
+                </div>
+                <!-- / name -->
+
+                <!-- description -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "settings_slogan" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="description" value="{{ .Config.Description }}" />
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">{{ __ "settings_slogan_description" }}</div>
+                    </div>
+                </div>
+                <!-- / description -->
+
+                <!-- is_public -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "settings_ispublic" }}</div>
+                    <div class="content is-padded">
+                        <label class="ts-checkbox">
+                            <input type="checkbox" name="is_public" value="true" {{ if .Config.IsPublic }}checked{{ end }} />
+                            {{ __ "settings_ispublic_label" }}
+                        </label>
+                        <div class="ts-text is-description has-top-spaced-small">{{ __ "settings_ispublic_descriptrion" }}</div>
+                    </div>
+                </div>
+                <!-- / is_public -->
+
+                <div class="ts-divider has-vertically-spaced-big"></div>
+
+                <!-- timezone -->
+                <div class="ts-control">
+                    <div class="label">{{ __ "settings_timezone" }}</div>
+                    <div class="content">
+                        <div class="ts-select">
+                            <select name="timezone">
+                                {{ range $k, $v := .Timezones }}
+                                <option value="{{ $v }}" {{ if eq $.Config.Timezone $v }}selected{{ end }}>({{ $k }}) {{ timezone $v }}</option>
+                                {{ end }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- / timezone -->
+
+                <!-- locale -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "settings_locale" }}</div>
+                    <div class="content">
+                        <div class="ts-select">
+                            <select name="locale">
+                                {{ range $k, $v := .Locales }}
+                                <option value="{{ $v }}" {{ if eq $.Config.Locale $v }}selected{{ end }}>{{ $k }}</option>
+                                {{ end }}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- / timezone -->
+
+                <!-- date_format -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "settings_dateformat" }}</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="date_format" value="2006-01-02" type="radio" {{ if eq .Config.DateFormat "2006-01-02" }}checked{{ end }} />
+                                {{ .Year }}-{{ .Month }}-{{ .Day }}
+                            </label>
+                            <label class="ts-radio">
+                                <input name="date_format" value="01/02/2006" type="radio" {{ if eq .Config.DateFormat "01/02/2006" }}checked{{ end }} />
+                                {{ .Day }}/{{ .Month }}/{{ .Year }}
+                            </label>
+                            <label class="ts-radio">
+                                <input name="date_format" value="02/01/2006" type="radio" {{ if eq .Config.DateFormat "02/01/2006" }}checked{{ end }} />
+                                {{ .Month }}/{{ .Day }}/{{ .Year }}
+                            </label>
+                            <div>
+                                <div class="ts-grid is-middle-aligned">
+                                    <div class="column">
+                                        <label class="ts-radio">
+                                            <!-- prettier-ignore -->
+                                            <input name="date_format" type="radio" value="custom" {{ if .IsCustomDateFormat }}checked{{ end }} />
+                                            {{ __ "settings_dateformat_custom" }}
+                                        </label>
+                                    </div>
+                                    <div class="column is-fluid">
+                                        <div class="ts-input">
+                                            <input name="date_format_custom" type="text" value="{{ .Config.DateFormat }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / date_format -->
+
+                <!-- time_format -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "settings_timeformat" }}</div>
+                    <div class="content is-padded">
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-radio">
+                                <input name="time_format" value="PM 03:04" type="radio" {{ if eq .Config.TimeFormat "PM 03:04" }}checked{{ end }} />
+                                {{ .Clock }} {{ .Hour }}:{{ .Minute }}
+                            </label>
+                            <label class="ts-radio">
+                                <input name="time_format" value="03:04 PM" type="radio" {{ if eq .Config.TimeFormat "03:04 PM" }}checked{{ end }} />
+                                {{ .Hour }}:{{ .Minute }} {{ .Clock }}
+                            </label>
+                            <label class="ts-radio">
+                                <input name="time_format" value="15:04" type="radio" {{ if eq .Config.TimeFormat "15:04" }}checked{{ end }} />
+                                {{ .Hour24 }}:{{ .Minute }}
+                            </label>
+                            <div>
+                                <div class="ts-grid is-middle-aligned">
+                                    <div class="column">
+                                        <label class="ts-radio">
+                                            <!-- prettier-ignore -->
+                                            <input name="time_format" type="radio" value="custom" {{ if .IsCustomTimeFormat }}checked{{ end }} />
+                                            {{ __ "settings_dateformat_custom" }}
+                                        </label>
+                                    </div>
+                                    <div class="column is-fluid">
+                                        <div class="ts-input">
+                                            <input name="time_format_custom" type="text" value="{{ .Config.TimeFormat }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">
+                            {{ __ "settings_timeformat_description" }}
+                        </div>
+                    </div>
+                </div>
+                <!-- / time_format -->
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <button class="ts-button">{{ __ "button_savechanges" }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="ts-header has-top-spaced-big">{{ __ "settings_about" }}</div>
+    <div class="ts-content is-rounded is-tertiary is-very-padded has-top-spaced">
+        <div class="ts-grid is-middle-aligned is-relaxed">
+            <div class="column is-fluid">
+                <div class="ts-text is-description">
+                    <p>{{ _f "settings_versions" .Version .RuntimeVersion }}</p>
+                    {{ __ "settings_madeof" }}
+                </div>
+            </div>
+            <div class="column">
+                <div class="ts-image logo">
+                    <img src="{{ .URL.RelativeRoot }}admin/assets/caris-events.svg" width="120" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

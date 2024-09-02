@@ -1,0 +1,111 @@
+{{ define "content" }}
+<div class="ts-app-layout is-horizontal">
+    <div class="cell is-fluid is-secondary is-scrollable">
+        <div id="content-container" class="ts-container has-vertically-padded-large has-bottom-padded-huge">
+            {{ if .Message }}
+            <div class="ts-notice has-bottom-spaced-large">
+                <div class="title">{{ __ "notice_title" }}</div>
+                <div class="content">{{ .Message }}</div>
+            </div>
+            {{ end }}
+
+            <div class="ts-header">{{ __ "tags_tags" }}</div>
+
+            <form method="POST">
+                <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                <div class="ts-box has-top-spaced">
+                    <div class="ts-content is-vertically-padded">
+                        <!-- name -->
+                        <div class="ts-control">
+                            <div class="label">{{ __ "tags_name" }}</div>
+                            <div class="content">
+                                <div class="ts-input">
+                                    <input type="text" name="name" pattern="[^,]+" required maxlength="64"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / name -->
+
+                        <!-- description -->
+                        <div class="ts-control has-top-spaced-large">
+                            <div class="label">{{ __ "tags_description" }}</div>
+                            <div class="content">
+                                <div class="ts-input is-resizable">
+                                    <textarea name="description" rows="3" maxlength="255"></textarea>
+                                </div>
+                                <div class="ts-text is-description has-top-spaced-small">{{ __ "tags_description_description" }}</div>
+                            </div>
+                        </div>
+                        <!-- / description -->
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content is-dense is-secondary is-end-aligned">
+                        <button type="submit" class="ts-button">{{ __ "button_create" }}</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="ts-header has-top-spaced-big">
+                {{ __ "tags_list" }} {{ if .Pagination.TotalCount }}
+                <span class="ts-badge is-start-spaced is-small">{{ .Pagination.TotalCount }}</span>
+                {{ end }}
+            </div>
+            {{ if not .Tags }}
+            <div class="ts-content is-tertiary is-vertically-very-padded has-top-spaced">
+                <div class="ts-text is-center-aligned is-secondary">{{ __ "tags_notfound" }}</div>
+            </div>
+            {{ else }}
+            <div class="ts-box has-top-spaced">
+                <table class="ts-table is-basic is-striped">
+                    <thead>
+                        <tr>
+                            <th class="is-collapsed">{{ __ "tags_name" }}</th>
+                            <th>{{ __ "tags_slug" }}</th>
+                            <th class="is-collapsed">{{ __ "tags_count" }}</th>
+                            <th class="is-collapsed" />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .Tags }}
+                        <tr class="is-middle-aligned">
+                            <td class="is-collapsed">{{ .Name }}</td>
+                            <td>
+                                <a href="{{ $.URL.RelativeRoot }}tag/{{ .Slug }}" target="_blank" class="ts-badge is-secondary">{{ .Slug }}</a>
+                            </td>
+                            <td class="is-collapsed">{{ .PostCount }}</td>
+                            <td class="is-collapsed">
+                                <a href="{{ $.URL.RelativeRoot }}admin/tag/{{ .ID }}" class="ts-button is-small is-dense is-outlined">{{ __ "button_edit" }}</a>
+                            </td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ts-grid is-end-aligned has-top-spaced">
+                <div class="column">{{ template "pagination" . }}</div>
+            </div>
+            <!-- -->
+            {{ end }}
+        </div>
+    </div>
+    <div class="cell" style="width: 290px">
+        <form method="get">
+            <div class="ts-content">
+                <div class="ts-header is-large">{{ __ "sidebar_filter" }}</div>
+                <div class="ts-text is-label has-top-spaced-large">{{ __ "tags_nameorslug" }}</div>
+                <div class="ts-input is-fluid has-top-spaced">
+                    <input type="text" name="keyword" value="{{ .Keyword }}" required />
+                </div>
+                <div class="ts-divider is-section"></div>
+                <div class="ts-wrap is-vertical">
+                    <button type="submit" class="ts-button is-fluid">{{ __ "button_filterapply" }}</button>
+                    {{ if .Keyword }}
+                    <a href="{{ .URL.RelativeRoot }}admin/tags" class="ts-button is-outlined">{{ __ "button_filterreset" }}</a>
+                    {{ end }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,332 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+HK:400,500|Noto+Sans+JP:400,500|Noto+Sans+KR:400,500|Noto+Sans+SC:400,500|Noto+Sans+TC:400,500&display=swap&subset=chinese-hongkong,chinese-simplified,chinese-traditional,cyrillic,japanese,korean,vietnamese");
+@import url("https://fonts.googleapis.com/css?family=Noto+Serif+HK:500,700,900|Noto+Serif+JP:500,700,900|Noto+Serif+KR:500,700,900|Noto+Serif+SC:500,700,900|Noto+Serif+TC:500,700,900&display=swap&subset=chinese-hongkong,chinese-simplified,chinese-traditional,cyrillic,japanese,korean,vietnamese");
+
+/**
+ * Tocas Enhanced
+ */
+
+.has-nowrap {
+    white-space: nowrap;
+    flex-wrap: nowrap;
+}
+
+.has-truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/**
+ * Global
+ */
+
+html.container-small .ts-container {
+    --width: 610px;
+}
+
+html.container-medium .ts-container {
+    --width: 710px;
+}
+
+html.container-large .ts-container {
+    --width: 810px;
+}
+
+html.text-small {
+    font-size: 15px;
+}
+
+html.text-medium {
+    font-size: 16px;
+}
+
+html.text-large {
+    font-size: 17px;
+}
+
+html.font-sans body {
+    font-family: "Noto Sans TC", "Noto Sans HK", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC", "Noto Sans";
+}
+
+html.font-serif body {
+    font-family: "Noto Serif TC", "Noto Serif HK", "Noto Serif JP", "Noto Serif KR", "Noto Serif SC", "Noto Serif";
+    font-weight: 500;
+}
+
+html.font-serif body .is-bold,
+html.font-serif body .ts-header:not(.is-heavy) {
+    font-weight: 700;
+}
+
+html.font-serif body .ts-header.is-heavy {
+    font-weight: 900 !important;
+}
+
+#page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#page-content {
+    flex: 1;
+}
+
+#page-footer {
+    border-top: 1px solid var(--ts-gray-300);
+}
+
+/**
+ * Index
+ */
+
+#index-navigation {
+    display: flex;
+    margin: 0 -0.9rem;
+    overflow-x: auto;
+}
+
+#index-navigation .navigation-item {
+    display: block;
+    padding: 0.8rem 0.9rem;
+
+    text-decoration: none;
+}
+
+#index-navigation .navigation-item:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+#index-articles .article-excerpt {
+    text-align: justify;
+}
+
+#index-articles .article-info {
+    flex-wrap: nowrap;
+    gap: 3rem;
+}
+
+#index-articles .info-meta {
+    min-width: fit-content;
+}
+
+#index-pagination {
+    font-size: 0.95rem;
+    color: var(--ts-gray-600);
+}
+
+#index-pagination .pagination-item {
+    display: block;
+    text-align: center;
+    padding: 0.7rem 1.25rem;
+    text-decoration: none;
+    border: 1px solid var(--ts-gray-300);
+    border-radius: 0.4rem;
+    line-height: 1;
+}
+
+#index-pagination .pagination-item:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 1px;
+}
+
+#index-filter {
+    position: sticky;
+    top: 0;
+    background: var(--ts-gray-100);
+    background: repeating-linear-gradient(45deg, var(--ts-gray-100), var(--ts-gray-100) 10px, var(--ts-gray-200) 10px, var(--ts-gray-200) 20px);
+}
+
+#filter-reset {
+    text-decoration: none;
+    font-weight: normal;
+    background: var(--ts-gray-100);
+}
+
+#filter-reset:hover {
+    text-decoration: underline;
+}
+
+.featured-star {
+    display: inline-block;
+    color: var(--ts-warning-500);
+    font-size: 1.2em;
+}
+
+/**
+ * Singular
+ */
+
+#singular-cover {
+    max-width: 100%;
+}
+
+#singular-pagination {
+}
+
+#singular-pagination .pagination-item {
+    text-decoration: none;
+}
+
+#singular-pagination .pagination-item .item-header {
+    text-wrap: balance;
+}
+
+#singular-pagination .pagination-item:hover .item-header {
+    text-decoration: underline;
+}
+
+#singular-tags .tags-item {
+    text-decoration: none;
+    color: var(--ts-link-700);
+}
+
+#singular-tags .tags-item:hover {
+    text-decoration: underline;
+}
+
+#singular-author:has(+ #singular-content) {
+    border-bottom: 1px solid var(--ts-gray-300);
+}
+
+#singular-content ~ #singular-author {
+    border-top: 1px solid var(--ts-gray-300);
+    margin-top: var(--ts-space-gap-large) !important;
+    padding-bottom: 0 !important;
+}
+
+#author-nickname {
+    text-decoration: none;
+}
+
+#author-nickname:hover {
+    text-decoration: underline;
+}
+
+#author-bio {
+    line-height: 2;
+    margin-top: 0.1rem;
+}
+
+/**
+ * Content
+ */
+
+#singular-content {
+    line-height: 2.2;
+    word-spacing: 0.3px;
+}
+
+#singular-content :is(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.7;
+}
+
+#singular-content h1 {
+    font-size: 30px;
+    border-bottom: 1px solid var(--ts-gray-300);
+    padding-bottom: 0.25rem;
+}
+
+#singular-content h2 {
+    font-size: 28px;
+    border-bottom: 1px solid var(--ts-gray-300);
+    padding-bottom: 0.25rem;
+}
+
+#singular-content h3 {
+    font-size: 24px;
+}
+
+#singular-content h4 {
+    font-size: 20px;
+}
+
+#singular-content h5 {
+    font-size: 18px;
+}
+
+#singular-content h6 {
+    font-size: 16px;
+}
+#singular-content hr {
+    border: 0;
+    background: var(--ts-gray-300);
+    height: 0.25em;
+    margin: 1.5rem 0;
+}
+
+#singular-content a {
+    color: var(--ts-link-700);
+    text-decoration-thickness: 1px;
+}
+
+#singular-content a:hover {
+    text-decoration-thickness: 2px;
+}
+
+#singular-content blockquote {
+    position: relative;
+    margin-left: 0;
+    padding-left: 3rem;
+    padding-top: 1rem;
+    color: inherit;
+}
+#singular-content blockquote::before {
+    content: "“";
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 5rem;
+    font-family: Georgia, times new roman, Times;
+    color: var(--ts-gray-400);
+    line-height: 1;
+}
+
+#singular-content pre {
+    padding: 1.5rem;
+    background: var(--ts-static-gray-800);
+    color: var(--ts-static-gray-100);
+    font-size: 14px;
+    font-family: "Fira Code", "Noto Sans TC";
+    font-weight: 400;
+    overflow-x: auto;
+    line-height: 1.7;
+}
+
+#singular-content code {
+    font-family: "Fira Code", "Noto Sans TC";
+    font-weight: 400;
+}
+
+#singular-content > code,
+#singular-content :not(pre) code {
+    background: var(--ts-gray-100);
+    padding: 0 0.2rem;
+    font-size: var(--ts-relative-small);
+    color: var(--ts-gray-800);
+}
+
+#singular-content img {
+    max-width: 100%;
+}
+
+#singular-content table {
+    width: 100%;
+    color: inherit;
+    border-collapse: collapse;
+    border: 1px solid var(--ts-gray-300);
+    font-size: var(--ts-relative-small);
+}
+
+#singular-content table :is(th, td) {
+    border: 1px solid var(--ts-gray-300);
+    padding: 0.25rem 1rem;
+}
+
+#singular-content table th {
+    background: var(--ts-gray-100);
+    font-weight: 500;
+}

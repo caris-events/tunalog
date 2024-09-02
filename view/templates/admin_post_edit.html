@@ -1,0 +1,391 @@
+{{ define "content" }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" />
+<link rel="stylesheet" href="{{ .URL.RelativeRoot }}admin/assets/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+<script src="//unpkg.com/alpinejs" defer></script>
+
+<form method="POST" enctype="multipart/form-data" x-data="data" x-on:submit="onFormSubmit">
+    <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+    <div class="ts-container has-vertically-padded-large">
+        <div class="ts-header">{{ __ "postedit_postedit" }}</div>
+
+        <div class="ts-grid has-top-spaced">
+            <!-- left column -->
+            <div class="column is-fluid has-flex has-flex-column">
+                <div id="editor-column">
+                    <!-- message -->
+                    {{ if .Message }}
+                    <div class="ts-notice has-bottom-spaced-large">
+                        <div class="title">{{ __ "notice_title" }}</div>
+                        <div class="content">{{ .Message }}</div>
+                    </div>
+                    {{ end }}
+                    <!-- / message -->
+
+                    <!-- title -->
+                    <div class="ts-input is-large">
+                        <input id="title-input" type="text" name="title" placeholder="{{ __ "postcreate_title_placeholder"}}" value="{{ .Post.Title }}" required />
+                    </div>
+                    <!-- / title -->
+
+                    <!-- content -->
+                    <textarea id="content" name="content">{{ .Post.Content }}</textarea>
+                    <!-- / content -->
+                </div>
+            </div>
+            <!-- / left column -->
+
+            <!-- right column -->
+            <div id="aside-column" class="column">
+                <div class="ts-box">
+                    <div class="ts-content is-dense is-secondary">
+                        <div class="ts-grid is-middle-aligned">
+                            <div class="column is-fluid">
+                                <div class="ts-header">{{ __ "postcreate_publish" }}</div>
+                            </div>
+                            <div class="column">
+                                <a href="{{ .URL.RelativeRoot }}post/{{ .Post.Slug }}" class="ts-text is-small is-link is-undecorated is-external-link" target="_blank">
+                                    {{ __ "postedit_viewpost" }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content">
+                        <!-- visibility -->
+                        <div class="ts-text is-label">
+                            <span class="ts-icon is-eye-icon is-end-spaced"></span>
+                            {{ __ "postcreate_visibility" }}
+                        </div>
+                        <div class="ts-select is-fluid has-top-spaced">
+                            <select name="visibility" x-model="visibility">
+                                <option value="public" selected>{{ __ "postcreate_visibility_public" }}</option>
+                                <option value="private">{{ __ "postcreate_visibility_private" }}</option>
+                                <option value="password">{{ __ "postcreate_visibility_password" }}</option>
+                                <option value="draft">{{ __ "postcreate_visibility_draft" }}</option>
+                            </select>
+                        </div>
+                        <!-- / visibility -->
+
+                        <!-- password -->
+                        <div class="has-top-spaced-small" x-bind:class="visibility !== 'password' ? 'has-hidden' : ''">
+                            <div class="ts-input is-start-icon">
+                                <span class="ts-icon is-key-icon"></span>
+                                <input type="text" name="password" placeholder="{{ __ "postcreate_visibility_password_placeholder" }}" value="{{ .Post.Password }}" />
+                            </div>
+                        </div>
+                        <!-- / password -->
+
+                        <!-- author_id -->
+                        <div class="ts-text is-label has-top-spaced-large">
+                            <span class="ts-icon is-user-icon is-end-spaced"></span>
+                            {{ __ "postcreate_author" }}
+                        </div>
+                        <div class="ts-select is-fluid has-top-spaced">
+                            <select name="author_id">
+                                {{ range .Users }}
+                                <option value="{{ .ID }}" {{ if eq $.Post.Author.ID .ID }}selected{{ end }}>{{ .Nickname }}</option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <!-- / author_id -->
+
+                        <!-- published_at -->
+                        <div class="ts-text is-label has-top-spaced-large">
+                            <span class="ts-icon is-clock-icon is-end-spaced"></span>
+                            {{ __ "postcreate_publishedat" }}
+                        </div>
+                        <div class="ts-input has-top-spaced">
+                            <input type="datetime-local" x-model="published_datetime" x-on:change="onPublishDateChange" />
+                        </div>
+                        <input type="hidden" name="published_at" x-model="published_at" />
+                        <!-- / published_at -->
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content is-dense is-secondary">
+                        <div class="ts-grid">
+                            <div class="column is-fluid">
+                                <!-- delete button -->
+                                <button class="ts-button is-outlined is-negative" type="submit" formaction="{{ .Post.ID }}/trash">
+                                    {{ __ "button_trashpost" }}
+                                </button>
+                                <!-- / delete button -->
+                            </div>
+                            <div class="column">
+                                <!-- save button -->
+                                <button class="ts-button is-start-labeled-icon" type="submit">
+                                    <span class="ts-icon is-floppy-disk-icon"></span>
+                                    {{ __ "button_savepost" }}
+                                </button>
+                                <!-- / save button -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- tags -->
+                <div class="ts-box has-top-spaced-large">
+                    <div class="ts-content is-dense is-secondary">
+                        <div class="ts-header">{{ __ "postcreate_tags" }}</div>
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content">
+                        <!-- search bar -->
+                        <div class="ts-grid is-middle-aligned">
+                            <div class="column is-fluid">
+                                <div class="ts-input">
+                                    <input list="tag-list" placeholder="{{ __ "postcreate_tags_placeholder" }}" x-on:keydown="onKeydownTag" x-model="tag_input_value" />
+                                </div>
+                            </div>
+                            <div class="column">
+                                <button type="button" class="ts-button is-icon is-secondary" x-on:click="onSubmitTag">
+                                    <span class="ts-icon is-plus-icon"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- / search bar -->
+
+                        <!-- chips -->
+                        <div class="ts-wrap is-compact has-top-spaced-small" x-show="tags.length">
+                            <template x-for="tag in tags">
+                                <span class="ts-chip">
+                                    <span x-text="tag"></span>
+                                    <button class="ts-close" type="button" x-on:click="deleteTag(tag)"></button>
+                                </span>
+                            </template>
+                        </div>
+                        <!-- / chips -->
+
+                        <!-- most used tags -->
+                        {{ if .MostUsedTags }}
+                        <details class="ts-accordion has-top-spaced">
+                            <summary>{{ __ "postcreate_tags_showcommon" }}</summary>
+                            <div class="ts-box">
+                                <div class="ts-content">
+                                    <div class="ts-wrap is-compact">
+                                        {{ range .MostUsedTags }}
+                                        <button type="button" class="ts-text is-link is-undecorated" x-on:click="addTag('{{ .Name }}')">#{{ .Name }}</button>
+                                        {{ end }}
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                        {{ end }}
+                        <!-- / most used tags -->
+
+                        <!-- datalist -->
+                        <datalist id="tag-list">
+                            {{ range .Tags }}
+                            <option value="{{ .Name }}"></option>
+                            {{ end }}
+                        </datalist>
+                        <input type="hidden" name="tags" x-model="tags_str" />
+                        <!-- / datalist -->
+                    </div>
+                </div>
+                <!-- / tags -->
+
+                <!-- information -->
+                <div class="ts-box has-top-spaced-large">
+                    <div class="ts-content is-dense is-secondary">
+                        <div class="ts-header">{{ __ "postcreate_information" }}</div>
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content">
+                        <!-- slug -->
+                        <div class="ts-text is-label">
+                            <span class="ts-icon is-link-icon is-end-spaced"></span>
+                            {{ __ "postcreate_slug" }}
+                        </div>
+                        <div class="ts-input has-top-spaced">
+                            <input type="text" name="slug" required x-model="slug" x-on:blur="onSlugChange" />
+                        </div>
+                        <!-- / slug -->
+
+                        <!-- excerpt -->
+                        <div class="ts-text is-label has-top-spaced-large">
+                            <span class="ts-icon is-quote-left-icon is-end-spaced"></span>
+                            {{ __ "postcreate_excerpt" }}
+                        </div>
+                        <div class="ts-input is-resizable has-top-spaced">
+                            <textarea name="excerpt" rows="5">{{ .Post.OriginalExcerpt }}</textarea>
+                        </div>
+                        <!-- / excerpt -->
+
+                        <!-- cover_file -->
+                        <div class="ts-text is-label has-top-spaced-large">
+                            <span class="ts-icon is-star-icon is-end-spaced"></span>
+                            {{ __ "postcreate_cover" }}
+                        </div>
+                        <div class="ts-box has-top-spaced" x-show="!cover_image_url">
+                            <div class="ts-content is-interactive is-fitted" x-on:click="showCoverPicker">
+                                <div class="ts-blankslate is-secondary is-small">
+                                    <span class="ts-icon is-image-icon"></span>
+                                    <div class="description">{{ __ "postcreate_cover_placeholder" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div x-show="cover_image_url">
+                            <div class="ts-image is-rounded is-full-width is-bordered is-16-by-9 has-top-spaced">
+                                <img id="cover-image" src="#!" x-bind:src="cover_image_url" alt="" />
+                                <div class="ts-mask is-secondary is-top">
+                                    <div class="ts-content is-compact is-end-aligned has-leading-none">
+                                        <button class="ts-close is-rounded" type="button" x-on:click="resetCover"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ts-file has-top-spaced">
+                            <input type="file" name="cover_file" x-on:change="onFileChange" x-ref="cover_file" accept="image/*" />
+                        </div>
+                        <input type="hidden" name="is_clear_cover" x-model="is_clear_cover" />
+                        <!-- / cover_file -->
+                    </div>
+                </div>
+                <!-- / information -->
+
+                <!-- others -->
+                <div class="ts-box has-top-spaced-large">
+                    <div class="ts-content is-dense is-secondary">
+                        <div class="ts-header">{{ __ "postcreate_other" }}</div>
+                    </div>
+                    <div class="ts-divider"></div>
+                    <div class="ts-content">
+                        <!-- is_pinned -->
+                        <div class="ts-wrap is-vertical is-compact">
+                            <label class="ts-checkbox">
+                                <input type="checkbox" name="is_pinned" value="true" {{ if .Post.PinnedAt }}checked{{ end }} />
+                                {{ __ "postcreate_pin" }}
+                            </label>
+                        </div>
+                        <!-- / is_pinned -->
+                    </div>
+                </div>
+                <!-- / others -->
+            </div>
+            <!-- / right column -->
+        </div>
+    </div>
+</form>
+
+<script>
+/**
+ * Easy MDE
+ */
+
+const easy_mde = new EasyMDE({
+    element: document.getElementById("content"),
+    spellChecker: false,
+    status: false,
+    toolbar: ["heading", "bold", "italic", "quote", "code", "link", "|", "unordered-list", "ordered-list", "|", "upload-image", "table", "|", "preview"],
+    uploadImage: true,
+    imageUploadFunction: (file, onSuccess, onError) => {
+        var formData = new FormData()
+        formData.append("_csrf", "{{ .CSRF }}")
+        formData.append("photo_file", file)
+
+        fetch("../photos/api", {
+            method: "POST",
+            body: formData,
+        })
+            .then(resp => resp.json())
+            .then(data => {
+                onSuccess(data.path)
+            })
+            .catch(onError)
+    },
+})
+
+easy_mde.codemirror.on("change", () => {
+    document.getElementById("content").value = easy_mde.value()
+    window.removeEventListener("beforeunload", unsavedHandler)
+    window.addEventListener("beforeunload", unsavedHandler)
+})
+
+const unsavedHandler = e => {
+    e.preventDefault()
+    e.returnValue = ""
+}
+
+/**
+ * Alpine.js
+ */
+
+const data = {
+    json_data: `{{ .JSONData }}`,
+
+    onFileChange(e) {
+        let file = e.target.files[0]
+        let reader = new FileReader()
+
+        reader.onload = () => {
+            this.cover_image_url = reader.result
+            this.is_clear_cover = false
+        }
+
+        if (file) {
+            reader.readAsDataURL(file)
+        } else {
+            this.cover_image_url = ""
+            this.is_clear_cover = true
+        }
+    },
+
+    onFormSubmit() {
+        window.removeEventListener("beforeunload", unsavedHandler)
+    },
+
+    resetCover() {
+        this.cover_image_url = ""
+        this.is_clear_cover = true
+        this.$refs.cover_file.value = ""
+    },
+
+    showCoverPicker() {
+        this.$refs.cover_file.showPicker()
+    },
+
+    deleteTag(name) {
+        this.tags = this.tags.filter(v => v !== name)
+        this.tags_str = this.tags.join(",")
+    },
+
+    onKeydownTag(e) {
+        if (e.key === "Enter" || e.keyCode === 13) {
+            e.preventDefault()
+            this.onSubmitTag()
+        }
+    },
+
+    addTag(v) {
+        this.tag_input_value = v
+        this.onSubmitTag()
+    },
+
+    onSubmitTag() {
+        this.tag_input_value
+            .split(",")
+            .map(v => v.trim())
+            .filter(v => !this.tags.includes(v) && v !== "")
+            .forEach(tag => {
+                this.tags = [...this.tags, tag]
+                this.tags_str = this.tags.join(",")
+            })
+        this.tag_input_value = ""
+    },
+
+    onPublishDateChange() {
+        this.published_at = Math.round(new Date(this.published_datetime).getTime() / 1000)
+    },
+
+    init() {
+        let json_data = JSON.parse(this.json_data)
+
+        for (let key in json_data) {
+            this[key] = json_data[key]
+        }
+    },
+}
+</script>
+{{ end }}

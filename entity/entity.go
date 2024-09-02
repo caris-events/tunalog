@@ -1,0 +1,116 @@
+package entity
+
+import "html/template"
+
+type Pagination struct {
+	CurrentPage int
+	TotalCount  int
+	TotalPages  int
+	Query       template.URL
+}
+
+var Timezones = map[string]int{
+	"UTC-12:00": -60 * 60 * 12,
+	"UTC-11:30": -60 * 60 * 11.5,
+	"UTC-11:00": -60 * 60 * 11,
+	"UTC-10:30": -60 * 60 * 10.5,
+	"UTC-10:00": -60 * 60 * 10,
+	"UTC-09:30": -60 * 60 * 9.5,
+	"UTC-09:00": -60 * 60 * 9,
+	"UTC-08:30": -60 * 60 * 8.5,
+	"UTC-08:00": -60 * 60 * 8,
+	"UTC-07:30": -60 * 60 * 7.5,
+	"UTC-07:00": -60 * 60 * 7,
+	"UTC-06:30": -60 * 60 * 6.5,
+	"UTC-06:00": -60 * 60 * 6,
+	"UTC-05:30": -60 * 60 * 5.5,
+	"UTC-05:00": -60 * 60 * 5,
+	"UTC-04:30": -60 * 60 * 4.5,
+	"UTC-04:00": -60 * 60 * 4,
+	"UTC-03:30": -60 * 60 * 3.5,
+	"UTC-03:00": -60 * 60 * 3,
+	"UTC-02:30": -60 * 60 * 2.5,
+	"UTC-02:00": -60 * 60 * 2,
+	"UTC-01:30": -60 * 60 * 1.5,
+	"UTC-01:00": -60 * 60 * 1,
+	"UTC-00:30": -60 * 60 * 0.5,
+	"UTC+00:00": 0,
+	"UTC+00:30": +60 * 60 * 0.5,
+	"UTC+01:00": +60 * 60 * 1,
+	"UTC+01:30": +60 * 60 * 1.5,
+	"UTC+02:00": +60 * 60 * 2,
+	"UTC+02:30": +60 * 60 * 2.5,
+	"UTC+03:00": +60 * 60 * 3,
+	"UTC+03:30": +60 * 60 * 3.5,
+	"UTC+04:00": +60 * 60 * 4,
+	"UTC+04:30": +60 * 60 * 4.5,
+	"UTC+05:00": +60 * 60 * 5,
+	"UTC+05:30": +60 * 60 * 5.5,
+	"UTC+05:45": +60 * 60 * 5.75,
+	"UTC+06:00": +60 * 60 * 6,
+	"UTC+06:30": +60 * 60 * 6.5,
+	"UTC+07:00": +60 * 60 * 7,
+	"UTC+07:30": +60 * 60 * 7.5,
+	"UTC+08:00": +60 * 60 * 8,
+	"UTC+08:30": +60 * 60 * 8.5,
+	"UTC+08:45": +60 * 60 * 8.75,
+	"UTC+09:00": +60 * 60 * 9,
+	"UTC+09:30": +60 * 60 * 9.5,
+	"UTC+10:00": +60 * 60 * 10,
+	"UTC+10:30": +60 * 60 * 10.5,
+	"UTC+11:00": +60 * 60 * 11,
+	"UTC+11:30": +60 * 60 * 11.5,
+	"UTC+12:00": +60 * 60 * 12,
+	"UTC+12:45": +60 * 60 * 12.75,
+	"UTC+13:00": +60 * 60 * 13,
+	"UTC+13:45": +60 * 60 * 13.75,
+	"UTC+14:00": +60 * 60 * 14,
+}
+
+var Locales = map[string]string{
+	"台灣正體":    "zh-tw",
+	"English": "en-us",
+}
+
+var PageTypes = map[string]string{
+	"/admin/users":       "user",
+	"/admin/user/:id":    "user",
+	"/admin/posts":       "post",
+	"/admin/post/create": "post",
+	"/admin/post/:id":    "post",
+	"/admin/tags":        "tag",
+	"/admin/tag/:id":     "tag",
+	"/admin/photos":      "media",
+	"/admin/navigations": "navigation",
+	"/admin/settings":    "settings",
+	"/admin/appearances": "appearances",
+}
+
+var RelativeRoots = map[string]string{
+	"/wizard":                     "../../",
+	"/login":                      "../../",
+	"/admin/users":                "../../",
+	"/admin/navigations":          "../../",
+	"/admin/tags":                 "../../",
+	"/admin/settings":             "../../",
+	"/admin/appearances":          "../../",
+	"/admin/posts":                "../../",
+	"/admin/photos":               "../../",
+	"/tag/:tag":                   "../../",
+	"/author/:author":             "../../",
+	"/archive/:year":              "../../",
+	"/post/:slug":                 "../../",
+	"/admin/user/:id":             "../../../",
+	"/navigations/edit":           "../../../",
+	"/admin/tag/:id":              "../../../",
+	"/admin/appearances/injected": "../../../",
+	"/admin/post/create":          "../../../",
+	"/admin/trashes/clear":        "../../../",
+	"/admin/post/:id":             "../../../",
+	"/archive/:year/:month":       "../../../",
+	"/admin/tag/:id/delete":       "../../../../",
+	"/admin/post/:id/delete":      "../../../../",
+	"/admin/post/:id/trash":       "../../../../",
+	"/admin/post/:id/untrash":     "../../../../",
+	"/archive/:year/:month/:day":  "../../../../",
+}

@@ -1,0 +1,112 @@
+{{ define "content" }}
+<div id="content-container" class="ts-container has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ __ "notice_title" }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+
+    <div class="ts-header">{{ __ "useredit_useredit" }}</div>
+    <form action="{{ .User.ID }}" enctype="multipart/form-data" method="POST">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-box has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <!-- avatar -->
+                <div class="ts-control">
+                    <div class="label">{{ __ "useredit_avatar" }}</div>
+                    <div class="content">
+                        <div class="ts-image is-rounded is-bordered is-1-by-1">
+                            <img src="{{ .User.Gravatar }}" width="128" height="128" alt="" />
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">{{ __ "useredit_avatar_description" }}</div>
+                    </div>
+                </div>
+                <!-- / avatar -->
+
+                <!-- email -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "users_email" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="email" name="email" value="{{ .User.Email }}" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- / email -->
+
+                <!-- nickname -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "users_nickname" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="text" name="nickname" value="{{ .User.Nickname }}" required minlength="1" maxlength="32" />
+                        </div>
+                    </div>
+                </div>
+                <!-- / nickname -->
+
+                <!-- password -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "users_password" }}</div>
+                    <div class="content">
+                        <div class="ts-input">
+                            <input type="password" name="password" autocomplete="new-password" minlength="1" maxlength="128" />
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">{{ __ "useredit_password_description" }}</div>
+                    </div>
+                </div>
+                <!-- / password -->
+
+                <!-- bio -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "useredit_bio" }}</div>
+                    <div class="content">
+                        <div class="ts-input is-resizable">
+                            <textarea name="bio" rows="5" maxlength="255">{{ .User.Bio }}</textarea>
+                        </div>
+                        <div class="ts-text is-description has-top-spaced-small">{{ __ "useredit_bio_description" }}</div>
+                    </div>
+                </div>
+                <!-- / bio -->
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary">
+                <div class="ts-wrap is-end-aligned">
+                    <a href="{{ .URL.RelativeRoot }}admin/users" class="ts-button is-outlined">{{ __ "button_back" }}</a>
+                    <button type="submit" name="action" value="update" class="ts-button">{{ __ "button_savechanges" }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{ if and (not .IsOnlyUser) (ne .User.ID .Self.ID) }}
+    <div class="ts-header has-top-spaced-big">{{ __ "useredit_manage" }}</div>
+    <div class="ts-box has-top-spaced">
+        <div class="ts-content is-vertically-padded">
+            <div class="ts-control">
+                <div class="label">{{ __ "useredit_deleteuser" }}</div>
+                <div class="content {{ if and .IsDeletable .PostCount }}is-padded{{ end }}">
+                    <form action="{{ .User.ID }}/delete" method="POST" onsubmit="return confirm(`{{ _f "alert_deleteuser" .User.Nickname }}`)">
+                        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                        <div class="{{ if not .PostCount }}has-hidden{{ end }}">
+                            <div class="ts-text">{{ _f "useredit_deleteuser_description" .PostCount }}</div>
+                            <div class="ts-select is-fluid has-top-spaced">
+                                <select name="transfer_to_id">
+                                    <option value="" selected>{{ __ "option_notransfer" }}</option>
+                                    {{ range .Users }} {{ if ne .ID $.User.ID }}
+                                    <option value="{{ .ID }}">{{ .Nickname }}（{{ .Email }}）</option>
+                                    {{ end }} {{ end }}
+                                </select>
+                            </div>
+                            <div class="ts-divider is-section"></div>
+                        </div>
+                        <button type="submit" name="action" value="delete" class="ts-button is-negative">{{ __ "button_deleteuser" }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,228 @@
+{{ define "content" }}
+<div class="ts-app-layout is-horizontal">
+    <div class="cell is-secondary is-scrollable is-fluid">
+        <div id="content-container" class="ts-container has-vertically-padded-large has-bottom-padded-huge">
+            {{ if .Message }}
+            <div class="ts-notice has-bottom-spaced-large">
+                <div class="title">{{ __ "notice_title" }}</div>
+                <div class="content">{{ .Message }}</div>
+            </div>
+            {{ end }}
+
+            <div class="ts-grid is-middle-aligned">
+                <div class="column is-fluid">
+                    <div class="ts-header">
+                        {{ __ "posts_list" }}
+                    </div>
+                </div>
+                <div class="column">
+                    <a href="./post/create" class="ts-button is-start-labeled-icon">
+                        <span class="ts-icon is-plus-icon"></span>
+                        {{ __ "button_createpost" }}
+                    </a>
+                </div>
+            </div>
+
+            {{ if eq .Visibility "trash" }}
+            <form action="trashes/clear" method="POST" onsubmit="return confirm(`{{ __ "alert_deleteposts" }}`);">
+                <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+                <div class="ts-snackbar has-flex is-fluid has-top-spaced">
+                    <div class="content has-flex-1">{{ __ "notice_autodeleteposts" }}</div>
+                    <button type="submit" class="action is-negative">{{ __ "button_deleteposts" }}</button>
+                </div>
+            </form>
+            {{ end }}
+
+            {{ if .PostCount.All }}
+            <div class="ts-tab has-top-spaced-small">
+                {{ if .PostCount.NonTrash }}
+                <a href="." class="item {{ if not .Visibility }}is-active{{ end }}">
+                    {{ __ "posts_tab_all" }} <span class="ts-badge is-outlined">{{ .PostCount.NonTrash }}</span>
+                </a>
+                {{ end }}
+                {{ if .PostCount.Public }}
+                <a href="?visibility=public" class="item {{ if eq .Visibility "public" }}is-active{{ end }}">
+                    {{ __ "posts_tab_public" }} <span class="ts-badge is-outlined">{{ .PostCount.Public }}</span>
+                </a>
+                {{ end }}
+                {{ if .PostCount.Draft }}
+                <a href="?visibility=draft" class="item {{ if eq .Visibility "draft" }}is-active{{ end }}">
+                    {{ __ "posts_tab_draft" }} <span class="ts-badge is-outlined">{{ .PostCount.Draft }}</span>
+                </a>
+                {{ end }}
+                {{ if .PostCount.Password }}
+                <a href="?visibility=password" class="item {{ if eq .Visibility "password" }}is-active{{ end }}">
+                    {{ __ "posts_tab_password" }} <span class="ts-badge is-outlined">{{ .PostCount.Password }}</span>
+                </a>
+                {{ end }}
+                {{ if .PostCount.Private }}
+                <a href="?visibility=private" class="item {{ if eq .Visibility "private" }}is-active{{ end }}">
+                    {{ __ "posts_tab_private" }} <span class="ts-badge is-outlined">{{ .PostCount.Private }}</span>
+                </a>
+                {{ end }}
+                {{ if .PostCount.Trash }}
+                <a href="?visibility=trash" class="item {{ if eq .Visibility "trash" }}is-active{{ end }}">
+                    {{ __ "posts_tab_trash" }} <span class="ts-badge is-outlined">{{ .PostCount.Trash }}</span>
+                </a>
+                {{ end }}
+            </div>
+
+            <div class="ts-divider"></div>
+            {{ end }}
+
+            {{ if not .Posts }}
+            <div class="ts-content is-rounded is-tertiary is-vertically-very-padded has-top-spaced">
+                <div class="ts-text is-center-aligned is-secondary">{{ __ "posts_notfound" }}</div>
+            </div>
+            {{ else }}
+            <div class="ts-box has-top-spaced">
+                <table class="ts-table is-basic is-striped has-break-all">
+                    <thead>
+                        <tr>
+                            <th>{{ __ "posts_title" }}</th>
+                            <th class="is-collapsed">{{ __ "posts_author" }}</th>
+                            <th class="is-collapsed">{{ __ "posts_date" }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range $k, $v := .Posts }}
+                        <tr class="posts-item">
+                            <td>
+                                <div class="ts-grid">
+                                    <div class="column">
+                                        <div class="ts-image is-rounded is-bordered is-1-by-1">
+                                            {{ if $v.Cover }}
+                                            <img class="item-cover" src="{{ $v.Cover }}">
+                                            {{ else }}
+                                            <img class="item-cover" src="assets/1-1.png">
+                                            {{ end }}
+                                        </div>
+                                    </div>
+                                    <div class="column is-fluid">
+                                        {{ if $v.PinnedAt }}
+                                        <span class="item-pinned ts-icon is-star-icon" data-tooltip="{{ __ "posts_helper_pinned" }}"></span>
+                                        {{ end }}
+                                        {{ if $v.TrashedAt }}
+                                        <span class="ts-text is-bold">{{ $v.Title }}</span>
+                                        {{ else }}
+                                        <a href="{{ $.URL.RelativeRoot }}admin/post/{{ $v.ID }}" class="ts-text is-link is-bold is-undecorated">{{ $v.Title }}</a>
+                                        {{ end }}
+                                        {{ if and (eq $v.Visibility "password") (ne $.Visibility "password") }}
+                                        <span class="ts-text is-secondary">{{ __ "posts_helper_password" }}</span>
+                                        {{ end }}
+                                        {{ if and (eq $v.Visibility "private") (ne $.Visibility "private") }}
+                                        <span class="ts-text is-secondary">{{ __ "posts_helper_private" }}</span>
+                                        {{ end }}
+                                        {{ if and (eq $v.Visibility "draft") (ne $.Visibility "draft") }}
+                                        <span class="ts-text is-secondary">{{ __ "posts_helper_draft" }}</span>
+                                        {{ end }}
+                                        <br />
+
+                                        {{ if not $v.TrashedAt }}
+                                        <form action="post/{{ $v.ID }}/trash" method="POST">
+                                            <input type="hidden" name="_csrf" value="{{ $.CSRF }}" />
+                                            <div class="item-actions ts-meta is-secondary is-small has-leading-none">
+                                                <a href="{{ $.URL.RelativeRoot }}admin/post/{{ $v.ID }}" class="item">
+                                                    {{ __ "button_edit" -}}
+                                                </a>
+                                                <button type="submit" class="item actions-negative">
+                                                    {{ __ "button_trashpost" -}}
+                                                </button>
+                                                <a href="{{ $.URL.RelativeRoot }}post/{{ $v.Slug }}" target="_blank" class="item ts-text is-external-link">
+                                                    {{ __ "button_viewpost" -}}
+                                                </a>
+                                            </div>
+                                        </form>
+                                        {{ else }}
+
+                                        <form action="post/{{ $v.ID }}/untrash" method="POST">
+                                            <input type="hidden" name="_csrf" value="{{ $.CSRF }}" />
+                                            <div class="item-actions ts-meta is-secondary is-small has-leading-none">
+                                                <button type="submit" class="item">
+                                                    {{ __ "button_untrashpost" -}}
+                                                </button>
+                                                <button type="submit" class="item actions-negative" formaction="post/{{ $v.ID }}/delete" onclick='return confirm("{{ _f "alert_deletepost" $v.Title }}");'>
+                                                    {{ __ "button_deletepost" -}}
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        {{ end }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="is-collapsed">
+                                {{ $v.Author.Nickname }}
+                            </td>
+                            <td class="is-collapsed has-leading-none">
+                                {{ $v.PublishedAtDatetime }}
+                                <div class="ts-wrap is-compact has-top-spaced-small">
+                                    {{ if and (not $v.IsPublished) (eq $v.Visibility "public") }}
+                                    <div class="ts-badge is-outlined">{{ __ "posts_helper_scheduled" }}</div>
+                                    {{ end }}
+                                </div>
+                            </td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ts-grid is-end-aligned has-top-spaced">
+                <div class="column">
+                    {{ template "pagination" . }}
+                </div>
+            </div>
+            <!-- -->
+            {{ end }}
+        </div>
+    </div>
+
+
+    <div class="cell" style="width: 290px">
+        <form method="get">
+            <div class="ts-content">
+                <div class="ts-header is-large">{{ __ "sidebar_filter" }}</div>
+                <div class="ts-text is-label has-top-spaced-large">{{ __ "posts_title" }}</div>
+                <div class="ts-input is-fluid has-top-spaced">
+                    <input type="text" name="title" value="{{ .Query.Title }}" />
+                </div>
+                <div class="ts-text is-label has-top-spaced-large">{{ __ "posts_author" }}</div>
+                <div class="ts-select is-fluid has-top-spaced">
+                    <select name="author_id">
+                        <option value="" {{ if eq .Query.AuthorID "" }}selected{{ end }}>
+                            {{ __ "option_any" }}
+                        </option>
+                        {{ range .Users }}
+                        <option value="{{ .ID }}" {{ if eq $.Query.AuthorID .ID }}selected{{ end }}>{{ .Nickname }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                <input type="hidden" name="visibility" value="{{ .Visibility }}">
+                <div class="ts-text is-label has-top-spaced-large">{{ __ "posts_date" }}</div>
+                <div class="ts-select is-fluid has-top-spaced">
+                    <select name="published_date">
+                        <option value="">
+                            {{ __ "option_any" }}
+                        </option>
+                        {{ range .Dates }}
+                        <option value="{{ . }}" {{ if eq $.Query.PublishedDate . }}selected{{ end }}>{{ . }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                <div class="ts-divider is-section"></div>
+                <div class="ts-wrap is-vertical">
+                    <button type="submit" class="ts-button is-fluid">
+                        {{ __ "button_filterapply" }}
+                    </button>
+                    {{ if .IsQuerySetted }}
+                    <a href="{{ .URL.RelativeRoot }}admin/posts" class="ts-button is-outlined is-fluid">
+                        {{ __ "button_filterreset" }}
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ end }}

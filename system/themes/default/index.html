@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="{{ if .Config.ContainerWidth }}container-{{ .Config.ContainerWidth }}{{ end }} text-{{ .Config.FontSize }} font-{{ .Config.FontFamily }} {{ if .Config.ColorScheme }}is-{{ .Config.ColorScheme }}{{ end }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Config.Name }}</title>
+    <meta name="description" content="{{ .Config.Description }}">
+    <!-- og -->
+    <meta property="og:site_name" content="{{ .Config.Name }}" />
+    <meta property="og:url" content="{{ .URL.Absolute }}" />
+    <meta property="og:description" content="{{ .Config.Description }}" />
+    <!-- / og -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="{{ .URL.RelativeRoot }}assets/style.css" />
+    <link rel="icon" type="image/png" href="{{ .URL.RelativeRoot }}assets/favicon.png">
+    {{ .Config.InjectedHead | html }}
+</head>
+<body id="page">
+    <!-- content -->
+    <div id="page-content" class="tablet+:has-bottom-padded-huge mobile:has-bottom-padded-large">
+        <!-- navigations -->
+        {{ if .Navigations }}
+        <div class="ts-content is-tertiary is-fitted">
+            <div class="ts-container">
+                <div id="index-navigation">
+                    {{ range .Navigations }}
+                    <a href="{{ .URL }}" class="navigation-item">{{ .Name }}</a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+        <div class="ts-divider"></div>
+        {{ end }}
+        <!-- / navigations -->
+
+        <!-- slate -->
+        <div class="ts-content is-secondary is-horizontally-fitted tablet+:has-vertically-padded-huge mobile:has-vertically-padded-big">
+            <div class="ts-container">
+                <a href="{{ .URL.RelativeRoot }}" class="ts-header is-heavy is-center-aligned tablet+:is-massive mobile:is-big">
+                    {{ .Config.Name }}
+                </a>
+                <div class="ts-text is-center-aligned is-secondary has-top-spaced">
+                    {{ .Config.Description }}
+                </div>
+            </div>
+        </div>
+        <!-- / slate -->
+
+        <div class="ts-divider"></div>
+
+        <!-- filter -->
+        {{ if not .Filter.IsEmpty }}
+        <div id="index-filter" class="ts-content is-secondary is-horizontally-fitted">
+            <div class="ts-container">
+                <div class="ts-grid is-middle-aligned">
+                    <div class="column is-fluid">
+                        <div class="ts-text is-bold mobile:is-small">
+                            {{ if .Filter.Tag }}{{ __ "filter_tag" }}{{ .Filter.Tag }}{{ end }}
+                            {{ if .Filter.Author }}{{ __ "filter_author" }}{{ .Filter.Author }}{{ end }}
+                            {{ if .Filter.Date }}{{ __ "filter_date" }}{{ .Filter.Date }}{{ end }}
+                        </div>
+                    </div>
+                    <div class="column">
+                        <a href="{{ .URL.RelativeRoot }}" id="filter-reset" class="ts-button is-outlined">
+                            {{ __ "button_resetfilter" }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ts-divider"></div>
+        {{ end }}
+        <!-- / filter -->
+
+        <!-- blankslate -->
+        {{ if not .Posts }}
+        <div class="ts-blankslate">
+            <span class="ts-icon is-otter-icon"></span>
+            <div class="header">{{ __ "notfound_title" }}</div>
+            <div class="description">{{ __ "notfound_description" }}</div>
+        </div>
+        {{ end }}
+        <!-- / blankslate -->
+
+        <!-- articles -->
+        <div id="index-articles" class="ts-container tablet+:has-top-spaced-big mobile:has-top-spaced-large">
+            {{ range .Posts }}
+            <div>
+                <a href="{{ $.URL.RelativeRoot }}post/{{ .Slug }}" class="ts-text is-link is-undecorated">
+                    <div class="ts-grid is-top-aligned">
+                        <div class="column is-fluid">
+                            <div class="ts-header tablet+:is-big mobile:is-large">
+                                {{ if eq .Visibility "private" }}{{ __ "title_private" }}{{ end }}
+                                {{ if eq .Visibility "password" }}{{ __ "title_password" }}{{ end }}
+                                {{ .Title }}
+                            </div>
+                        </div>
+                        {{ if .PinnedAt }}
+                        <div class="column">
+                            <span class="featured-star ts-icon is-star-icon" data-tooltip="{{ __ "status_pinned" }}"></span>
+                        </div>
+                        {{ end }}
+                    </div>
+                </a>
+                <div class="ts-text is-3-lines has-top-spaced article-excerpt tablet+:has-leading-large">
+                    {{ if eq .Visibility "password" }}
+                        {{ __ "password_excerpt" }}
+                    {{ else }}
+                        {{ .Excerpt }}
+                    {{ end }}
+                </div>
+                <div class="article-info ts-grid">
+                    <div class="info-meta column is-fluid">
+                        <div class="ts-meta is-secondary is-small has-top-spaced has-nowrap">
+                            <a href="{{ $.URL.RelativeRoot }}archive/{{ .PublishedYear }}/{{ .PublishedMonth }}" class="item has-nowrap">
+                                {{ .PublishedAt | unix2date -}}
+                            </a>
+                            <a href="{{ $.URL.RelativeRoot }}author/{{ .Author.ID }}" title="{{ .Author.Nickname }}" class="item">
+                                <div class="ts-text is-1-lines">
+                                    {{ .Author.Nickname }}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    {{ if .Tags }}
+                    <div class="column has-overflow-hidden mobile:has-hidden">
+                        <div class="ts-wrap is-end-aligned has-top-spaced has-nowrap">
+                            {{ range $k, $v := .Tags }}
+                            {{ if gt $k 2 }}{{ break }}{{ end }}
+                            <a class="ts-text is-description is-undecorated has-truncated" href="{{ $.URL.RelativeRoot }}tag/{{ .Slug }}" title="{{ .Name }}">#{{ .Name }}</a>
+                            {{ end }}
+                        </div>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+            <div class="ts-divider has-vertically-spaced-large"></div>
+            {{ end }}
+        </div>
+        <!-- / articles -->
+
+        <!-- pagination -->
+        {{ if .Posts }}
+        <div class="ts-container has-top-spaced-large">
+            <div id="index-pagination" class="ts-grid is-middle-aligned">
+                <div class="column mobile:is-order-2 mobile:is-8-wide">
+                    <a href="?page={{ sub .Pagination.CurrentPage 1 }}"
+                    class="pagination-item {{if eq .Pagination.CurrentPage 1 }}has-invisible{{ end }}">
+                        {{ __ "pagination_new" }}
+                    </a>
+                </div>
+                <div class="column is-center-aligned tablet+:is-fluid mobile:is-order-1 mobile:is-16-wide">
+                    {{ _f "pagination_info" .Pagination.CurrentPage .Pagination.TotalPages }}
+                </div>
+                <div class="column mobile:is-order-3 mobile:is-8-wide">
+                    <a href="?page={{ add .Pagination.CurrentPage 1 }}"
+                    class="pagination-item {{if eq .Pagination.CurrentPage .Pagination.TotalPages }}has-invisible{{ end }}">
+                        {{ __ "pagination_old" }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+        <!-- / pagination -->
+    </div>
+    <!-- / content -->
+
+    <!-- footer -->
+    {{ if .Config.FooterText }}
+    <div id="page-footer" class="ts-content is-horizontally-fitted">
+        <div class="ts-container">{{ .Config.FooterText | html }}</div>
+    </div>
+    {{ end }}
+    <!-- / footer -->
+
+    {{ .Config.InjectedFoot | html }}
+</body>
+</html>

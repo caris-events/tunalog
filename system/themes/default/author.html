@@ -1,0 +1,15 @@
+<div id="singular-author" class="has-vertically-padded-large">
+    <div class="ts-grid {{ if not .Post.Author.Bio }}is-middle-aligned{{ end }}">
+        <div class="column">
+            <a href="{{ .URL.RelativeRoot }}author/{{ .Post.Author.ID }}" class="ts-image is-circular">
+                <img src="{{ .Post.Author.Gravatar }}" width="64" />
+            </a>
+        </div>
+        <div class="column is-fluid">
+            <a href="{{ .URL.RelativeRoot }}author/{{ .Post.Author.ID }}" id="author-nickname" class="ts-text is-bold">{{ .Post.Author.Nickname }}</a>
+            {{ if .Post.Author.Bio }}
+            <div id="author-bio" class="ts-text is-secondary">{{ .Post.Author.Bio | html }}</div>
+            {{ end }}
+        </div>
+    </div>
+</div>

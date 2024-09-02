@@ -1,0 +1,33 @@
+{
+    "filter_tag": "只顯示有關標籤的文章：",
+    "filter_author": "只顯示指定作者的文章：",
+    "filter_date": "只顯示指定日期的文章：",
+
+    "button_resetfilter": "重設條件",
+    "button_menu": "選單",
+    "button_close": "關閉",
+    "button_editpost": "編輯文章",
+    "button_unlock": "解鎖",
+
+    "notfound_title": "找不到任何文章",
+    "notfound_description": "目前沒有可供檢視的公開文章",
+
+    "title_private": "私密：",
+    "title_draft": "草稿：",
+    "title_password": "受保護的文章：",
+    "title_scheduled": "——已排程",
+
+    "notice_title": "通知",
+    "status_pinned": "已置頂",
+
+    "password_title": "此文章已上鎖",
+    "password_description": "輸入文章密碼以解鎖並觀看內容。",
+    "password_placeholder": "在此輸入密碼…",
+    "password_excerpt": "受保護的文章不會顯示摘要。",
+
+    "pagination_new": "← 新文章",
+    "pagination_old": "舊文章 →",
+    "pagination_new_label": "新文章",
+    "pagination_old_label": "舊文章",
+    "pagination_info": "目前第 %d 頁，共有 %d 頁"
+}

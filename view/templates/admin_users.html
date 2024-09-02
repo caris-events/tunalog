@@ -1,0 +1,72 @@
+{{ define "content" }}
+<div id="content-container" class="ts-container has-vertically-padded-large has-bottom-padded-huge">
+    {{ if .Message }}
+    <div class="ts-notice has-bottom-spaced-large">
+        <div class="title">{{ __ "notice_title" }}</div>
+        <div class="content">{{ .Message }}</div>
+    </div>
+    {{ end }}
+    <div class="ts-header">{{ __ "users_users" }}</div>
+    <form method="POST">
+        <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
+        <div class="ts-box has-top-spaced">
+            <div class="ts-content is-vertically-padded">
+                <!-- email -->
+                <div class="ts-control">
+                    <div class="label">{{ __ "users_email" }}</div>
+                    <div class="content">
+                        <div class="ts-input is-fluid">
+                            <input type="email" name="email" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- / email -->
+
+                <!-- password -->
+                <div class="ts-control has-top-spaced-large">
+                    <div class="label">{{ __ "users_password" }}</div>
+                    <div class="content">
+                        <div class="ts-input is-fluid">
+                            <input type="password" name="password" autocomplete="new-password" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- / password -->
+            </div>
+            <div class="ts-divider"></div>
+            <div class="ts-content is-dense is-secondary is-end-aligned">
+                <button type="submit" class="ts-button">{{ __ "button_create" }}</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="ts-header has-top-spaced-big">
+        {{ __ "users_list" }}
+        <div class="ts-badge is-start-spaced is-small">{{ len .Users }}</div>
+    </div>
+    <div class="ts-box has-top-spaced">
+        <table class="ts-table is-basic is-striped">
+            <thead>
+                <tr>
+                    <th class="is-collapsed">{{ __ "users_email" }}</th>
+                    <th>{{ __ "users_nickname" }}</th>
+                    <th class="is-collapsed">{{ __ "users_createdat" }}</th>
+                    <th class="is-collapsed"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .Users }}
+                <tr class="is-middle-aligned">
+                    <td class="is-collapsed">{{ .Email }}</td>
+                    <td>{{ .Nickname }}</td>
+                    <td class="is-collapsed">{{ unix2date .CreatedAt }}</td>
+                    <td class="is-collapsed">
+                        <a href="user/{{ .ID }}" class="ts-button is-small is-dense is-outlined">{{ __ "button_edit" }}</a>
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ end }}
