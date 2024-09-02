@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/YamiOdymel/conform"
+	"github.com/YamiOdymel/multitemplate"
 	"github.com/caris-events/tunalog/system"
 	"github.com/caris-events/tunalog/view"
-	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"

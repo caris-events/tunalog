@@ -4,7 +4,7 @@ go 1.23.0
 
 require (
 	github.com/YamiOdymel/conform v1.0.0
-	github.com/gin-contrib/multitemplate v1.0.1
+	github.com/YamiOdymel/multitemplate v1.0.3
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-playground/validator/v10 v10.22.0

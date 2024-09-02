@@ -3,6 +3,8 @@ github.com/Masterminds/semver v1.4.2/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF0
 github.com/Masterminds/vcs v1.13.0/go.mod h1:N09YCmOQr6RLxC6UNHzuVwAdodYbbnycGHSmwVJjcKA=
 github.com/YamiOdymel/conform v1.0.0 h1:MTvZA0r6rxGnDUM1VX5DgWeZlyk+noxzQKtnwSWS/1U=
 github.com/YamiOdymel/conform v1.0.0/go.mod h1:iiDgJK3yQshFZ6k05rt3hH6VDIB5C6hogD2NNUpTmME=
+github.com/YamiOdymel/multitemplate v1.0.3 h1:PWtlCc7tKyLLIt24CrypWpwtTF0R1ESgfuExPr2llac=
+github.com/YamiOdymel/multitemplate v1.0.3/go.mod h1:vgx5telGJnrUlSSy7kGRUiJ+z7C/KyBZkSIMuDuUKsE=
 github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff/go.mod h1:+RTT1BOk5P97fT2CiHkbFQwkK3mjsFAP6zCYV2aXtjw=
 github.com/bradfitz/gomemcache v0.0.0-20180710155616-bc664df96737/go.mod h1:PmM6Mmwb0LSuEubjR8N7PtNe1KxZLtOUHtbeikc5h60=
 github.com/bradleypeabody/gorilla-sessions-memcache v0.0.0-20181103040241-659414f458e1/go.mod h1:dkChI7Tbtx7H1Tj7TqGSZMOeGpMP5gLHtjroHd4agiI=
