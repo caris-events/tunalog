@@ -200,7 +200,11 @@ func saveCover(c *gin.Context, pid string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	resizeImg := imgconv.Resize(srcImg, &imgconv.ResizeOption{Width: 1024})
+	w := srcImg.Bounds().Dx()
+	if w > 1024 {
+		w = 1024
+	}
+	resizeImg := imgconv.Resize(srcImg, &imgconv.ResizeOption{Width: w})
 
 	dstImg, err := os.OpenFile(localDst, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
