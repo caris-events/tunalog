@@ -99,10 +99,6 @@ html.font-serif body .ts-header.is-heavy {
     text-underline-offset: 6px;
 }
 
-#index-articles .article-excerpt {
-    text-align: justify;
-}
-
 #index-articles .article-info {
     flex-wrap: nowrap;
     gap: 3rem;
@@ -216,7 +212,7 @@ html.font-serif body .ts-header.is-heavy {
  */
 
 #singular-content {
-    line-height: 1.9;
+    line-height: 2;
     word-spacing: 0.3px;
 }
 
