@@ -12,6 +12,8 @@ A no-installation, easy-to-use blogging system written in Go.
 -   Portable, Zero-configuration SQLite file database.
 -   Only 30 MiB in size and uses 32 MiB of memory while running.
 
+🚧 The project was meant to be a simple side project, and may have strong opinions on accepting pull requests. But you can always fork it to make a better version 😎👍
+
 &nbsp;
 
 ## Getting Started
