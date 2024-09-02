@@ -3,26 +3,26 @@
 Compile All at once:
 
 ```
-GOOS=windows GOARCH=amd64 go build -o bin/x64_windows_tunalog.exe &&
-GOOS=darwin GOARCH=amd64 go build -o bin/x64_macos_tunalog &&
-GOOS=linux GOARCH=amd64 go build -o bin/x64_linux_tunalog &&
-GOOS=windows GOARCH=arm64 go build -o bin/arm64_windows_tunalog.exe &&
-GOOS=darwin GOARCH=arm64 go build -o bin/arm64_macos_tunalog &&
-GOOS=linux GOARCH=arm64 go build -o bin/arm64_linux_tunalog
+GOOS=windows GOARCH=amd64 go build -o bin/tunalog_windows_x64.exe &&
+GOOS=darwin GOARCH=amd64 go build -o bin/tunalog_macos_x64 &&
+GOOS=linux GOARCH=amd64 go build -o bin/tunalog_linux_x64 &&
+GOOS=windows GOARCH=arm64 go build -o bin/tunalog_windows_arm64.exe &&
+GOOS=darwin GOARCH=arm64 go build -o bin/tunalog_macos_arm64 &&
+GOOS=linux GOARCH=arm64 go build -o bin/tunalog_linux_arm64
 ```
 
 or Compile for 64-bit Windows, macOS, Linux:
 
 ```
-GOOS=windows GOARCH=amd64 go build -o bin/x64_windows_tunalog.exe &&
-GOOS=darwin GOARCH=amd64 go build -o bin/x64_macos_tunalog &&
-GOOS=linux GOARCH=amd64 go build -o bin/x64_linux_tunalog
+GOOS=windows GOARCH=amd64 go build -o bin/tunalog_windows_x64.exe &&
+GOOS=darwin GOARCH=amd64 go build -o bin/tunalog_macos_x64 &&
+GOOS=linux GOARCH=amd64 go build -o bin/tunalog_linux_x64
 ```
 
 or for arm64 Windows, macOS, Linux:
 
 ```
-GOOS=windows GOARCH=arm64 go build -o bin/arm64_windows_tunalog.exe &&
-GOOS=darwin GOARCH=arm64 go build -o bin/arm64_macos_tunalog &&
-GOOS=linux GOARCH=arm64 go build -o bin/arm64_linux_tunalog
+GOOS=windows GOARCH=arm64 go build -o bin/tunalog_windows_arm64.exe &&
+GOOS=darwin GOARCH=arm64 go build -o bin/tunalog_macos_arm64 &&
+GOOS=linux GOARCH=arm64 go build -o bin/tunalog_linux_arm64
 ```
