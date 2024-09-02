@@ -192,7 +192,7 @@
     "settings_timeformat_description": "<a class='ts-text is-external-link' href='https://stackoverflow.com/a/20234207/5203951' target='_blank'>點擊此處</a>參閱自訂日期與時間格式的相關資訊。",
     "settings_about": "關於 Tunalog",
     "settings_versions": "目前執行的 Tunalog 版本是 v%s（編譯版本為 %s）",
-    "settings_madeof": "由來自 <span class='ts-flag is-taiwan-flag is-rounded is-small'></span> 台灣的 <a href='https://twitter.com/YamiOdymel' target='_blank'>Yami Odymel</a> 所開發，當然還有<a href='https://github.com/caris-events/tunalog/graphs/contributors' target='_blank'>貢獻者們</a>的愛心❤️。原始碼授權方式為 <a href='https://github.com/caris-events/tunalog/blob/master/LICENSE' target='_blank'>MIT</a>，還請盡情地使用、分享或一同改進。Tunalog 由<a href='https://caris.events' target='_blank'>卡莉絲伊繁星</a>共同開發，而卡莉絲伊繁星屬<a href='https://sorae.co' target='_blank'>對空音商事</a>。",
+    "settings_madeof": "由來自 <span class='ts-flag is-taiwan-flag is-rounded is-small'></span> 台灣的 <a href='https://twitter.com/YamiOdymel' target='_blank'>Yami Odymel</a> 所開發，當然還有<a href='https://github.com/caris-events/tunalog/graphs/contributors' target='_blank'>貢獻者們</a>的愛心❤️。原始碼授權方式為 <a href='https://github.com/caris-events/tunalog/blob/master/LICENSE' target='_blank'>MIT</a>，還請盡情地使用、分享或一同改進。Tunalog 由<a href='https://caris.events' target='_blank'>卡莉絲伊繁星</a>共同開發，而卡莉絲伊繁星屬<a href='https://sorae.co' target='_blank'>對空音商事</a>。<p><a class='ts-text is-external-link' href='https://github.com/caris-events/tunalog' target='_blank'>前往 GitHub 檢視原始碼</a></p>",
 
     "tagedit_tagedit": "編輯標籤",
     "tagedit_manage": "標籤管理",
