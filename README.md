@@ -8,11 +8,9 @@ A no-installation, easy-to-use blogging system written in Go.
 
 ---
 
--   Easy Markdown editor (powered by [SimpleMDE](<[https://simplemde.com/](https://github.com/sparksuite/simplemde-markdown-editor)>).
+-   Easy Markdown editor (powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor)).
 -   Portable, Zero-configuration SQLite file database.
 -   Only 30 MiB in size and uses 32 MiB of memory while running.
-
-🚧 The project was meant to be a simple side project, and may have strong opinions on accepting pull requests. But you can always fork it to make a better version 😎👍
 
 &nbsp;
 
@@ -77,6 +75,12 @@ GLOBAL OPTIONS:
    --help, -h              show help
    --version, -v           print the version
 ```
+
+&nbsp;
+
+## Contributions
+
+The project was meant to be a simple side project, and may have strong opinions on accepting pull requests. But you can always fork it to make a better version 😎👍
 
 &nbsp;
 
