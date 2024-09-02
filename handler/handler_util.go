@@ -228,7 +228,11 @@ func savePhoto(c *gin.Context, file *multipart.FileHeader) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	resizeImg := imgconv.Resize(srcImg, &imgconv.ResizeOption{Width: 2000})
+	w := srcImg.Bounds().Dx()
+	if w > 2000 {
+		w = 2000
+	}
+	resizeImg := imgconv.Resize(srcImg, &imgconv.ResizeOption{Width: w})
 
 	dstImg, err := os.OpenFile(localDst, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
