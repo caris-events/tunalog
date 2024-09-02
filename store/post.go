@@ -322,7 +322,7 @@ func ListPosts(q *ListPostsQuery) ([]*entity.PostR, error) {
 	qQuery, qArgs := q.Build()
 	query += qQuery
 	args = append(args, qArgs...)
-	query += " ORDER BY p.pinned_at DESC, p.published_at DESC"
+	query += " ORDER BY p.pinned_at DESC, p.published_at DESC, p.created_at DESC"
 
 	if q.Limit > 0 && q.Offset >= 0 {
 		query += " LIMIT ? OFFSET ?"
