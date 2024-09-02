@@ -103,10 +103,10 @@ func Wizard(c *gin.Context, req *WizardRequest) {
 		Password:    "",
 		Visibility:  entity.VisibilityPublic,
 		Content:     system.Locale.String("defaultpost_content"),
-		PublishedAt: time.Now().Unix(),
+		PublishedAt: time.Now().Unix() - 60, // so it won't collide with user post created in 1 mins after site initialized
 		TagIDs:      []string{},
-		CreatedAt:   time.Now().Unix(),
-		UpdatedAt:   time.Now().Unix(),
+		CreatedAt:   time.Now().Unix() - 60,
+		UpdatedAt:   time.Now().Unix() - 60,
 	}
 	if err := store.CreatePost(p); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
