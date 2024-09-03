@@ -128,9 +128,10 @@
             document.getElementsByName("timezone")[0].value = new Date().getTimezoneOffset() * -60
             // user can select their language in the frontend with refresh the page
             document.getElementById('language-select').addEventListener('change', function () {
-            var selectedLocale = this.value;
-            window.location.href = "?locale=" + selectedLocale;
-    });
+                var selectedLocale = this.value;
+                window.location.href = "?locale=" + selectedLocale;
+            });
+
         </script>
     </body>
 </html>
