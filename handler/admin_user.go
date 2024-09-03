@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -42,11 +43,21 @@ func UserCreate(c *gin.Context, req *UserCreateRequest) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
+	nickname := strings.Split(req.Email, "@")[0]
+
+	exists, err := store.UserNicknameExists(nickname)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+	if exists {
+		nickname = fmt.Sprintf("%s-%d", nickname, time.Now().Unix())
+	}
 	if err := store.CreateUser(&entity.UserW{
 		ID:        uuid.New().String(),
 		Email:     req.Email,
 		Password:  string(hashedPwd),
-		Nickname:  strings.Split(req.Email, "@")[0],
+		Nickname:  nickname,
 		Bio:       "",
 		CreatedAt: time.Now().Unix(),
 	}); err != nil {
@@ -113,6 +124,7 @@ func UserEdit(c *gin.Context, req *UserEditRequest) {
 			return
 		}
 	}
+
 	if err := store.UpdateUser(c.Param("id"), req.Nickname, req.Bio, req.Email); err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

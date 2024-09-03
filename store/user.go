@@ -33,6 +33,14 @@ func GetUserByEmail(email string) (*entity.UserR, error) {
 	return &u, nil
 }
 
+func UserNicknameExists(nickname string) (bool, error) {
+	var exists bool
+	if err := db.QueryRow(`SELECT EXISTS(SELECT 1 FROM users WHERE nickname = ?)`, nickname).Scan(&exists); err != nil {
+		return false, err
+	}
+	return exists, nil
+}
+
 func ListUsers() ([]*entity.UserR, error) {
 	rows, err := db.Query(`SELECT id, email, nickname, password, bio, created_at FROM users`)
 	if err != nil {
