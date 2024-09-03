@@ -1,6 +1,6 @@
 # Tunalog [![](https://img.shields.io/github/v/release/caris-events/tunalog)](https://github.com/caris-events/tunalog/releases) [![](https://img.shields.io/badge/license-MIT-green)](https://github.com/caris-events/tunalog/blob/master/LICENSE)
 
-A no-installation, easy-to-use blogging system written in Go.
+A no-installation, easy-to-use blogging system written in Go. Powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor), [SQLite 3](https://www.sqlite.org/).
 
 -   📘 Official Webiste: [tunalog.org](https://tunalog.org) ([Source Code](https://github.com/caris-events/tunalog-docs))
 -   📦 Source Code: [GitHub](https://github.com/caris-events/tunalog)
@@ -8,9 +8,7 @@ A no-installation, easy-to-use blogging system written in Go.
 
 ---
 
--   Easy Markdown editor (powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor)).
--   Portable, Zero-configuration SQLite file database.
--   Only 30 MiB in size and uses 32 MiB of memory while running.
+![](https://tunalog.org/en-us/assets/screenshot-2_light.png)
 
 &nbsp;
 
