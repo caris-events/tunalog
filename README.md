@@ -24,7 +24,7 @@ A no-installation, easy-to-use blogging system written in Go. Powered by [Simple
 ### Using Docker
 
 ```
-$ docker run --name tunalog -p 8080:8080 yamiodymel/tunalog
+$ docker run --name tunalog -v tunalog:/var/lib/tunalog -p 8080:8080 yamiodymel/tunalog
 ```
 
 ### Using on Linux
