@@ -32,7 +32,7 @@ $ docker run --name tunalog -p 8080:8080 yamiodymel/tunalog
 ### Using on Linux
 
 ```
-$ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunalog_linux_x64 &&
+$ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunalog_linux_x64
 $ chmod +x tunalog_linux_x64
 $ ./tunalog_linux_x64
 ```
