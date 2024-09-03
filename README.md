@@ -23,24 +23,18 @@ A no-installation, easy-to-use blogging system written in Go.
 
 &nbsp;
 
-### Using Go
+### Using Docker
 
 ```
-go install github.com/caris-events/tunalog@latest
+$ docker run --name tunalog -p 8080:8080 yamiodymel/tunalog
 ```
 
 ### Using on Linux
 
-1. Download latest Tunalog
-
 ```
-$ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunalog_linux_x64
-```
-
-2. Run Tunalog
-
-```
-./tunalog_linux_x64
+$ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunalog_linux_x64 &&
+$ chmod +x tunalog_linux_x64
+$ ./tunalog_linux_x64
 ```
 
 ### Using on Windows
@@ -48,6 +42,12 @@ $ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunal
 1. Download latest Tunalog: [tunalog_windows_x64.exe](https://github.com/caris-events/tunalog/releases/latest/download/tunalog_windows_x64.exe)
 
 2. Double-click the downloaded `tunalog_windows_x64.exe` file to run.
+
+### Using Go
+
+```
+$ go install github.com/caris-events/tunalog@latest
+```
 
 &nbsp;
 
