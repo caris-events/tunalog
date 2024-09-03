@@ -33,8 +33,25 @@
                         <div class="ts-header is-large">{{ __ "wizard_settings" }}</div>
                         <div class="ts-text is-secondary">{{ __ "wizard_settings_description" }}</div>
                         <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
-                            <!-- name -->
+                            <!-- locale -->
                             <div class="ts-control is-wide mobile:is-stacked">
+                                <div class="label">{{ __ "settings_locale" }}</div>
+                                <div class="content">
+                                    <div class="ts-select">
+                                        <select id="language-select" name="locale">
+                                            {{ range $k, $v := .Locales }}
+                                            <option value="{{ $v }}" {{ if eq $.DefaultLocale $v }}selected{{ end }}>{{ $k }}</option>
+                                            {{ end }}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / locale -->
+
+                            <div class="ts-divider has-top-spaced-large"></div>
+                            
+                            <!-- name -->
+                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
                                 <div class="label">{{ __ "settings_name" }}</div>
                                 <div class="content">
                                     <div class="ts-input">
@@ -53,21 +70,6 @@
                                 </div>
                             </div>
                             <!-- description -->
-
-                            <!-- locale -->
-                            <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
-                                <div class="label">{{ __ "settings_locale" }}</div>
-                                <div class="content">
-                                    <div class="ts-select">
-                                        <select id="language-select" name="locale">
-                                            {{ range $k, $v := .Locales }}
-                                            <option value="{{ $v }}" {{ if eq $.DefaultLocale $v }}selected{{ end }}>{{ $k }}</option>
-                                            {{ end }}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- locale -->
 
                             <!-- timezone -->
                             <input type="hidden" name="timezone" value="" />
