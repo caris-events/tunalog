@@ -23,13 +23,17 @@ func WizardView(c *gin.Context) {
 		c.Redirect(http.StatusFound, "admin")
 		return
 	}
-	// use user's language by default in wizard
-	system.ReloadLocale(i18n.ParseAcceptLanguage(c.GetHeader("Accept-Language"))...)
+	// Users can manually set the language through param to coordinate with the front-end refresh:w
+	locale := c.Query("locale")
+	if locale == "" {
+		locale = i18n.ParseAcceptLanguage(c.GetHeader("Accept-Language"))[0] // use user's language by default in wizard
+	}
+	system.ReloadLocale(locale)
 
 	c.HTML(http.StatusOK, "wizard", gin.H{
 		"Message":       message(c),
 		"Locales":       entity.Locales,
-		"DefaultLocale": i18n.ParseAcceptLanguage(c.GetHeader("Accept-Language"))[0],
+		"DefaultLocale": locale,
 		"CSRF":          csrf.GetToken(c),
 	})
 }

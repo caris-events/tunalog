@@ -59,7 +59,7 @@
                                 <div class="label">{{ __ "settings_locale" }}</div>
                                 <div class="content">
                                     <div class="ts-select">
-                                        <select name="locale">
+                                        <select id="language-select" name="locale">
                                             {{ range $k, $v := .Locales }}
                                             <option value="{{ $v }}" {{ if eq $.DefaultLocale $v }}selected{{ end }}>{{ $k }}</option>
                                             {{ end }}
@@ -126,6 +126,11 @@
         </form>
         <script>
             document.getElementsByName("timezone")[0].value = new Date().getTimezoneOffset() * -60
+            // user can select their language in the frontend with refresh the page
+            document.getElementById('language-select').addEventListener('change', function () {
+            var selectedLocale = this.value;
+            window.location.href = "?locale=" + selectedLocale;
+    });
         </script>
     </body>
 </html>
