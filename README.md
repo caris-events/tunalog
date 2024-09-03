@@ -1,10 +1,10 @@
 # Tunalog [![](https://img.shields.io/github/v/release/caris-events/tunalog)](https://github.com/caris-events/tunalog/releases) [![](https://img.shields.io/badge/license-MIT-green)](https://github.com/caris-events/tunalog/blob/master/LICENSE)
 
-A no-installation, easy-to-use blogging system written in Go. Powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor), [SQLite 3](https://www.sqlite.org/).
+A no-installation, easy-to-use blogging system written in Go. Powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor), [SQLite3](https://www.sqlite.org/). [Gin](https://github.com/gin-gonic/gin), [TocasUI](https://tocas-ui.com/5.0/en-us/index.html).
 
 -   📘 Official Webiste: [tunalog.org](https://tunalog.org) ([Source Code](https://github.com/caris-events/tunalog-docs))
 -   📦 Source Code: [GitHub](https://github.com/caris-events/tunalog)
--   🌎 Supported Languages: 🇹🇼 台灣正體, 🇺🇸 English (US)
+-   🌎 Supported Languages: English (US), 台灣正體
 
 ---
 
@@ -93,6 +93,7 @@ The project was meant to be a simple side project, and may have strong opinions 
 -   [twitter/twemoji](https://github.com/twitter/twemoji) - Default fish favicon because I was too lazy to draw one myself.
 -   [teacat/tocas](https://github.com/teacat/tocas) - The UI used in the default theme and admin panel.
 -   [cznic/sqlite](https://gitlab.com/cznic/sqlite) - For the CGO-free SQLite driver, making it easier to cross-compile Tunalog.
+-   [alpinejs/alpine](https://github.com/alpinejs/alpine) - Minimal data-binding for a simpler post creation/edit form.
 
 And Tunalog is inspired by [Ghost Blog](https://ghost.org/) and [WordPress](https://wordpress.org/).
 
