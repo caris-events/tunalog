@@ -5,7 +5,7 @@ COPY ./ ./
 RUN go build -o tunalog .
 
 FROM scratch AS runnable
-WORKDIR /usr/src/app
+WORKDIR /var/lib/tunalog
 
 COPY --from=builder /workspace/tunalog /tunalog
 
