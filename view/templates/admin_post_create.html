@@ -271,6 +271,9 @@ const easy_mde = new EasyMDE({
     status: false,
     toolbar: ["heading", "bold", "italic", "quote", "code", "link", "|", "unordered-list", "ordered-list", "|", "upload-image", "table", "|", "preview"],
     uploadImage: true,
+    renderingConfig: {
+        singleLineBreaks: false,
+    },
     imageUploadFunction: (file, onSuccess, onError) => {
         var formData = new FormData()
         formData.append("_csrf", "{{ .CSRF }}")
