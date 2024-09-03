@@ -32,13 +32,13 @@
                         {{ end }}
                         <div class="ts-header is-large">{{ __ "wizard_settings" }}</div>
                         <div class="ts-text is-secondary">{{ __ "wizard_settings_description" }}</div>
-                        <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
+                        <div class="ts-content is-rounded is-secondary tablet+:has-padded-big has-top-spaced-large">
                             <!-- locale -->
                             <div class="ts-control is-wide mobile:is-stacked">
                                 <div class="label">{{ __ "settings_locale" }}</div>
                                 <div class="content">
-                                    <div class="ts-select">
-                                        <select id="language-select" name="locale">
+                                    <div class="ts-select" style="min-width: 260px">
+                                        <select id="locale-input" name="locale">
                                             {{ range $k, $v := .Locales }}
                                             <option value="{{ $v }}" {{ if eq $.DefaultLocale $v }}selected{{ end }}>{{ $k }}</option>
                                             {{ end }}
@@ -49,7 +49,7 @@
                             <!-- / locale -->
 
                             <div class="ts-divider has-top-spaced-large"></div>
-                            
+
                             <!-- name -->
                             <div class="ts-control is-wide mobile:is-stacked has-top-spaced-large">
                                 <div class="label">{{ __ "settings_name" }}</div>
@@ -72,12 +72,12 @@
                             <!-- description -->
 
                             <!-- timezone -->
-                            <input type="hidden" name="timezone" value="" />
+                            <input type="hidden" id="timezone-input" name="timezone" value="" />
                             <!-- / timezone -->
                         </div>
                         <div class="ts-header is-large has-top-spaced-big">{{ __ "wizard_admin" }}</div>
                         <div class="ts-text is-secondary">{{ __ "wizard_admin_description" }}</div>
-                        <div class="ts-content is-rounded is-secondary has-padded-big has-top-spaced-large">
+                        <div class="ts-content is-rounded is-secondary tablet+:has-padded-big has-top-spaced-large">
                             <!-- email -->
                             <div class="ts-control is-wide mobile:is-stacked">
                                 <div class="label">{{ __ "users_email" }}</div>
@@ -127,13 +127,10 @@
             </div>
         </form>
         <script>
-            document.getElementsByName("timezone")[0].value = new Date().getTimezoneOffset() * -60
-            // user can select their language in the frontend with refresh the page
-            document.getElementById('language-select').addEventListener('change', function () {
-                var selectedLocale = this.value;
-                window.location.href = "?locale=" + selectedLocale;
+            document.getElementById('timezone-input').value = new Date().getTimezoneOffset() * -60
+            document.getElementById('locale-input').addEventListener('change', function () {
+                window.location.href = "?locale=" + this.value;
             });
-
         </script>
     </body>
 </html>
