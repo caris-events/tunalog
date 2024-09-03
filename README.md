@@ -23,6 +23,12 @@ A no-installation, easy-to-use blogging system written in Go.
 
 &nbsp;
 
+### Using Go
+
+```
+go install github.com/caris-events/tunalog@latest
+```
+
 ### Using on Linux
 
 1. Download latest Tunalog
