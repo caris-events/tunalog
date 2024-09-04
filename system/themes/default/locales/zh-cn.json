@@ -1,0 +1,33 @@
+{
+    "filter_tag": "仅显示带有标签的文章：",
+    "filter_author": "仅显示作者发布的文章：",
+    "filter_date": "仅显示日期的文章：",
+
+    "button_resetfilter": "重置过滤器",
+    "button_menu": "菜单",
+    "button_close": "关闭",
+    "button_editpost": "编辑文章",
+    "button_unlock": "解锁",
+
+    "notfound_title": "未找到文章",
+    "notfound_description": "当前没有可查看的公开文章",
+
+    "title_private": "私密：",
+    "title_draft": "草稿：",
+    "title_password": "受保护：",
+    "title_scheduled": "—— 定时发布",
+
+    "notice_title": "通知",
+    "status_pinned": "置顶",
+
+    "password_title": "此文章已锁定",
+    "password_description": "请输入文章密码以解锁并查看内容。",
+    "password_placeholder": "在此输入密码...",
+    "password_excerpt": "受保护的文章不会显示摘录。",
+
+    "pagination_new": "← 新文章",
+    "pagination_old": "旧文章 →",
+    "pagination_new_label": "新文章",
+    "pagination_old_label": "旧文章",
+    "pagination_info": "第 %d 页，共 %d 页"
+}
