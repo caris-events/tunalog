@@ -127,7 +127,9 @@ func SingularView(c *gin.Context) {
 		return
 	}
 	if p == nil {
-		c.AbortWithStatus(http.StatusNotFound)
+		c.HTML(http.StatusNotFound,"404NotFound",gin.H{
+			"title": "Page Not Found",
+		})
 		return
 	}
 	if self == nil && p.Visibility != entity.VisibilityPublic && p.Visibility != entity.VisibilityPassword {

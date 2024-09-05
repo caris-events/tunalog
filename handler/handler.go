@@ -111,6 +111,7 @@ func init() {
 	render.AddFromFSFuncs("admin_posts", funcs, view.Templates, "templates/admin_base.html", "templates/admin_pagination.html", "templates/admin_posts.html")
 	render.AddFromFSFuncs("admin_post_edit", funcs, view.Templates, "templates/admin_base.html", "templates/admin_post_edit.html")
 	render.AddFromFSFuncs("admin_photos", funcs, view.Templates, "templates/admin_base.html", "templates/admin_pagination.html", "templates/admin_photos.html")
+	render.AddFromFSFuncs("404NotFound", funcs, view.Templates, "templates/404NotFound.html")
 	Router.HTMLRender = render
 
 	fs, err := fs.Sub(view.Assets, "assets")
@@ -122,7 +123,7 @@ func init() {
 	Router.POST("/wizard", handleForm(Wizard))
 	Router.GET("/login", checkConfig, LoginView)
 	Router.POST("/login", checkConfig, throttle, handleForm(Login))
-
+	
 	// admin
 	adminRoute := Router.Group("/admin", checkConfig, checkLoggedIn)
 	{

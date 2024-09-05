@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html class="is-secondary">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link rel="icon" type="image/png" href="{{ .URL.RelativeRoot }}assets/favicon.png">
+        <title>{{ .Name }}</title>
+    </head>
+    <body>
+        <div class="ts-app-center">
+            <div class="content">
+                <div class="ts-header is-large is-heavy is-icon">
+                    <div class="ts-icon is-fish-icon"></div>
+                    <a class="ts-text is-undecorated" href="{{ .URL.RelativeRoot }}">{{ .Name }}</a>
+                </div>
+                <div class="has-top-spaced-large" style="width: 280px">
+                    <div class="ts-box">
+                        <div class="ts-content is-padded">
+                            <div class="ts-wrap is-vertical">
+                                <div class="ts-header is-large">404</div>
+                                <div class="ts-text is-heavy is-large">Page Not Found</div>
+                                <div class="has-top-spaced-large">
+                                    <!-- 使用 JavaScript 返回上一頁 -->
+                                    <button class="ts-button is-large is-primary is-fluid" onclick="history.back()">
+                                        {{ __ "button_back" }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
