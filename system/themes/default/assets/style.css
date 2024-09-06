@@ -45,11 +45,11 @@ html.text-large {
 }
 
 html.font-sans body {
-    font-family: "Noto Sans TC", "Noto Sans HK", "Noto Sans JP", "Noto Sans KR", "Noto Sans SC", "Noto Sans";
+    font-family: "Noto Sans TC", "Noto Sans SC", "Noto Sans HK", "Noto Sans JP", "Noto Sans KR", "Noto Sans";
 }
 
 html.font-serif body {
-    font-family: "Noto Serif TC", "Noto Serif HK", "Noto Serif JP", "Noto Serif KR", "Noto Serif SC", "Noto Serif";
+    font-family: "Noto Serif TC", "Noto Serif SC", "Noto Serif HK", "Noto Serif JP", "Noto Serif KR", "Noto Serif";
     font-weight: 500;
 }
 
