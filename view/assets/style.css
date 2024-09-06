@@ -8,6 +8,10 @@
     }
 }
 
+body {
+    font-family: "Noto Sans TC", "Noto Sans SC", "Noto Sans JP", "Noto Sans KR";
+}
+
 #title-input {
     font-size: 20px;
     height: 48px;
