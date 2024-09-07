@@ -115,7 +115,7 @@ type PostCreateRequest struct {
 	AuthorID    string            `form:"author_id" binding:"required,uuid"`
 	Password    string            `form:"password" binding:"max=128" conform:"trim"`
 	Visibility  entity.Visibility `form:"visibility" binding:"required,oneof=public private password draft"`
-	Content     string            `form:"content" binding:"required" conform:"trim"`
+	Content     string            `form:"content" conform:"trim"`
 	PublishedAt int64             `form:"published_at"`
 	IsPinned    bool              `form:"is_pinned"`
 	Tags        string            `form:"tags"`
@@ -240,7 +240,7 @@ type PostEditRequest struct {
 	AuthorID     string            `form:"author_id" binding:"required,uuid"`
 	Password     string            `form:"password" binding:"max=128" conform:"trim"`
 	Visibility   entity.Visibility `form:"visibility" binding:"required,oneof=public private password draft"`
-	Content      string            `form:"content" binding:"required" conform:"trim"`
+	Content      string            `form:"content" conform:"trim"`
 	PublishedAt  int64             `form:"published_at" binding:"required"`
 	IsPinned     bool              `form:"is_pinned"`
 	IsClearCover bool              `form:"is_clear_cover"`
