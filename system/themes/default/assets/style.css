@@ -84,6 +84,7 @@ html.font-serif body .ts-header.is-heavy {
     display: flex;
     margin: 0 -0.9rem;
     overflow-x: auto;
+    white-space: nowrap;
 }
 
 #index-navigation .navigation-item {
