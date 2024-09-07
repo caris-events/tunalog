@@ -132,6 +132,7 @@ func SaveConfig() error {
 		return err
 	}
 	// load 404.html optionally
+	NotFoundTmpl = nil
 	if _, err := os.Stat(fmt.Sprintf("data/themes/%s/404.html", Config.Theme)); !os.IsNotExist(err) {
 		NotFoundTmpl, err = template.
 			New("404.html").
