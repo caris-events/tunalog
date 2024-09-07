@@ -117,6 +117,7 @@ func init() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	Router.NoRoute(checkConfig, NoRouteView)
 	Router.Static("/post/uploads", "data/uploads")
 	Router.GET("/wizard", WizardView)
 	Router.POST("/wizard", handleForm(Wizard))

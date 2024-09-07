@@ -122,6 +122,7 @@ func data(c *gin.Context, data gin.H) gin.H {
 		"Root":         filepath.Clean(suffix + c.Request.Host + c.Request.URL.Path + entity.RelativeRoots[c.FullPath()]),
 		"Absolute":     suffix + c.Request.Host + c.Request.URL.Path,
 		"RelativeRoot": entity.RelativeRoots[c.FullPath()],
+		"AbsoluteHost": suffix + c.Request.Host + "/",
 		"PageType":     entity.PageTypes[c.FullPath()],
 	}
 	return data

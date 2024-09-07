@@ -31,6 +31,7 @@ var (
 
 	IndexTmpl    *template.Template
 	SingularTmpl *template.Template
+	NotFoundTmpl *template.Template
 
 	//go:embed locales
 	LocalesFS embed.FS
@@ -130,7 +131,15 @@ func SaveConfig() error {
 	if err != nil {
 		return err
 	}
-
+	// load 404.html optionally
+	if _, err := os.Stat(fmt.Sprintf("data/themes/%s/404.html", Config.Theme)); !os.IsNotExist(err) {
+		NotFoundTmpl, err = template.
+			New("404.html").
+			Funcs(funcs).ParseGlob(fmt.Sprintf("data/themes/%s/*.html", Config.Theme))
+		if err != nil {
+			return err
+		}
+	}
 	// load theme locales, or skip if not exists
 	themeLocaleBase = i18n.New("default")
 	if _, err := os.Stat(fmt.Sprintf("data/themes/%s/locales", Config.Theme)); !os.IsNotExist(err) {

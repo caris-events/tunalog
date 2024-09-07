@@ -8,9 +8,13 @@
     "button_close": "Close",
     "button_editpost": "Edit Post",
     "button_unlock": "Unlock",
+    "button_returnhomepage": "Return to Homepage",
 
     "notfound_title": "No Posts Found",
     "notfound_description": "There are currently no public posts available to view",
+
+    "404_title": "Page Not Found",
+    "404_description": "The link you clicked may no longer be valid, or the page may have been removed",
 
     "title_private": "Private:",
     "title_draft": "Draft:",

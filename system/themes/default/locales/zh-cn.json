@@ -8,9 +8,13 @@
     "button_close": "关闭",
     "button_editpost": "编辑文章",
     "button_unlock": "解锁",
+    "button_returnhomepage": "回到主页",
 
     "notfound_title": "未找到文章",
     "notfound_description": "当前没有可查看的公开文章",
+
+    "404_title": "页面不存在",
+    "404_description": "您点击的链接可能已失效，或该页面已被移除",
 
     "title_private": "私密：",
     "title_draft": "草稿：",

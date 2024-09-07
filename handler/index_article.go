@@ -127,15 +127,15 @@ func SingularView(c *gin.Context) {
 		return
 	}
 	if p == nil {
-		c.AbortWithStatus(http.StatusNotFound)
+		noRoute(c)
 		return
 	}
 	if self == nil && p.Visibility != entity.VisibilityPublic && p.Visibility != entity.VisibilityPassword {
-		c.AbortWithStatus(http.StatusNotFound)
+		noRoute(c)
 		return
 	}
 	if self == nil && p.PublishedAt > time.Now().Unix() {
-		c.AbortWithStatus(http.StatusNotFound)
+		noRoute(c)
 		return
 	}
 	navs, err := store.ListNavigations()

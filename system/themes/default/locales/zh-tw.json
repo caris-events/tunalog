@@ -8,9 +8,13 @@
     "button_close": "關閉",
     "button_editpost": "編輯文章",
     "button_unlock": "解鎖",
+    "button_returnhomepage": "返回首頁",
 
     "notfound_title": "找不到任何文章",
     "notfound_description": "目前沒有可供檢視的公開文章",
+
+    "404_title": "找不到頁面",
+    "404_description": "你點擊的連結可能已經失效，或該頁面已被移除",
 
     "title_private": "私密：",
     "title_draft": "草稿：",

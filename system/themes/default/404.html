@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html class="{{ if .Config.ContainerWidth }}container-{{ .Config.ContainerWidth }}{{ end }} text-{{ .Config.FontSize }} font-{{ .Config.FontFamily }} {{ if .Config.ColorScheme }}is-{{ .Config.ColorScheme }}{{ end }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Config.Name }}</title>
+    <meta name="description" content="{{ .Config.Description }}">
+    <!-- og -->
+    <meta property="og:site_name" content="{{ .Config.Name }}" />
+    <meta property="og:url" content="{{ .URL.Absolute }}" />
+    <meta property="og:description" content="{{ .Config.Description }}" />
+    <!-- / og -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas/5.0.1/tocas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="{{ .URL.AbsoluteHost }}assets/style.css" />
+    <link rel="icon" type="image/png" href="{{ .URL.AbsoluteHost }}assets/favicon.png">
+    {{ .Config.InjectedHead | html }}
+</head>
+<body id="page">
+    <!-- content -->
+    <div id="page-content" class="tablet+:has-bottom-padded-huge mobile:has-bottom-padded-large">
+        <!-- navigations -->
+        {{ if .Navigations }}
+        <div class="ts-content is-tertiary is-fitted">
+            <div class="ts-container">
+                <div id="index-navigation">
+                    {{ range .Navigations }}
+                    <a href="{{ .URL }}" class="navigation-item">{{ .Name }}</a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+        <div class="ts-divider"></div>
+        {{ end }}
+        <!-- / navigations -->
+
+        <!-- slate -->
+        <div class="ts-content is-secondary is-horizontally-fitted tablet+:has-vertically-padded-huge mobile:has-vertically-padded-big">
+            <div class="ts-container">
+                <a href="{{ .URL.AbsoluteHost }}" class="ts-header is-heavy is-center-aligned tablet+:is-massive mobile:is-big">
+                    {{ .Config.Name }}
+                </a>
+                <div class="ts-text is-center-aligned is-secondary has-top-spaced">
+                    {{ .Config.Description }}
+                </div>
+            </div>
+        </div>
+        <!-- / slate -->
+
+        <div class="ts-divider"></div>
+
+        <!-- blankslate -->
+        <div class="ts-blankslate is-narrow">
+            <span class="ts-icon is-ghost-icon"></span>
+            <div class="header">{{ __ "404_title" }}</div>
+            <div class="description">{{ __ "404_description" }}</div>
+            <div class="action">
+                <a href="{{ .URL.AbsoluteHost }}" class="ts-button">{{ __ "button_returnhomepage" }}</a>
+            </div>
+        </div>
+        <!-- / blankslate -->
+    </div>
+    <!-- / content -->
+
+    <!-- footer -->
+    {{ if .Config.FooterText }}
+    <div id="page-footer" class="ts-content is-horizontally-fitted">
+        <div class="ts-container">{{ .Config.FooterText | html }}</div>
+    </div>
+    {{ end }}
+    <!-- / footer -->
+
+    {{ .Config.InjectedFoot | html }}
+</body>
+</html>
