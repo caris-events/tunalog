@@ -194,7 +194,7 @@
                     {{ if .PreviousPost }}
                     <a href="{{ .PreviousPost.Slug }}" class="pagination-item column tablet+:is-end-aligned">
                         <div class="ts-text is-small is-secondary">{{ __ "pagination_old_label" }}</div>
-                        <div class="item-header ts-header mobile:is-end-aligned">{{ .PreviousPost.Title }}</div>
+                        <div class="item-header ts-header tablet+:is-end-aligned">{{ .PreviousPost.Title }}</div>
                     </a>
                     {{ end }}
                     {{ if not .PreviousPost }}
