@@ -16,6 +16,10 @@
     text-overflow: ellipsis;
 }
 
+.has-bottom-padded-massive {
+    padding-bottom: 6.5rem !important;
+}
+
 /**
  * Global
  */
