@@ -163,6 +163,7 @@ html.font-serif body .ts-header.is-heavy {
 
 #singular-cover {
     max-width: 100%;
+    display: block;
 }
 
 #singular-pagination {
