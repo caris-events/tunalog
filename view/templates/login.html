@@ -11,6 +11,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <link rel="icon" type="image/png" href="{{ .URL.RelativeRoot }}assets/favicon.png">
         <title>{{ .Name }}</title>
+        <style>
+            /** temporary fix for #14, on hold for Tocas 5.0.2 */
+            @-moz-document url-prefix() {
+                body:has(> .ts-app-center, > form > .ts-app-center) {
+                    height: 100%;
+                }
+            }
+        </style>
     </head>
     <body>
         <form method="POST">
