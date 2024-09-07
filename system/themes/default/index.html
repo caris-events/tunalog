@@ -94,7 +94,7 @@
                 <a href="{{ $.URL.RelativeRoot }}post/{{ .Slug }}" class="ts-text is-link is-undecorated">
                     <div class="ts-grid is-top-aligned">
                         <div class="column is-fluid">
-                            <div class="ts-header tablet+:is-large">
+                            <div class="ts-header is-large">
                                 {{ if eq .Visibility "private" }}{{ __ "title_private" }}{{ end }}
                                 {{ if eq .Visibility "password" }}{{ __ "title_password" }}{{ end }}
                                 {{ .Title }}
