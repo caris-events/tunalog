@@ -189,7 +189,7 @@
                     </a>
                     {{ end }}
                     {{ if not .NextPost }}
-                    <div class="column"></div>
+                    <div class="column mobile:has-hidden"></div>
                     {{ end }}
                     {{ if .PreviousPost }}
                     <a href="{{ .PreviousPost.Slug }}" class="pagination-item column tablet+:is-end-aligned">
