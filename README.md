@@ -4,7 +4,7 @@ A no-installation, easy-to-use blogging system written in Go. Powered by [Simple
 
 -   📘 Official Webiste: [tunalog.org](https://tunalog.org) ([Source Code](https://github.com/caris-events/tunalog-docs))
 -   📦 Source Code: [GitHub](https://github.com/caris-events/tunalog)
--   🌎 Supported Languages: English (US), 台灣正體
+-   🌎 Supported Languages: English (US), 台灣正體, 简体中文
 
 ---
 
