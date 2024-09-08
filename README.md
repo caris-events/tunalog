@@ -1,10 +1,11 @@
 # Tunalog [![](https://img.shields.io/github/v/release/caris-events/tunalog)](https://github.com/caris-events/tunalog/releases) [![](https://img.shields.io/badge/license-MIT-green)](https://github.com/caris-events/tunalog/blob/master/LICENSE)
 
-A no-installation, easy-to-use blogging system written in Go. Powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor), [SQLite3](https://www.sqlite.org/). [Gin](https://github.com/gin-gonic/gin), [TocasUI](https://tocas-ui.com/5.0/en-us/index.html).
+A no-installation, easy-to-use blogging system written in Go—— Powered by [SimpleMDE](https://github.com/sparksuite/simplemde-markdown-editor) / [SQLite3](https://www.sqlite.org/) / [Gin](https://github.com/gin-gonic/gin) / [TocasUI](https://tocas-ui.com/5.0/en-us/index.html)
 
--   📘 Official Webiste: [tunalog.org](https://tunalog.org) ([Source Code](https://github.com/caris-events/tunalog-docs))
--   📦 Source Code: [GitHub](https://github.com/caris-events/tunalog)
--   🌎 Supported Languages: English (US), 台灣正體, 简体中文
+-   📘 Webiste: [tunalog.org](https://tunalog.org) ([Source Code](https://github.com/caris-events/tunalog-docs))
+-   🌎 Languages: English (US), 台灣正體, 简体中文
+
+
 
 ---
 
@@ -21,6 +22,12 @@ A no-installation, easy-to-use blogging system written in Go. Powered by [Simple
 
 &nbsp;
 
+### Using Go
+
+```
+$ go install github.com/caris-events/tunalog@latest
+```
+
 ### Using Docker
 
 ```
@@ -31,7 +38,6 @@ $ docker run --name tunalog -v tunalog:/var/lib/tunalog -p 8080:8080 yamiodymel/
 
 ```
 $ wget -c https://github.com/caris-events/tunalog/releases/latest/download/tunalog_linux_x64
-$ chmod +x tunalog_linux_x64
 $ ./tunalog_linux_x64
 ```
 
@@ -40,12 +46,6 @@ $ ./tunalog_linux_x64
 1. Download latest Tunalog: [tunalog_windows_x64.exe](https://github.com/caris-events/tunalog/releases/latest/download/tunalog_windows_x64.exe)
 
 2. Double-click the downloaded `tunalog_windows_x64.exe` file to run.
-
-### Using Go
-
-```
-$ go install github.com/caris-events/tunalog@latest
-```
 
 &nbsp;
 
