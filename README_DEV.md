@@ -33,8 +33,15 @@ GOOS=linux GOARCH=arm64 go build -o bin/tunalog_linux_arm64
 
 You can also use `make` command to build the whole project. The compiled binary will be exported to the `bin` folder.
 
-```
-cd tunalog
-make
+```bash
+$ cd tunalog
+$ make
 ```
 
+### Using Docker
+
+```bash
+$ docker build -t yamiodymel/tunalog:latest -t yamiodymel/tunalog:v1.0.2 .
+$ docker push yamiodymel/tunalog
+$ docker push yamiodymel/tunalog:v1.0.2
+```
