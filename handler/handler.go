@@ -181,7 +181,7 @@ func init() {
 	{
 		publicRoute.Static("/uploads", "data/uploads")
 		publicRoute.GET("/", IndexView)
-		publicRoute.GET("/sitemap.xml", SiteMapView)
+		//publicRoute.GET("/sitemap.xml", SiteMapView)
 		publicRoute.GET("/assets/:asset", AssetView)
 
 		publicRoute.GET("/tag/:tag", IndexView)
