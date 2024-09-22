@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="{{ if .Config.ContainerWidth }}container-{{ .Config.ContainerWidth }}{{ end }} text-{{ .Config.FontSize }} font-{{ .Config.FontFamily }} {{ if .Config.ColorScheme }}is-{{ .Config.ColorScheme }}{{ end }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +31,43 @@
     {{ if .Config.HighlightJS }}
     <link rel="stylesheet" href="{{ .URL.RelativeRoot }}assets/highlight.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.min.js" defer></script>
+    <style>
+        .code-block {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.15rem;
+            right: 0.15rem;
+            height: 1.2rem;
+            width: 1.2rem;
+            background-color: rgba(255, 255, 255, 0.298);
+            border: none;
+            border-radius: 4px;
+            padding: 0.2rem;
+            cursor: pointer;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: background-color 0.2s;
+        }
+        .copy-button:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .copy-icon, .check-icon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0.8rem;
+            height: 0.8rem;
+            padding: 0.1rem;
+        }
+        .copy-icon {
+            color: #6b7280;
+        }
+        .check-icon {
+            color: #10b981;
+        }
+    </style>
     {{ end }}
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="{{ .URL.RelativeRoot }}assets/style.css" />
@@ -217,7 +255,69 @@
 
     {{ if .Config.HighlightJS }}
     <script>
-        hljs.highlightAll()
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('copyButton', () => ({
+                copied: false,
+                copyToClipboard() {
+                    // Find the closest code element, looking in siblings and parent
+                    const codeElement = 
+                        this.$el.parentNode.querySelector('code') || 
+                        this.$el.closest('.code-block')?.querySelector('code');
+                    
+                    if (codeElement) {
+                        const code = codeElement.innerText;
+                        navigator.clipboard.writeText(code).then(() => {
+                            this.copied = true;
+                            setTimeout(() => this.copied = false, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    } else {
+                        console.error('No code element found to copy');
+                    }
+                }
+            }));
+        });
+    
+        function addCopyButtons() {
+            document.querySelectorAll('pre > code, code.language-javascript').forEach((block) => {
+                let wrapper = block.parentNode;
+                if (!wrapper.classList.contains('code-block')) {
+                    wrapper = document.createElement('div');
+                    wrapper.className = 'code-block';
+                    block.parentNode.insertBefore(wrapper, block);
+                    wrapper.appendChild(block);
+                }
+                
+                if (!wrapper.querySelector('.copy-button')) {
+                    const button = document.createElement('button');
+                    button.innerHTML = `
+                        <svg x-show="!copied" class="copy-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                        </svg>
+                        <svg x-show="copied" class="check-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    `;
+                    button.className = 'copy-button';
+                    button.setAttribute('x-data', 'copyButton');
+                    button.setAttribute('x-on:click', 'copyToClipboard');
+                    button.setAttribute('x-bind:aria-label', 'copied ? "Copied!" : "Copy code"');
+                    wrapper.appendChild(button);
+                }
+            });
+    
+            // Initialize Alpine.js on new elements
+            Alpine.initTree(document.body);
+        }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+            addCopyButtons();
+        });
+    
+        // Additional check to run after a short delay
+        setTimeout(addCopyButtons, 1000);
     </script>
     {{ end }}
 
