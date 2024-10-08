@@ -80,6 +80,15 @@ GLOBAL OPTIONS:
    --version, -v           print the version
 ```
 
+### Using a self-signed TLS certificate
+
+You can run Tunalog with a TLS certificate directly, without needing a reverse proxy.
+
+```bash
+# Ports under 1024 require `sudo` to run
+$ ./tunalog_linux_x64 -p :443 --tls-key cert/server-key.pem --tls-crt cert/server.pem
+```
+
 &nbsp;
 
 ## Contributions
