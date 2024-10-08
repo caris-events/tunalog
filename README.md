@@ -5,10 +5,6 @@ A no-installation, easy-to-use blogging system written in Go—— Powered by [S
 -   📘 Webiste: [tunalog.org](https://tunalog.org) ([Source Code](https://github.com/caris-events/tunalog-docs))
 -   🌎 Languages: English (US), 台灣正體, 简体中文
 
-
-
----
-
 ![](https://tunalog.org/en-us/assets/screenshot-2_light.png)
 
 &nbsp;
@@ -21,12 +17,6 @@ A no-installation, easy-to-use blogging system written in Go—— Powered by [S
 > -   http://localhost:8080/admin - 👩‍💼 Admin Panel
 
 &nbsp;
-
-### Using Go
-
-```
-$ go install github.com/caris-events/tunalog@latest
-```
 
 ### Using Docker
 
