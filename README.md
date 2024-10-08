@@ -47,27 +47,6 @@ $ ./tunalog_linux_x64
 
 2. Double-click the downloaded `tunalog_windows_x64.exe` file to run.
 
-### Using a self-signed TLS certificate
-
-Adopted from [Gin 101: Enable TLS/SSL](https://medium.com/@pointgoal/gin-101-enable-tls-ssl-e84090aeb432)
-
-```bash
-$ go install -ldflags="-s -w" github.com/cloudflare/cfssl/cmd/cfssl@latest
-$ go install -ldflags="-s -w" github.com/cloudflare/cfssl/cmd/cfssljson@latest
-$ cd ~/tunalog
-$ mkdir cert
-$ cd cert
-$ cfssl print-defaults config > ca-config.json
-$ cfssl print-defaults csr > ca-csr.json
-# now edit `ca-csr.json` for your site-specific settings
-$ cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
-# this creates: ca.pem, ca-key.pem, ca.csr
-$ cfssl gencert -config ca-config.json -ca ca.pem -ca-key ca-key.pem -profile www ca-csr.json | cfssljson -bare server
-# this creates: server.pem, server-key.pem, server.csr
-$ cd ..
-$ ./tunalog_YourOS_YourArch -p :8443 --tls-key cert/server-key.pem --tls-crt cert/server.pem
-```
-
 &nbsp;
 
 ## Help
@@ -99,6 +78,15 @@ GLOBAL OPTIONS:
    --tls-crt value         path to TLS certificate file
    --help, -h              show help
    --version, -v           print the version
+```
+
+### Using a self-signed TLS certificate
+
+You can run Tunalog with a TLS certificate directly, without needing a reverse proxy.
+
+```bash
+# Ports under 1024 require `sudo` to run
+$ ./tunalog_linux_x64 -p :443 --tls-key cert/server-key.pem --tls-crt cert/server.pem
 ```
 
 &nbsp;
