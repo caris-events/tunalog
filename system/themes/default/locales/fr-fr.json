@@ -1,0 +1,37 @@
+{
+    "filter_tag": "Afficher uniquement les publications avec le tag :",
+    "filter_author": "Afficher uniquement les publications de l'auteur :",
+    "filter_date": "Afficher uniquement les publications de la date :",
+
+    "button_resetfilter": "Réinitialiser le filtre",
+    "button_menu": "Menu",
+    "button_close": "Fermer",
+    "button_editpost": "Modifier la publication",
+    "button_unlock": "Déverrouiller",
+    "button_returnhomepage": "Retour à la page d'accueil",
+
+    "notfound_title": "Aucune publication trouvée",
+    "notfound_description": "Il n'y a actuellement aucune publication publique disponible à consulter",
+
+    "404_title": "Page introuvable",
+    "404_description": "Le lien sur lequel vous avez cliqué n'est peut-être plus valide, ou la page a été supprimée",
+
+    "title_private": "Privé :",
+    "title_draft": "Brouillon :",
+    "title_password": "Protégé :",
+    "title_scheduled": "—— Planifié",
+
+    "notice_title": "Avis",
+    "status_pinned": "Épinglé",
+
+    "password_title": "Cette publication est verrouillée",
+    "password_description": "Entrez le mot de passe pour déverrouiller et consulter le contenu.",
+    "password_placeholder": "Saisissez le mot de passe ici...",
+    "password_excerpt": "Les publications protégées n'affichent pas d'extrait.",
+
+    "pagination_new": "← Articles plus récents",
+    "pagination_old": "Articles plus anciens →",
+    "pagination_new_label": "Articles plus récents",
+    "pagination_old_label": "Articles plus anciens",
+    "pagination_info": "Page %d sur %d"
+}
