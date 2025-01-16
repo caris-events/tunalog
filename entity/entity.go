@@ -68,9 +68,10 @@ var Timezones = map[string]int{
 }
 
 var Locales = map[string]string{
-	"台灣正體":    "zh-tw",
-	"English": "en-us",
-	"简体中文":    "zh-cn",
+	"台灣正體":     "zh-tw",
+	"English":  "en-us",
+	"简体中文":     "zh-cn",
+	"Français": "fr-fr",
 }
 
 var PageTypes = map[string]string{
