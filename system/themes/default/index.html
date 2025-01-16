@@ -18,6 +18,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="{{ .URL.RelativeRoot }}assets/style.css" />
     <link rel="icon" type="image/png" href="{{ .URL.RelativeRoot }}assets/favicon.png">
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="{{ .Config.Name }}" href="{{ .URL.RelativeRoot }}/rss.xml" />
+    <!-- / RSS -->
     {{ .Config.InjectedHead | html }}
 </head>
 <body id="page">
