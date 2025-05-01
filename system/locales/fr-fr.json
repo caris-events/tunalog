@@ -130,6 +130,7 @@
     "photos_list": "Liste des médias",
     "photos_notfound": "Aucun média trouvé",
     "photos_dropdown_view": "Voir l'image dans un nouvel onglet",
+    "photos_dropdown_copy": "Copier l'URL de l'image",
     "photos_dropdown_delete": "Supprimer l'image",
     "postcreate_postcreate": "Créer un article",
     "postcreate_title_placeholder": "Pensez à un titre pour cet article...",
