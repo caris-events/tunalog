@@ -130,6 +130,7 @@
     "photos_list": "Media List",
     "photos_notfound": "No media found",
     "photos_dropdown_view": "View Image in New Tab",
+    "photos_dropdown_copy": "Copy Image URL",
     "photos_dropdown_delete": "Delete Image",
     "postcreate_postcreate": "Create Post",
     "postcreate_title_placeholder": "Think of a title for this post...",

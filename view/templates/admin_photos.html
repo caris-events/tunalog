@@ -60,6 +60,9 @@
                             <a href="{{ $.URL.RelativeRoot }}uploads/images/{{ $group.Year }}/{{ $group.Month }}/{{ . }}" target="_blank" class="item">
                                 {{ __ "photos_dropdown_view" }}
                             </a>
+                            <button type="button" class="item" onclick="navigator.clipboard.writeText(window.location.origin + '/uploads/images/{{ $group.Year }}/{{ $group.Month }}/{{ . }}')">
+                                {{ __ "photos_dropdown_copy" }}
+                            </button>
                             <div class="divider"></div>
                             <button type="submit" class="item" style="--color: var(--ts-negative-400)">
                                 {{ __ "photos_dropdown_delete" }}

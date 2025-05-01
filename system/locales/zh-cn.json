@@ -130,6 +130,7 @@
     "photos_list": "多媒体",
     "photos_notfound": "目前没有任何多媒体",
     "photos_dropdown_view": "以新分页查看图片",
+    "photos_dropdown_copy": "复制图片网址",
     "photos_dropdown_delete": "删除图片",
     "postcreate_postcreate": "建立文章",
     "postcreate_title_placeholder": "替这篇文章想个标题…",

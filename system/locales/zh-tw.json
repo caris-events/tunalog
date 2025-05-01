@@ -130,6 +130,7 @@
     "photos_list": "多媒體",
     "photos_notfound": "目前沒有任何多媒體",
     "photos_dropdown_view": "以新分頁檢視圖片",
+    "photos_dropdown_copy": "複製圖片連結",
     "photos_dropdown_delete": "刪除圖片",
 
     "postcreate_postcreate": "建立文章",
