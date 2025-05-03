@@ -117,7 +117,7 @@
 
             <!-- content -->
             {{ if .IsUnlocked }}
-                {{ .Config.InjectedPostStart }}
+                {{ .Config.InjectedPostStart | html }}
 
                 {{ if eq .Config.AuthorBlock "start" }}
                     {{ template "author.html" . }}
@@ -139,7 +139,7 @@
                     {{ template "author.html" . }}
                 {{ end }}
 
-                {{ .Config.InjectedPostEnd }}
+                {{ .Config.InjectedPostEnd | html }}
             {{ else }}
                 <!-- locked -->
                 {{ if .Message }}
