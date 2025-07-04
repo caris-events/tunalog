@@ -52,7 +52,7 @@ var (
 			return time.Unix(v, 0).Format(Config.DateFormat)
 		},
 		"markdown": func(v string) template.HTML {
-			p := parser.NewWithExtensions(parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock | parser.Footnotes | parser.SuperSubscript)
+			p := parser.NewWithExtensions(parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock | parser.Footnotes | parser.SuperSubscript | parser.MathJax)
 			doc := p.Parse([]byte(v))
 			renderer := html.NewRenderer(html.RendererOptions{
 				Flags: html.HrefTargetBlank,
